@@ -23,6 +23,6 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-secondary" type="button" (click)="onCreate()">Create</button>
+    <button class="btn btn-secondary" type="button" (click)="onCreate()" [ngClass]="{ 'disabled': !isNameValid }">Create</button>
     <button class="btn btn-danger" type="button" (click)="activeModal.close()">Close</button>
 </div>
