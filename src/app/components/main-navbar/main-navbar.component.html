@@ -1,10 +1,11 @@
 <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-primary shadow">
-    <div class="container-fluid">
+    <div class="container-xxl flex-wrap flex-lg-nowrap gx-3">
         <a class="navbar-brand" [routerLink]="['/']">Grimoire</a>
-        <button (click)="isCollapsed = !isCollapsed" class="navbar-toggler" type="button">
+        <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div [(ngbCollapse)]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" [(ngbCollapse)]="isCollapsed">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['']" [routerLinkActive]="'active'">ShadowRun</a>
@@ -12,18 +13,28 @@
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['']" [routerLinkActive]="'active'">SSTL</a>
                 </li>
-                <li ngbDropdown class="nav-item dropdown">
-                    <a ngbDropdownToggle class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item dropdown" ngbDropdown>
+                    <a class="nav-link dropdown-toggle" role="button" ngbDropdownToggle>
                         Gaming Tools
                     </a>
-                    <ul ngbDropdownMenu class="dropdown-menu">
-                        <li ngbDropdownItem>
+                    <ul class="dropdown-menu bg-primary" ngbDropdownMenu>
+                        <li ngbDropdownItem="">
                             <a class="dropdown-item" [routerLink]="['gaming-tools', 'inventories']">Inventory</a>
                         </li>
                     </ul>
                 </li>
-
             </ul>
+
+            <!-- <div class="d-flex">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <button class="btn p-0" (click)="openSettingsMenu()">
+                            <i class="bi bi-gear-wide-connected fs-5 text-white"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div> -->
+
         </div>
     </div>
 </nav>

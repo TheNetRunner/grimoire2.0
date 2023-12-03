@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+
+import { SettingsNavbarComponent } from '../settings-navbar/settings-navbar.component';
 
 @Component({
   selector: 'app-main-navbar',
@@ -6,5 +9,12 @@ import { Component } from '@angular/core';
   styleUrl: './main-navbar.component.css',
 })
 export class MainNavbarComponent {
-  isCollapsed: boolean = true;
+    private offcanvasService = inject(NgbOffcanvas);
+
+    isCollapsed: boolean = true;
+
+    openSettingsMenu(): void {
+        const offcanvasRef = this.offcanvasService.open(SettingsNavbarComponent, {animation: true, backdrop: true, position: 'end'});
+    }
+
 }
