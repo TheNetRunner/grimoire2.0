@@ -34,6 +34,7 @@ export class DetailViewComponent implements OnInit {
 	inventory!: Inventory;
     form!: FormGroup;
     notesCollapsed: boolean = false;
+    detailsCollapsed: boolean = true;
 
 	ngOnInit() {
 		this.activedRoute.params.subscribe((params) => {

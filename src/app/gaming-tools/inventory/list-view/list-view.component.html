@@ -19,9 +19,6 @@
                     <h5 class="mb-1 text-secondary">{{ inventory.name | titlecase }}</h5>
                     <h6 class="mb-1 text-info">{{ inventory.gameSystem | titlecase }}</h6>
                 </a>
-                <div class="d-flex pt-3">
-                    <span class="fs-8">Last Updated: {{ inventory.created | date:"medium" }}</span>
-                </div>
             </div>
             <div class="col-2">
                 <div class="d-flex justify-content-end">
@@ -29,6 +26,15 @@
                         <i class="bi bi-trash-fill text-danger fs-3"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+                <span class="fs-8">Last Updated: {{ inventory.lastUpdated | date:"dd-MMM-yy HH:mm:ss" }}</span>
+            </div>
+            <div class="col-4 text-end">
+                <span class="fs-8 text-info" ngbTooltip="Last 12 characters of id" [placement]="'bottom'">{{ inventory.id.slice(-12) }}</span>
             </div>
         </div>
     </li>

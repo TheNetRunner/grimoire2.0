@@ -29,6 +29,7 @@ export class UploadInventoryModalComponent {
             const isFileValid = await this.validateSelectedFile()
 
             if(isFileValid) {
+                console.log("The provided file is valid for upload.");
                 this.isSelectedFileValid = true;
             } else {
                 this.selectedFileErrors.push("The file provided failed validation, please check and try again."); 
@@ -88,10 +89,13 @@ export class UploadInventoryModalComponent {
 
 	async onSubmit(event: Event): Promise<void> {
         event.preventDefault();
+
+        console.log(this.selectedFile, this.isSelectedFileValid);
         
         if (this.selectedFile && this.isSelectedFileValid) {
             const fileContentAsJson = await this.readFileContents(this.selectedFile);
             this.uploadInventoryEvent.emit(fileContentAsJson);
+            this.activeModal.close();
         }
     }
 }

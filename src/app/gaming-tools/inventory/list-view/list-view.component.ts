@@ -87,8 +87,13 @@ export class ListViewComponent implements OnInit {
 
 		modalRef.componentInstance.uploadInventoryEvent.subscribe(
 			async (uploadedInventory: Inventory) => {
-                console.log("Hello");
+                console.log("uploading inventory...", uploadedInventory);
+                const now = Date.now();
+                console.log("Updating lasy updated field to..", now)
+
                 uploadedInventory.id = await this.inventoryService.getUniqueInventoryId();
+                uploadedInventory.lastUpdated = now;
+                
                 this.inventoryService.saveInventoryToDatabase(uploadedInventory);
             },
 		);
