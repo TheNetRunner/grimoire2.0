@@ -80,8 +80,8 @@
                 <ul class="list-group list-group-flush" [(ngbCollapse)]="detailsCollapsed">
                     <li class="list-group-item bg-primary">id: {{ inventory.id }}</li>
                     <li class="list-group-item bg-primary">Total Number of Items: {{ inventory.items.length }}</li>
-                    <li class="list-group-item bg-primary">Created: {{ inventory.created }}</li>
-                    <li class="list-group-item bg-primary">Last Updated: {{ inventory.lastUpdated }}</li>
+                    <li class="list-group-item bg-primary">Created: {{ inventory.created | date:"dd-MMM-yy HH:mm:ss" }}</li>
+                    <li class="list-group-item bg-primary">Last Updated: {{ inventory.lastUpdated | date:"dd-MMM-yy HH:mm:ss" }}</li>
                 </ul>
             </div>
         </div>
