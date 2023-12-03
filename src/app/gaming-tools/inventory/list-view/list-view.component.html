@@ -1,0 +1,35 @@
+<ul class="list-group shadow">
+    <li class="list-group-item">
+        <div class="d-flex justify-content-between">
+            <span>{{ inventories.length }} / 25</span>
+            <div>
+                <button class="btn p-0 mx-2" (click)="openNewInventoryModal()" ngbTooltip="Create New Inventory" placement="bottom">
+                    <i class="bi bi-plus-square-fill text-secondary fs-1"></i>
+                </button>
+                <button class="btn p-0" (click)="openUploadInventoryModal()" ngbTooltip="Upload inventory" placement="bottom">
+                    <i class="bi bi-cloud-arrow-up-fill text-secondary fs-1"></i>
+                </button>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item" *ngFor="let inventory of inventories">
+        <div class="row align-items-center">
+            <div class="col-10">
+                <a class="text-decoration-none" [routerLink]="[inventory.id]">
+                    <h5 class="mb-1 text-secondary">{{ inventory.name | titlecase }}</h5>
+                    <h6 class="mb-1 text-info">{{ inventory.gameSystem | titlecase }}</h6>
+                </a>
+                <div class="d-flex pt-3">
+                    <span class="fs-8">Last Updated: {{ inventory.created | date:"medium" }}</span>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-flex justify-content-end">
+                    <button class="btn p-0" (click)="openDeleteInventoryModal(inventory)" ngbTooltip="Delete Inventory" placement="bottom">
+                        <i class="bi bi-trash-fill text-danger fs-3"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>

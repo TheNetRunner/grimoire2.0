@@ -1,0 +1,28 @@
+<li class="list-group-item bg-primary" *ngIf="item">
+    <div class="row align-items-center">
+        <div class="col-6 ">
+            <span class="text-break">{{ item.quantity }} x {{ item.name | titlecase }}</span>
+        </div>
+        <div class="col-6 text-end">
+            <button class="btn" (click)="emitOpenItemEditModalEvent()">
+                <i class="bi bi-pencil-fill" ngbTooltip="Edit item" placement="top"></i>
+            </button>
+            <button class="btn" (click)="collapse.toggle()" [attr.aria-expanded]="!notesCollapsed">
+                <i class="bi bi-caret-down-square-fill" *ngIf="notesCollapsed" ngbTooltip="Expand notes" placement="top"></i>
+                <i class="bi bi-caret-up-square-fill" *ngIf="!notesCollapsed" ngbTooltip="Collapse notes" placement="top"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <span class="fs-7 text-info" *ngIf="item.amountPerItem > 0">Value: {{ item.amountPerItem }}{{ item.currencyPerItem | stringAbbreviationer }} each</span>
+        </div>
+        <div class="col-6 text-end">
+            <span class="fs-7 text-info" *ngIf="item.amountPerItem > 0">Total Value: {{ item.amountPerItem * item.quantity }}{{ item.currencyPerItem | stringAbbreviationer }}</span>
+        </div>
+    </div>
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="notesCollapsed" [animation]="true">
+        <p class="text-info fs-6 m-0">Item Notes:</p>
+        <p>{{ item.notes }}</p>
+    </div>
+</li>

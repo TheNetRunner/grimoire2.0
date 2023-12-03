@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "attr-value-not-empty": true,
+    "attr-lowercase": true,
+    "attr-no-duplication": true,
+    "attr-no-unnecessary-whitespace": true,
+    "attr-unsafe-chars": true,
+    "attr-value-double-quotes": true,
+    "tag-attributes-alphabetical-order": true,
+    "tag-pair": true
+  }
+}
