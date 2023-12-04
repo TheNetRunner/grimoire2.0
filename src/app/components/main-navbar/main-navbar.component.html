@@ -7,11 +7,15 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent" [(ngbCollapse)]="isCollapsed">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['']" [routerLinkActive]="'active'">ShadowRun</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['']" [routerLinkActive]="'active'">SSTL</a>
+                <li class="nav-item dropdown" ngbDropdown>
+                    <a class="nav-link dropdown-toggle" role="button" ngbDropdownToggle>
+                        Shadow Run
+                    </a>
+                    <ul class="dropdown-menu bg-primary" ngbDropdownMenu>
+                        <li ngbDropdownItem="">
+                            <a class="dropdown-item" [routerLink]="['shadow-run', 'characters']" [routerLinkActive]="'active'">Characters</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown" ngbDropdown>
                     <a class="nav-link dropdown-toggle" role="button" ngbDropdownToggle>

@@ -8,6 +8,7 @@ import { AppComponent } from "./app.component";
 import { MainNavbarComponent } from "./components/main-navbar/main-navbar.component";
 import { InventoryModule } from "./gaming-tools/inventory/inventory.module";
 import { SettingsNavbarComponent } from './components/settings-navbar/settings-navbar.component';
+import { ShadowRunCharactersModule } from "./shadow-run-characters/shadow-run-characters.module";
 
 @NgModule({
 	declarations: [AppComponent, MainNavbarComponent, SettingsNavbarComponent],
@@ -17,6 +18,7 @@ import { SettingsNavbarComponent } from './components/settings-navbar/settings-n
 		NgbModule,
 		ReactiveFormsModule,
 		InventoryModule,
+        ShadowRunCharactersModule
 	],
 	providers: [],
 	bootstrap: [AppComponent],
