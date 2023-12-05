@@ -20,12 +20,10 @@ export class ListViewComponent {
 
     copyCharacter(characterIndex: number): void {
         if (this.characters.length < 25) {
-            let characterCopy = this.characters[characterIndex];
-            characterCopy.id = uuidv4();
-            characterCopy.name = `${characterCopy.name} copy`
+            const originalCharacter = this.characters[characterIndex];
+            const characterCopy = {...originalCharacter, id: uuidv4(), name: `${originalCharacter.name} copy`}
 
             this.characters.push(characterCopy);
-            this.addCharacterToDatabase(characterCopy);
         }
     }
 
