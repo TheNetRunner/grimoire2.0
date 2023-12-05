@@ -3,6 +3,22 @@
     height: 10rem;
 }
 
+.card-body-background-one {
+    background-image: url("../../../assets/imgs/shadow-run/character_background_one.png");
+}
+
+.card-body-background-two {
+    background-image: url("../../../assets/imgs/shadow-run/character_background_two.png");
+}
+
+.card-body-background-three {
+    background-image: url("../../../assets/imgs/shadow-run/character_background_three.png");
+}
+
+.card-body-background-four {
+    background-image: url("../../../assets/imgs/shadow-run/character_background_four.png");
+}
+
 .card-body {
     background-size: cover;
     background-repeat: no-repeat;

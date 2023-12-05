@@ -1,12 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 
-import { ShadowRunCharactersDatabaseService } from './shadow-run-characters-database.service';
+import { DatabaseService } from '../../shared/services/database.service';
+
+const SHADOW_RUN_CHARACTERS_TABLE_NAME = "shadowRunCharacters";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShadowRunCharactersService {
-    shadowRunCharactesrDatabaseService = inject(ShadowRunCharactersDatabaseService);
+    shadowRunCharactesrDatabaseService = inject(DatabaseService);
 
     // Create
 
@@ -15,7 +17,7 @@ export class ShadowRunCharactersService {
     // Update
 
     // Delete
-    deleteCharacterFromDatabase(characterId: string): void {
-        this.shadowRunCharactesrDatabaseService.deleteCharacter(characterId);
+    deleteCharacter(characterId: string): void {
+        this.shadowRunCharactesrDatabaseService.deleteItem(SHADOW_RUN_CHARACTERS_TABLE_NAME, characterId);
     }
 }

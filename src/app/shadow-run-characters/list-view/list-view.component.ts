@@ -29,12 +29,11 @@ export class ListViewComponent {
         }
     }
 
-    getRandomBackgroundImage(): any {
+    getRandomBackgroundImage(): string[] {
         const choices = ["one", "two", "three", "four"];
         const randomIndex = Math.floor(Math.random() * choices.length);
-        const choice = choices[randomIndex];
 
-        return { "background-image": `url(../../../assets/imgs/shadow-run/character_background_${choice}.png)` }
+        return ['card-body', 'm-1',`card-body-background-${choices[randomIndex]}`]
     }
 
     get totalCharacters(): number {
@@ -47,12 +46,8 @@ export class ListViewComponent {
         modelRef.componentInstance.characterId = characterId;
 
         modelRef.componentInstance.deleteCharacterEvent.subscribe((characterId: string) => {
-            this.shadowRunCharacterService.deleteCharacterFromDatabase(characterId);
+            this.shadowRunCharacterService.deleteCharacter(characterId);
         });
-    }
-
-    deleteCharacter(characterId: string): void {
-        this.shadowRunCharacterService.deleteCharacterFromDatabase(characterId);
     }
 
    addCharacterToDatabase(character: ShadowRunCharacter): void {
