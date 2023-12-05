@@ -3,7 +3,6 @@ import { Observable, liveQuery } from "dexie";
 import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
 
-import { InventoryDatabaseService } from "./inventory-database.service";
 import {
 	Currency,
 	Inventory,
@@ -15,12 +14,15 @@ import {
 	shadowRunCurrencies,
 	earthDawnCurrencies,
 } from "../data/currencies.data";
+import { DatabaseService } from "../../../shared/services/database.service";
+
+const INVENTORY_TABLE_NAME = "inventories";
 
 @Injectable({
 	providedIn: "root",
 })
 export class InventoryService {
-	inventoryDatabaseService = inject(InventoryDatabaseService);
+    databaseService = inject(DatabaseService);
 
 	async createNewInventory(
 		newInventoryConfig: NewInventoryConfig,
@@ -41,23 +43,23 @@ export class InventoryService {
 	}
 
 	getInventories(): Observable<Inventory[]> {
-		return liveQuery(() => this.inventoryDatabaseService.getItems());
+		return liveQuery(() => this.databaseService.getItems(INVENTORY_TABLE_NAME));
 	}
 
 	getInventory(id: string): Observable<Inventory | undefined> {
-		return liveQuery(() => this.inventoryDatabaseService.getItemById(id));
+		return liveQuery(() => this.databaseService.getItemById(INVENTORY_TABLE_NAME, id));
 	}
 
 	saveInventoryToDatabase(inventory: Inventory): void {
-		this.inventoryDatabaseService.addItem(inventory, inventory.id);
+		this.databaseService.addItem(INVENTORY_TABLE_NAME, inventory, inventory.id);
 	}
 
 	updateInventoryItemInDatabase(inventory: Inventory): void {
-		this.inventoryDatabaseService.updateItem(inventory.id, inventory);
+		this.databaseService.updateItem(INVENTORY_TABLE_NAME, inventory.id, inventory);
 	}
 
 	deleteInventoryItemInDatabase(inventoryId: string): void {
-		this.inventoryDatabaseService.deleteItem(inventoryId);
+		this.databaseService.deleteItem(INVENTORY_TABLE_NAME, inventoryId);
 	}
 
 	validateInventoryJson(inventoryObject: Inventory): boolean {
@@ -121,7 +123,7 @@ export class InventoryService {
 		do {
 			newId = uuidv4();
 		} while (
-			await this.inventoryDatabaseService.verifyIdExistsInTable(newId)
+			await this.databaseService.verifyIdExistsInTable(INVENTORY_TABLE_NAME, newId)
 		);
 
 		return newId;
