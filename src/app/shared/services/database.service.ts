@@ -18,19 +18,19 @@ export class DatabaseService {
 		});
 	}
 
-	async addItem(tableName: string, item: Inventory, key: string): Promise<void> {
+	async addItem(tableName: string, item: any, key: string): Promise<void> {
 		await this.database.table(tableName).add(item, key);
 	}
 
-	async getItems(tableName: string): Promise<Inventory[]> {
+	async getItems(tableName: string): Promise<any[]> {
 		return await this.database.table(tableName).toArray();
 	}
 
-	async getItemById(tableName: string, id: string): Promise<Inventory | undefined> {
+	async getItemById(tableName: string, id: string): Promise<any> {
 		return await this.database.table(tableName).where("id").equals(id).first();
 	}
 
-	async updateItem(tableName: string, id: string, update: Inventory): Promise<number> {
+	async updateItem(tableName: string, id: string, update: any): Promise<number> {
 		const response = await this.database.table(tableName).update(id, update);
 		return response;
 	}
