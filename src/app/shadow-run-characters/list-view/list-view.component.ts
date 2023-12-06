@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 
-import { fakeCharacters } from '../data/fakeCharacters.data';
 import { ShadowRunCharacter } from '../models/shadow-run.model';
 import { DeleteCharacterModalComponent } from '../components/delete-character-modal/delete-character-modal.component';
 import { ShadowRunCharactersService } from '../services/shadow-run-characters.service';

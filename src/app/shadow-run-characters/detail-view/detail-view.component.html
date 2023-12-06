@@ -1,1 +1,18 @@
-<p>detail-view works!</p>
+{{ character | json }}
+
+<div *ngIf="character">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <app-personal-data-card [character]="character"></app-personal-data-card>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <app-attribute-card>[character]="character"></app-attribute-card>
+        </div>
+    </div>
+
+</div>
+ 

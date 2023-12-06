@@ -1,5 +1,17 @@
-export const newCharacterObject = {
+import { ShadowRunCharacter } from "../models/shadow-run.model";
+
+export const newCharacterObject: ShadowRunCharacter = {
     id: "",
     name: "New Character",
-    metaType: "human"
+    ethnicity: "",
+    age: "",
+    gender: "",
+    height: "",
+    weight: "",
+    streetCred: "",
+    notoriety: "",
+    publicAwareness: "",
+    metaType: "human",
+    misc: "",
+    karmaEarned: 0
 }

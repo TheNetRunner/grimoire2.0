@@ -36,6 +36,9 @@ export class ShadowRunCharactersService {
     }
 
     // Update
+    updateCharacter(characterId: string, characterUpdates: ShadowRunCharacter): void {
+        this.databaseService.updateItem(SHADOW_RUN_CHARACTERS_TABLE_NAME, characterId, characterUpdates);
+    }
 
     // Delete
     deleteCharacter(characterId: string): void { 
