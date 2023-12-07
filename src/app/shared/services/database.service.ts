@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import Dexie, { Table } from "dexie";
-
-import { Inventory } from '../../gaming-tools/inventory/models/inventory.model';
-import { ShadowRunCharacter } from '../../shadow-run-characters/models/shadow-run.model';
+import Dexie from "dexie";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +9,9 @@ export class DatabaseService {
 
 	constructor() {
 		this.database = new Dexie("Grimoire");
-		this.database.version(1).stores({
+		this.database.version(2).stores({
 			inventories: "&id",
-            shadowRunCharacters: "&id"
+            shadowRun5ECharacters: "&id"
 		});
 	}
 

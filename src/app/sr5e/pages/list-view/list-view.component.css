@@ -1,0 +1,10 @@
+.card {
+    width: 26rem;
+    height: 10rem;
+}
+
+.card-body {
+    background-image: url("../../../../assets/imgs/shadow-run/character_background_one.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}

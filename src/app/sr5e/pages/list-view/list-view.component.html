@@ -1,0 +1,41 @@
+<div class="container-xxl">
+    <div class="row mt-3">
+        <div class="col-8">
+            <h3>My Characters</h3>
+            <h6 class="mb-2 text-body-secondary">{{ totalCharacters }} / 25</h6>
+        </div>
+        <div class="col-4">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" (click)="createCharacter()">
+                    Create Character
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="d-flex flex-wrap">
+            <div class="card bg-primary shadow m-2" *ngFor="let character of characters; let i = index">
+                <div class="card-body m-1">
+                    <div class="d-flex flex-column flex-nowrap overflow-hidden">
+                        <h5 class="card-title text-nowrap text-break ">{{ character.name | titlecase }}</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ character.metaType | titlecase }}</h6>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <button class="btn p-0" [routerLink]="[character.id, 'play']">
+                        <span class="">Play</span>
+                    </button>
+                    <button class="btn p-0" [routerLink]="[character.id, 'edit']" [queryParams]="{ 'step': 'concept' }">
+                        <span class="">Edit</span>
+                    </button>
+                    <button class="btn p-0">
+                        <span class (click)="copyCharacter(i)">Copy</span>
+                    </button>
+                    <button class="btn text-danger p-0">
+                        <span class (click)="openDeleteCharacterModal(character)">Delete</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<app-navbar *ngIf="character" [characterName]="character.name"></app-navbar>
+
+<div class="container-xxl">
+    {{ character | json }}
+    <div *ngIf="character">
+
+        <app-concept-step
+            *ngIf="editorStep === 'concept'"
+            [character]="character"
+        ></app-concept-step>
+
+        <app-priorities-step
+            *ngIf="editorStep === 'priorities'"
+            [character]="character"
+        ></app-priorities-step>
+
+    </div>
+</div>

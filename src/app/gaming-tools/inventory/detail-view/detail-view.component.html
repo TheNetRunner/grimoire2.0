@@ -1,90 +1,92 @@
-<div *ngIf="inventory">
-    <div class="row mt-3">
+<div class="container-xxl">
+    <div *ngIf="inventory">
+        <div class="row mt-3">
 
-        <div class="col-md-6">
-            <div class="card bg-primary shadow mb-2">
-                <div class="card-header d-flex justify-content-between align-items-center py-0">
-                    <span>{{ inventory.name | titlecase }}</span>
-                    <button class="btn" (click)="downloadInventory()" ngbTooltip="Download inventory" placement="top">
-                        <i class="bi bi-cloud-arrow-down-fill fs-5"></i>
-                    </button>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item bg-primary" *ngFor="let currency of inventory.currencies">
-                        <div class="row">
-                            <div class="col-8">
-                                {{ currency.name | titlecase }} ({{ currency.name | stringAbbreviationer }})
-                            </div>
-                            <div class="col-2">
-                                {{ currency.amount }}
-                            </div>
-                            <div class="col-2">
-                                <button class="btn" (click)="openUpdateCurrecyModal(currency)"><i class="bi bi-pencil-fill"></i></button>
-                            </div>
-
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card bg-primary shadow mb-2">
-                <div class="card-header d-flex justify-content-between align-items-center py-0">
-                    <span>Notes</span>
-                    <button class="btn" (click)="notesCollapsed = !notesCollapsed" [attr.aria-expanded]="!notesCollapsed">
-                        <i class="bi bi-caret-down-square-fill" *ngIf="notesCollapsed" ngbTooltip="Expand notes" placement="top"></i>
-                        <i class="bi bi-caret-up-square-fill" *ngIf="!notesCollapsed" ngbTooltip="Collapse notes" placement="top"></i>
-                    </button>
-                </div>
-                <div class="card-body" [(ngbCollapse)]="notesCollapsed" [animation]="true">
-                    <form [formGroup]="form">
-                        <textarea class="form-control" formControlName="notes" rows="6"></textarea>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row">
-
-        <div class="col-12">
-            <div class="card bg-primary shadow mb-2">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between">
-                        <span>Items</span>
-                        <button class="btn" (click)="openAddItemModal()" ngbTooltip="Add item" placement="top">
-                            <i class="bi bi-cart-plus-fill fs-5"></i>
+            <div class="col-md-6">
+                <div class="card bg-primary shadow mb-2">
+                    <div class="card-header d-flex justify-content-between align-items-center py-0">
+                        <span>{{ inventory.name | titlecase }}</span>
+                        <button class="btn" (click)="downloadInventory()" ngbTooltip="Download inventory" placement="top">
+                            <i class="bi bi-cloud-arrow-down-fill fs-5"></i>
                         </button>
                     </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-primary" *ngFor="let currency of inventory.currencies">
+                            <div class="row">
+                                <div class="col-8">
+                                    {{ currency.name | titlecase }} ({{ currency.name | stringAbbreviationer }})
+                                </div>
+                                <div class="col-2">
+                                    {{ currency.amount }}
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn" (click)="openUpdateCurrecyModal(currency)"><i class="bi bi-pencil-fill"></i></button>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <app-inventory-item-list-item *ngFor="let item of inventory.items" [item]="item" (openItemEditModalEvent)="openItemEditModal(item)"></app-inventory-item-list-item>
-                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card bg-primary shadow mb-2">
+                    <div class="card-header d-flex justify-content-between align-items-center py-0">
+                        <span>Notes</span>
+                        <button class="btn" (click)="notesCollapsed = !notesCollapsed" [attr.aria-expanded]="!notesCollapsed">
+                            <i class="bi bi-caret-down-square-fill" *ngIf="notesCollapsed" ngbTooltip="Expand notes" placement="top"></i>
+                            <i class="bi bi-caret-up-square-fill" *ngIf="!notesCollapsed" ngbTooltip="Collapse notes" placement="top"></i>
+                        </button>
+                    </div>
+                    <div class="card-body" [(ngbCollapse)]="notesCollapsed" [animation]="true">
+                        <form [formGroup]="form">
+                            <textarea class="form-control" formControlName="notes" rows="6"></textarea>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+                <div class="card bg-primary shadow mb-2">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <span>Items</span>
+                            <button class="btn" (click)="openAddItemModal()" ngbTooltip="Add item" placement="top">
+                                <i class="bi bi-cart-plus-fill fs-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <app-inventory-item-list-item *ngFor="let item of inventory.items" [item]="item" (openItemEditModalEvent)="openItemEditModal(item)"></app-inventory-item-list-item>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card bg-primary shadow mb-2">
+                    <div class="card-header d-flex justify-content-between align-items-center py-0">
+                        <span>List Details:</span>
+                        <button class="btn" (click)="detailsCollapsed = !detailsCollapsed" [attr.aria-expanded]="!detailsCollapsed">
+                            <i class="bi bi-caret-down-square-fill" *ngIf="detailsCollapsed" ngbTooltip="Expand notes" placement="top"></i>
+                            <i class="bi bi-caret-up-square-fill" *ngIf="!detailsCollapsed" ngbTooltip="Collapse notes" placement="top"></i>
+                        </button>
+                    </div>
+                    <ul class="list-group list-group-flush" [(ngbCollapse)]="detailsCollapsed">
+                        <li class="list-group-item bg-primary">id: {{ inventory.id }}</li>
+                        <li class="list-group-item bg-primary">Total Number of Items: {{ inventory.items.length }}</li>
+                        <li class="list-group-item bg-primary">Created: {{ inventory.created | date:"dd-MMM-yy HH:mm:ss" }}</li>
+                        <li class="list-group-item bg-primary">Last Updated: {{ inventory.lastUpdated | date:"dd-MMM-yy HH:mm:ss" }}</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
     </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card bg-primary shadow mb-2">
-                <div class="card-header d-flex justify-content-between align-items-center py-0">
-                    <span>List Details:</span>
-                    <button class="btn" (click)="detailsCollapsed = !detailsCollapsed" [attr.aria-expanded]="!detailsCollapsed">
-                        <i class="bi bi-caret-down-square-fill" *ngIf="detailsCollapsed" ngbTooltip="Expand notes" placement="top"></i>
-                        <i class="bi bi-caret-up-square-fill" *ngIf="!detailsCollapsed" ngbTooltip="Collapse notes" placement="top"></i>
-                    </button>
-                </div>
-                <ul class="list-group list-group-flush" [(ngbCollapse)]="detailsCollapsed">
-                    <li class="list-group-item bg-primary">id: {{ inventory.id }}</li>
-                    <li class="list-group-item bg-primary">Total Number of Items: {{ inventory.items.length }}</li>
-                    <li class="list-group-item bg-primary">Created: {{ inventory.created | date:"dd-MMM-yy HH:mm:ss" }}</li>
-                    <li class="list-group-item bg-primary">Last Updated: {{ inventory.lastUpdated | date:"dd-MMM-yy HH:mm:ss" }}</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
 </div>
