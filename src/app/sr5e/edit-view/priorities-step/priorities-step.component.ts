@@ -41,6 +41,11 @@ export class PrioritiesStepComponent {
         });
 
 		this.form.valueChanges.subscribe((formData: any) => {
+
+            if(this.character.priorities.metaType !== formData.priorities.metaType) {
+                this.character.metaType = "human";
+            }
+
             this.dataStoreService.updateCharacter(this.character.id, formData);
 		});
     }
