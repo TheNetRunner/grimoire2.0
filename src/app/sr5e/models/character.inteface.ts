@@ -28,6 +28,7 @@ export interface ShadowRun5ECharacter {
     height: string;
     weight: string;
     misc: string;
+    image: string;
     streetCred: string;
     notoriety: string;
     publicAwareness: string;

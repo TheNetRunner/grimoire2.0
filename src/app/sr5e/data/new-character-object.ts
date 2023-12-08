@@ -12,6 +12,7 @@ export const newCharacterObject = {
     misc: "",
     streetCred: "",
     notoriety: "",
+    image: "human_one",
     publicAwareness: "",
 	levelOfPlay: "normal",
 	totalKarma: 25,

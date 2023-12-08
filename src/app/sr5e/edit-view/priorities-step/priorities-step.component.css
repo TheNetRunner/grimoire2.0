@@ -5,7 +5,3 @@
 td {
     color: rgb(130, 130, 130, 0.5)
 }
-
-.selected {
-    color: var(--bs-info) 
-} 

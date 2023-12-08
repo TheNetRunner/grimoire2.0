@@ -32,7 +32,7 @@
 
                         <div class="col-lg-3 gx-2">
                             <label class="form-label" for="magicResonance">Magic / Resonance</label>
-                            <select class="form-select m-auto" formControlName="magicResonance">
+                            <select class="form-select" formControlName="magicResonance">
                                 <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
                                     {{ priority | titlecase }}
                                 </option>
@@ -120,8 +120,7 @@
                                         </li>
                                     </ul>
                                 </td>
-                                <td class="text-center" 
-                                    [ngClass]="{ 'text-info': this.character.priorities.skills === priority }">
+                                <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.skills === priority }">
                                     {{ getPriorityRow(priority).skills.individualSkillsPoints }}/{{ getPriorityRow(priority).skills.skillGroupPoints }}
                                 </td>
                                 <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.resources === priority }">
