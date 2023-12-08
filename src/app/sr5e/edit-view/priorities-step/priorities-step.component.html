@@ -2,7 +2,7 @@
     
     <div class="col-md-6">
 
-        <div class="card bg-primary shadow">
+        <div class="card bg-primary shadow mb-2">
 
             <div class="card-header">
                 <h5 class="card-title text-white m-0">Priorities</h5>
@@ -66,6 +66,73 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-12">
+        <div class="card bg-primary shadow mb-2">
+            <div class="card-header">
+                <h5 class="card-title text-white m-0">Priority Table</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr class="text-center bg-primary">
+                                <th colspan="6">
+                                    <h5 class="m-0">Priority Table</h5>
+                                </th>
+                            </tr>
+                            <tr class="text-center">
+                                <th class="col-1" scope="col">Priority</th>
+                                <th class="col-2" scope="col">Meta Type</th>
+                                <th class="col-1" scope="col">Attributes</th>
+                                <th class="col-3" scope="col">Magic or Resonance</th>
+                                <th class="col-1" scope="col">Skills</th>
+                                <th class="col-1" scope="col">Resources</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let priority of availablePriorityOptions">
+                                <td class="text-center">
+                                    {{ priority | titlecase }}
+                                </td>
+
+                                <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.metaType === priority }">
+                                    <ul class="list-unstyled">
+                                        <li *ngFor="let metaType of getPriorityRow(priority).metaTypes">
+                                            {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
+                                        </li>
+                                    </ul>
+                                </td>
+
+                                <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.attributes === priority }">
+                                    {{ getPriorityRow(priority).attributes }}
+                                </td>
+
+                                <td [ngClass]="{ 'text-info': this.character.priorities.magicResonance === priority }">
+                                    <ul class="list-unstyled">
+                                        <li *ngFor="let text of getPriorityRow(priority).magicResonanceText">
+                                            <strong class="text-secondary">{{ text.title }}: </strong>{{ text.description }}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td class="text-center" 
+                                    [ngClass]="{ 'text-info': this.character.priorities.skills === priority }">
+                                    {{ getPriorityRow(priority).skills.individualSkillsPoints }}/{{ getPriorityRow(priority).skills.skillGroupPoints }}
+                                </td>
+                                <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.resources === priority }">
+                                    {{ getLevelOfPlayResources(priority, character.levelOfPlay) }} &#165;
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
         </div>
     </div>
 

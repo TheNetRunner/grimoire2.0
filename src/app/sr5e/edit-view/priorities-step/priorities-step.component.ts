@@ -5,6 +5,8 @@ import { DataStoreService } from '../../services/data-store.service';
 import { ShadowRun5ECharacter } from '../../models/character.inteface';
 import { PRIORITIES } from '../../common/constants';
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
+import { PriorityTable, PriorityRow } from '../../models/priorityTables.interface';
+import { priorityTable } from '../../data/priorityTable';
 
 @Component({
   selector: 'app-priorities-step',
@@ -18,6 +20,7 @@ export class PrioritiesStepComponent {
 	@Input() character!: ShadowRun5ECharacter;
 	availablePriorityOptions: string[] = PRIORITIES;
 	form!: FormGroup;
+    priorityTable: PriorityTable = priorityTable;
 
 	ngOnInit(): void {
 		this.generatePriorityForm();
@@ -42,11 +45,27 @@ export class PrioritiesStepComponent {
 		});
     }
 
+    getPriorityRow(priority: string): PriorityRow {
+        const key = priority as keyof typeof this.priorityTable;
+        return this.priorityTable[key];
+    }
+
+    getLevelOfPlayResources(priority: string, levelOfPlay: string): number {
+        const row = this.getPriorityRow(priority);
+        const key = levelOfPlay as keyof typeof row.resources;
+
+        return row.resources[key];
+    }
+
     get prioritiesFormGroup(): FormGroup {
         return this.form.get('priorities') as FormGroup;
     }
 
     get isFormValid(): boolean {
         return this.form.valid;
+    }
+
+    get levelOfPlayKey(): string {
+        return this.character.levelOfPlay;
     }
 }
