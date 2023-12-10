@@ -1,8 +1,10 @@
 import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { ShadowRun5ECharacter } from '../../models/character.inteface';
 import { DataStoreService } from '../../services/data-store.service';
+
+import { ShadowRun5ECharacter } from '../../models/character.model';
+
 
 @Component({
   selector: 'app-concept-step',

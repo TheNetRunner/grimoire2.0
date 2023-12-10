@@ -1,36 +1,38 @@
 import { Injectable } from '@angular/core';
 
-import { ShadowRun5ECharacter } from '../models/character.inteface';
-import { priorityTable } from '../data/priorityTable';
-import { PriorityTable } from "../models/priority-tables.interface";
-import { metaTypeAttributesTable } from "../data/meta-type-attribute-table";
-import { AttributeMinMax } from '../models/meta-type-attribute-table.interface';
+import { ShadowRun5ECharacter } from '../models/character.model';
+import { AttributeName, AttributesTableRow } from '../models/attribute.model';
+import { MetaTypeName } from '../models/meta-types.model';
+
+import { priorityTable } from '../data/priority-table';
+import { attributesTable } from '../data/meta-type-attribute-table';
+import { Priority, PriorityTableRow } from '../models/priority-table.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CharacterService {
-    private priorityTable: PriorityTable = priorityTable;
-    private metaTypeAttributesTable = metaTypeAttributesTable;
+    private priorityTable = priorityTable;
+    private attributesTable = attributesTable;
+
 
     getTotalBuildPointsSpent(character: ShadowRun5ECharacter): number {
-        let total = 0;
+        let totalBuildPoints = 0;
 
-        for (const attribute in character.attributes) {
-            if (character.attributes.hasOwnProperty(attribute)) {
-                const key = attribute as keyof typeof character.attributes;
-                total = total + character.attributes[key].buildPoints;
+        for (const attributeName in character.attributes) {
+            if (character.attributes.hasOwnProperty(attributeName)) {
+                const attribute = character.attributes[attributeName as keyof typeof character.attributes];
+
+                totalBuildPoints = totalBuildPoints + attribute.buildPoints;
             }
         }
 
-        return total;
+        return totalBuildPoints;
     }
 
     getMaxBuildPoints(character: ShadowRun5ECharacter): number {
         const characterAttributePriority = character.priorities.attributes;
-        const key = characterAttributePriority as keyof PriorityTable;
-
-        const maxBuildPoints = this.priorityTable[key].attributes;
+        const maxBuildPoints = this.getPriorityRow(characterAttributePriority)?.attributePoints || 0;
 
         return maxBuildPoints;
     }
@@ -40,43 +42,32 @@ export class CharacterService {
 
     }
 
-    calculateAttributeMinAndMax(character: ShadowRun5ECharacter, attributeName: string): number[] {
-        let attrMinAndMax: number[] = [];
-        
-        const characterMetaType = character.metaType;
-        const metaTypeTableRow = this.metaTypeAttributesTable[characterMetaType];
-
-        // @ts-ignore
-        attrMinAndMax.push(metaTypeTableRow[attributeName].minimum);
-
-        // @ts-ignore
-        attrMinAndMax.push(metaTypeTableRow[attributeName].maximum);
-
-		// if (character.qualities.exceptionalAttribute === attributeName) {
-		// 	attrMinAndMax[1] += 1;
-		// }
-
-		return attrMinAndMax;
-	}
-
-    calculateAttributeTotalValue(character: ShadowRun5ECharacter, attributeName: string): number {
+    calculateAttributeTotalValue(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
         const startingValue = this.calculateAttributeMinAndMax(character, attributeName)[0];
-		// @ts-ignore
 		const buildPoints = character.attributes[attributeName].buildPoints;
-		// @ts-ignore
 		const increases = character.attributes[attributeName].increases;
 
 		return startingValue + buildPoints + increases;
     }
 
-    calculateAttributeIncreasesSpent(character: ShadowRun5ECharacter, attributeName: string): number {
+    calculateTotalIncreasesSpent(character: ShadowRun5ECharacter): number {
+        let totalIncreaseSpent = 0;
+
+        for(const attributeName in character.attributes) {
+            if (character.attributes.hasOwnProperty(attributeName)) {
+                totalIncreaseSpent += this.calculateAttributeIncreasesSpent(character, attributeName as AttributeName);
+            }
+        }
+
+        return totalIncreaseSpent;
+    }
+
+    private calculateAttributeIncreasesSpent(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
         let total = 0;
 
         const attributeStartingValue = this.calculateAttributeMinAndMax(character, attributeName)[0];
-        // @ts-ignore
         const attributeBuildPoints = character.attributes[attributeName].buildPoints;
         const attributeValueBeforeIncreases = attributeStartingValue + attributeBuildPoints;
-        // @ts-ignore
         const attributeIncreases = character.attributes[attributeName].increases;
         
         for(let i = 1; i <= attributeIncreases; i++) {
@@ -88,13 +79,40 @@ export class CharacterService {
 
     }
 
-    calculateTotalIncreasesSpent(character: ShadowRun5ECharacter): number {
-        let total = 0;
+    calculateAttributeMinAndMax(character: ShadowRun5ECharacter, attributeName: AttributeName): number[] {
+        let attrMinAndMax: number[] = [];
 
-        for(const attributeName in character.attributes) {
-            total = total + this.calculateAttributeIncreasesSpent(character, attributeName);
+        const attributesTableRow = this.getAttributeTableRow(character.metaType);
+
+        if(attributesTableRow) {
+            attrMinAndMax.push(attributesTableRow.attributes[attributeName].minimum);
+            attrMinAndMax.push(attributesTableRow.attributes[attributeName].maximum);
         }
 
-        return total;
+		// if (character.qualities.exceptionalAttribute === attributeName) {
+		// 	attrMinAndMax[1] += 1;
+		// }
+
+		return attrMinAndMax;
+	}
+
+    getAttributeTableRow(metaTypeName: MetaTypeName): AttributesTableRow | undefined {
+        for(const tableRow of this.attributesTable) {
+            if(tableRow.metaTypeName === metaTypeName) {
+                return tableRow;
+            }
+        }
+
+        return undefined;
+    }
+
+    getPriorityRow(priority: Priority): PriorityTableRow | undefined {
+        for(const priorityRow of this.priorityTable) {
+            if(priorityRow.name === priority) {
+                return priorityRow;
+            }
+        }
+
+        return undefined;
     }
 } 

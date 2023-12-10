@@ -1,9 +1,11 @@
+import { MetaTypeName } from "./meta-types.model";
+
 export interface MetaTypeAttributesTable {
 	[key: string]: MetaTypeAttributesTableRow;
 }
 
 export interface MetaTypeAttributesTableRow {
-	metaTypeName: "human" | "elf" | "ork" | "dwarf" | "troll";
+	metaTypeName: MetaTypeName;
 	racial: string;
 	body: AttributeMinMax;
     agility: AttributeMinMax;

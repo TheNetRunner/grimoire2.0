@@ -2,9 +2,12 @@ import { Component, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ShadowRun5ECharacter } from '../../models/character.inteface';
 import { DeleteCharacterComponent } from '../../modals/delete-character/delete-character.component';
 import { DataStoreService } from '../../services/data-store.service';
+import { ShadowRun5ECharacter } from '../../models/character.model';
+
+
+
 
 @Component({
   selector: 'app-list-view',

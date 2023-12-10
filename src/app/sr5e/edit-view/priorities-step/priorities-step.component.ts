@@ -1,12 +1,17 @@
 import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { CharacterService } from '../../services/character.service';
 import { DataStoreService } from '../../services/data-store.service';
-import { ShadowRun5ECharacter } from '../../models/character.inteface';
-import { PRIORITIES } from '../../common/constants';
+
+import { LevelOfPlay, Priority, PriorityTableRow } from '../../models/priority-table.model';
+import { ShadowRun5ECharacter } from '../../models/character.model';
+
+
+import { priorityTable } from '../../data/priority-table';
+
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
-import { PriorityTable, PriorityRow } from '../../models/priority-tables.interface';
-import { priorityTable } from '../../data/priorityTable';
+import { MetaTypeName } from '../../models/meta-types.model';
 
 @Component({
   selector: 'app-priorities-step',
@@ -16,11 +21,12 @@ import { priorityTable } from '../../data/priorityTable';
 export class PrioritiesStepComponent {
     private formBuilder = inject(FormBuilder);
     private dataStoreService = inject(DataStoreService);
+    private characterService = inject(CharacterService);
 
 	@Input() character!: ShadowRun5ECharacter;
-	availablePriorityOptions: string[] = PRIORITIES;
-	form!: FormGroup;
-    priorityTable: PriorityTable = priorityTable;
+	availablePriorityOptions = Object.values(Priority);
+    priorityTable: PriorityTableRow[] = priorityTable;
+    form!: FormGroup;
 
 	ngOnInit(): void {
 		this.generatePriorityForm();
@@ -41,25 +47,21 @@ export class PrioritiesStepComponent {
         });
 
 		this.form.valueChanges.subscribe((formData: any) => {
-
             if(this.character.priorities.metaType !== formData.priorities.metaType) {
-                this.character.metaType = "human";
+                this.character.metaType = MetaTypeName.human;
             }
 
             this.dataStoreService.updateCharacter(this.character.id, formData);
 		});
     }
 
-    getPriorityRow(priority: string): PriorityRow {
-        const key = priority as keyof typeof this.priorityTable;
-        return this.priorityTable[key];
+    getPriorityRow(priority: Priority): PriorityTableRow | undefined {
+        return this.characterService.getPriorityRow(priority);
     }
 
-    getLevelOfPlayResources(priority: string, levelOfPlay: string): number {
-        const row = this.getPriorityRow(priority);
-        const key = levelOfPlay as keyof typeof row.resources;
-
-        return row.resources[key];
+    getLevelOfPlayResources(priority: Priority, levelOfPlay: LevelOfPlay): number {
+        const priorityRow = this.characterService.getPriorityRow(priority);
+        return priorityRow?.resources[levelOfPlay] || 0;
     }
 
     get prioritiesFormGroup(): FormGroup {

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, inject,  } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ShadowRun5ECharacter } from '../../models/character.inteface';
+import { ShadowRun5ECharacter } from '../../models/character.model';
 
 @Component({
   selector: 'app-delete-character',

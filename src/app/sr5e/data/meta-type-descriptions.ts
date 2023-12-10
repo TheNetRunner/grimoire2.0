@@ -1,15 +1,4 @@
-export interface MetaTypeDescription {
-    latinName: string;
-    text: string;
-}
-
-export interface MetaTypeDescriptions {
-    human: MetaTypeDescription;
-    ork: MetaTypeDescription;
-    elf: MetaTypeDescription;
-    troll: MetaTypeDescription;
-    dwarf: MetaTypeDescription;
-}
+import { MetaTypeDescriptions } from "../models/meta-types.model";
 
 export const metaTypeDescriptions: MetaTypeDescriptions = {
 	human: {

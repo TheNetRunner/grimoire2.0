@@ -1,30 +1,32 @@
-import { PriorityTable } from "../models/priority-tables.interface";
+import { PriorityTableRow, Priority } from "../models/priority-table.model";
+import { MetaTypeName } from "../models/meta-types.model";
 
-export const priorityTable: PriorityTable = {
-	a: {
-		metaTypes: [
+export const priorityTable: PriorityTableRow[] = [
+	{
+		name: Priority.A,
+        metaTypes: [
 			{
-				name: "human",
+				name: MetaTypeName.human,
 				specialAttrPoints: 9,
 			},
 			{
-				name: "elf",
+				name: MetaTypeName.elf,
 				specialAttrPoints: 8,
 			},
 			{
-				name: "dwarf",
+				name: MetaTypeName.dwarf,
 				specialAttrPoints: 7,
 			},
 			{
-				name: "ork",
+				name: MetaTypeName.ork,
 				specialAttrPoints: 7,
 			},
 			{
-				name: "troll",
+				name: MetaTypeName.troll,
 				specialAttrPoints: 5,
 			},
 		],
-		attributes: 24,
+		attributePoints: 24,
 		magicResonanceText: [
             {
                 title: "Magician or Mystic Adept",
@@ -36,7 +38,7 @@ export const priorityTable: PriorityTable = {
             },
         ],
 		skills: {
-			individualSkillsPoints: 46,
+			skillPoints: 46,
 			skillGroupPoints: 10,
 		},
 		resources: {
@@ -45,30 +47,31 @@ export const priorityTable: PriorityTable = {
 			prime: 500000,
 		},
 	},
-	b: {
+	{
+        name: Priority.B,
 		metaTypes: [
 			{
-				name: "human",
+				name: MetaTypeName.human,
 				specialAttrPoints: 7,
 			},
 			{
-				name: "elf",
+				name: MetaTypeName.elf,
 				specialAttrPoints: 6,
 			},
 			{
-				name: "dwarf",
+				name: MetaTypeName.dwarf,
 				specialAttrPoints: 4,
 			},
 			{
-				name: "ork",
+				name: MetaTypeName.ork,
 				specialAttrPoints: 4,
 			},
 			{
-				name: "troll",
+				name: MetaTypeName.troll,
 				specialAttrPoints: 0,
 			},
 		],
-		attributes: 20,
+		attributePoints: 20,
 		magicResonanceText: [
             {
                 title: "Magician or Mystic Adept",
@@ -88,7 +91,7 @@ export const priorityTable: PriorityTable = {
             }
         ],
 		skills: {
-			individualSkillsPoints: 36,
+			skillPoints: 36,
 			skillGroupPoints: 5,
 		},
 		resources: {
@@ -97,26 +100,27 @@ export const priorityTable: PriorityTable = {
 			prime: 325000,
 		},
 	},
-	c: {
+	{
+        name: Priority.C,
 		metaTypes: [
 			{
-				name: "human",
+				name: MetaTypeName.human,
 				specialAttrPoints: 5,
 			},
 			{
-				name: "elf",
+				name: MetaTypeName.elf,
 				specialAttrPoints: 3,
 			},
 			{
-				name: "dwarf",
+				name: MetaTypeName.dwarf,
 				specialAttrPoints: 1,
 			},
 			{
-				name: "ork",
+				name: MetaTypeName.ork,
 				specialAttrPoints: 0,
 			},
 		],
-		attributes: 16,
+		attributePoints: 16,
 		magicResonanceText: [
             {
                 title: "Magician or Mystic Adept",
@@ -136,7 +140,7 @@ export const priorityTable: PriorityTable = {
             }
         ],
 		skills: {
-			individualSkillsPoints: 28,
+			skillPoints: 28,
 			skillGroupPoints: 2,
 		},
 		resources: {
@@ -145,18 +149,19 @@ export const priorityTable: PriorityTable = {
 			prime: 210000,
 		},
 	},
-	d: {
+	{
+        name: Priority.D,
 		metaTypes: [
 			{
-				name: "human",
+				name: MetaTypeName.human,
 				specialAttrPoints: 3,
 			},
 			{
-				name: "elf",
+				name: MetaTypeName.elf,
 				specialAttrPoints: 0,
 			},
 		],
-		attributes: 14,
+		attributePoints: 14,
 		magicResonanceText: [
             {
                 title: "Adept",
@@ -168,7 +173,7 @@ export const priorityTable: PriorityTable = {
             }
         ],
 		skills: {
-			individualSkillsPoints: 22,
+			skillPoints: 22,
 			skillGroupPoints: 0,
 		},
 		resources: {
@@ -177,17 +182,18 @@ export const priorityTable: PriorityTable = {
 			prime: 150000,
 		},
 	},
-	e: {
+    {
+        name: Priority.E,
 		metaTypes: [
 			{
-				name: "human",
+				name: MetaTypeName.human,
 				specialAttrPoints: 1,
 			},
 		],
-		attributes: 12,
+		attributePoints: 12,
 		magicResonanceText: [],
 		skills: {
-			individualSkillsPoints: 18,
+			skillPoints: 18,
 			skillGroupPoints: 0,
 		},
 		resources: {
@@ -196,4 +202,4 @@ export const priorityTable: PriorityTable = {
 			prime: 100000,
 		},
 	},
-};
+];

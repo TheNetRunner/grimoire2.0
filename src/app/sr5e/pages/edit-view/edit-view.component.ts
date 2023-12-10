@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
 import { DataStoreService } from '../../services/data-store.service';
-import { ShadowRun5ECharacter } from '../../models/character.inteface';
+import { ShadowRun5ECharacter } from '../../models/character.model';
 
 export const editorSteps = [
 	"concept",

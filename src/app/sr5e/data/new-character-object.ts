@@ -1,3 +1,6 @@
+import { MetaTypeName } from '../models/meta-types.model';
+import { LevelOfPlay, Priority } from '../models/priority-table.model';
+
 export const newCharacterObject = {
     id: "",
     name: "New Character",
@@ -14,61 +17,77 @@ export const newCharacterObject = {
     notoriety: "",
     image: "human_one",
     publicAwareness: "",
-	levelOfPlay: "normal",
+	levelOfPlay: LevelOfPlay.Normal,
 	totalKarma: 25,
     startingKarma: 25,
     nuyen: 0,
 	bio: "",
-	metaType: "human",
+	metaType: MetaTypeName.human,
 	priorities: {
-		metaType: "a",
-		attributes: "b",
-		magicResonance: "c",
-		skills: "d",
-		resources: "e",
+		metaType: Priority.A,
+		attributes: Priority.B,
+		magicResonance: Priority.C,
+		skills: Priority.D,
+		resources: Priority.E,
 	},
 	attributes: {
 		body: {
+            maximum: 6,
+            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         agility: {
+            maximum: 6,
+            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         reaction: {
+            maximum: 6,
+            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         strength: {
+            maximum: 6,
+            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         willPower: {
+            maximum: 6,
+            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         logic: {
+            maximum: 6,
+            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         intuition: {
+            maximum: 6,
+            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         charisma: {
+            maximum: 6,
+            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
-        edge: {
-            buildPoints: 0,
-            increases: 0
-        },
-        magicResonance: {
-            buildPoints: 0,
-            increases: 0
-        }
 	},
+    specialAttributes: {
+        edge: {
+            maximum: 7,
+            minimum: 1,
+            buildPoints: 0,
+            increases: 0
+        },
+    },
 	qualities: {
 		positive: [],
 		negative: [],

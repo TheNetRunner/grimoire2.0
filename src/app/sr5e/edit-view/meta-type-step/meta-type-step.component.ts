@@ -2,13 +2,16 @@ import { Component, Input, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
-import { ShadowRun5ECharacter } from '../../models/character.inteface';
-import { priorityTable } from '../../data/priorityTable';
-import { MetaType } from '../../models/priority-tables.interface';
+import { CharacterService } from '../../services/character.service';
+
+import { MetaType, MetaTypeDescription } from '../../models/meta-types.model';
+import { ShadowRun5ECharacter } from '../../models/character.model';
+import { MetaTypeName } from '../../models/meta-types.model';
+
 import { IMAGE_SUFFEX } from '../../common/constants';
-import { MetaTypeDescription, metaTypeDescriptions } from '../../data/meta-type-descriptions';
-import { MetaTypeAttributesTable } from '../../models/meta-type-attribute-table.interface';
-import { metaTypeAttributesTable } from '../../data/meta-type-attribute-table';
+import { metaTypeDescriptions } from '../../data/meta-type-descriptions';
+import { attributesTable } from '../../data/meta-type-attribute-table';
+
 
 @Component({
   selector: 'app-meta-type-step',
@@ -18,12 +21,13 @@ import { metaTypeAttributesTable } from '../../data/meta-type-attribute-table';
 export class MetaTypeStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
     private dataStoreService = inject(DataStoreService);
+    private characterService = inject(CharacterService);
 
 	@Input() character!: ShadowRun5ECharacter;
 
     imageSuffex = IMAGE_SUFFEX;
     metaTypeDescriptions = metaTypeDescriptions;
-    metaTypeAttributesTable: MetaTypeAttributesTable = metaTypeAttributesTable
+    attributesTable = attributesTable;
 	metaTypeForm!: FormGroup;
     imageForm!: FormGroup;
 
@@ -52,19 +56,22 @@ export class MetaTypeStepComponent implements OnInit {
         });
 
         this.metaTypeForm.valueChanges.subscribe((formData: any) => {
-            const newImageValue = `${formData.metaType}_one`;
-            this.setImageFormValue(newImageValue);
-            formData.image = newImageValue;
-            
-            this.dataStoreService.updateCharacter(this.character.id, formData);
+            this.handleMetaTypeChange(formData);
         });
     }
 
-    getMetaTypeOptions(): MetaType[] {
-        const characterMetaTypePriority = this.character.priorities.metaType;
-        const key = characterMetaTypePriority as keyof typeof priorityTable;
+    handleMetaTypeChange(formData: any): void {
+        let updates = formData;
+        const newImageValue = `${formData.metaType}_one`;
 
-        return priorityTable[key].metaTypes;
+        updates.image = this.setImageFormValue(newImageValue);
+
+        this.dataStoreService.updateCharacter(this.character.id, formData);
+    }
+
+    getMetaTypeOptions(): MetaType[] | undefined {
+        const priorityTableRow = this.characterService.getPriorityRow(this.character.priorities.metaType);
+        return priorityTableRow?.metaTypes;
     }
 
     getMetaTypeFormValue(): string {
@@ -83,15 +90,12 @@ export class MetaTypeStepComponent implements OnInit {
         return `../../../assets/imgs/shadow-run/${this.character.image}.png`;
     }
 
-    getMetaTypeDescription(metaType: string): MetaTypeDescription {
-        const key = metaType as keyof typeof metaTypeDescriptions;
-        return metaTypeDescriptions[key];
+    getMetaTypeDescription(metaTypeName: MetaTypeName): MetaTypeDescription {
+        return metaTypeDescriptions[metaTypeName];
     }
 
     get metaTypeRacial(): string {
-        const metaType = this.character.metaType;
-        const key = metaType as keyof typeof metaTypeAttributesTable;
-
-        return this.metaTypeAttributesTable[key].racial;
+        const tableRow = this.characterService.getAttributeTableRow(this.character.metaType);
+        return tableRow?.racial || "";
     }
 }

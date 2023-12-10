@@ -2,9 +2,9 @@ import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
-import { ShadowRun5ECharacter } from '../../models/character.inteface';
 import { CharacterService } from '../../services/character.service';
-import { ATTRIBUTE_NAMES } from '../../common/constants';
+import { AttributeName } from '../../models/attribute.model';
+import { ShadowRun5ECharacter } from '../../models/character.model';
 
 const attributeFormValidators = [Validators.required, Validators.min(0), Validators.max(99), Validators.pattern('^[0-9]*$')];
 
@@ -19,7 +19,7 @@ export class AttributeStepComponent {
     private characterService = inject(CharacterService);
 
 	@Input() character!: ShadowRun5ECharacter;
-    attributeNames: string[] = ATTRIBUTE_NAMES;
+    attributeNames: AttributeName[] = Object.values(AttributeName);
 	form!: FormGroup;
 
     	ngOnInit(): void {
@@ -71,35 +71,35 @@ export class AttributeStepComponent {
 		});
 	}
 
-    getAttributeFormGroupByName(attributeName: string): FormGroup | undefined {
+    getAttributeFormGroupByName(attributeName: AttributeName): FormGroup | undefined {
         const attributesFormGroup = this.form.get('attributes') as FormGroup;
         const attributeFormGroup = attributesFormGroup?.get(attributeName) as FormGroup;
         return attributeFormGroup;
     }
 
-    isFormControlValid(attributeName: string, controlName: string): boolean | undefined {
+    isFormControlValid(attributeName: AttributeName, controlName: string): boolean | undefined {
         const attributeFormGroup = this.getAttributeFormGroupByName(attributeName);
         return attributeFormGroup?.get(controlName)?.valid;
     }
 
-    hasFormControlBeenTouched(attributeName: string, controlName: string): boolean | undefined {
+    hasFormControlBeenTouched(attributeName: AttributeName, controlName: string): boolean | undefined {
         const attributeFormGroup = this.getAttributeFormGroupByName(attributeName);
         return attributeFormGroup?.get(controlName)?.touched;
     }
 
-    getAttributeTotalValue(attributeName: string): number { 
+    getAttributeTotalValue(attributeName: AttributeName): number { 
         return this.characterService.calculateAttributeTotalValue(this.character, attributeName);
     }
 
-    getAttributeMinValue(attributeName: string): number {
+    getAttributeMinValue(attributeName: AttributeName): number {
         return this.characterService.calculateAttributeMinAndMax(this.character, attributeName)[0];
     }
 
-    getAttributeMaxValue(attributeName: string): number {
+    getAttributeMaxValue(attributeName: AttributeName): number {
         return this.characterService.calculateAttributeMinAndMax(this.character, attributeName)[1];
     }
 
-    isAttributeTotalValueGreaterThanMax(attributeName: string): boolean {
+    isAttributeTotalValueGreaterThanMax(attributeName: AttributeName): boolean {
         return this.getAttributeTotalValue(attributeName) > this.getAttributeMaxValue(attributeName);
     }
 

@@ -1,29 +1,33 @@
-export interface PriorityTable {
-    a: PriorityRow;
-    b: PriorityRow;
-    c: PriorityRow;
-    d: PriorityRow;
-    e: PriorityRow;
+import { MetaType } from "./meta-types.model";
+
+export enum Priority {
+    A = 'a',
+    B = 'b',
+    C = 'c',
+    D = 'd',
+    E = 'e'
 }
 
-export interface PriorityRow {
+export enum LevelOfPlay {
+    Street = 'street',
+    Normal = 'normal',
+    Prime = 'prime'
+}
+
+export interface PriorityTableRow {
+    name: Priority;
 	metaTypes: MetaType[];
-	attributes: number;
+	attributePoints: number;
     magicResonanceText: MagicResonanceText[];
 	skills: {
-		individualSkillsPoints: number;
+		skillPoints: number;
 		skillGroupPoints: number;
 	};
 	resources: {
-		street: number;
-		normal: number;
-		prime: number;
+		[LevelOfPlay.Street]: number;
+        [LevelOfPlay.Normal]: number;
+        [LevelOfPlay.Prime]: number;
 	};
-}
-
-export interface MetaType {
-	name: string;
-	specialAttrPoints: number;
 }
 
 interface MagicResonanceText {
