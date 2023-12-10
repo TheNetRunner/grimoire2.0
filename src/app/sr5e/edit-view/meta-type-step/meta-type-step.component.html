@@ -33,6 +33,8 @@
             <div class="card-body">
                 <i class="text-info">{{ getMetaTypeDescription(this.character.metaType).latinName }}:</i>
                 {{ getMetaTypeDescription(this.character.metaType).text }}
+                <hr>
+                <span><i class="text-info">Racial: </i>{{ metaTypeRacial }}</span>
                 <form [formGroup]="metaTypeForm">
                     <select class="form-select mt-2" formControlName="metaType">
                         <option *ngFor="let metaType of getMetaTypeOptions()" [ngValue]="metaType.name">

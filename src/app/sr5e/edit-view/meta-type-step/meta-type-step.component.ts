@@ -7,6 +7,8 @@ import { priorityTable } from '../../data/priorityTable';
 import { MetaType } from '../../models/priority-tables.interface';
 import { IMAGE_SUFFEX } from '../../common/constants';
 import { MetaTypeDescription, metaTypeDescriptions } from '../../data/meta-type-descriptions';
+import { MetaTypeAttributesTable } from '../../models/meta-type-attribute-table.interface';
+import { metaTypeAttributesTable } from '../../data/meta-type-attribute-table';
 
 @Component({
   selector: 'app-meta-type-step',
@@ -21,6 +23,7 @@ export class MetaTypeStepComponent implements OnInit {
 
     imageSuffex = IMAGE_SUFFEX;
     metaTypeDescriptions = metaTypeDescriptions;
+    metaTypeAttributesTable: MetaTypeAttributesTable = metaTypeAttributesTable
 	metaTypeForm!: FormGroup;
     imageForm!: FormGroup;
 
@@ -83,5 +86,12 @@ export class MetaTypeStepComponent implements OnInit {
     getMetaTypeDescription(metaType: string): MetaTypeDescription {
         const key = metaType as keyof typeof metaTypeDescriptions;
         return metaTypeDescriptions[key];
+    }
+
+    get metaTypeRacial(): string {
+        const metaType = this.character.metaType;
+        const key = metaType as keyof typeof metaTypeAttributesTable;
+
+        return this.metaTypeAttributesTable[key].racial;
     }
 }

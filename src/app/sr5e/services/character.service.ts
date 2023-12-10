@@ -82,9 +82,6 @@ export class CharacterService {
         for(let i = 1; i <= attributeIncreases; i++) {
             const newRating = attributeValueBeforeIncreases + i;
             total = total + (newRating * 5);
-            if(attributeName === 'body') {
-                console.log(attributeValueBeforeIncreases, newRating, i, total);
-            }
         }
 
         return total;
