@@ -1,1 +1,67 @@
-<p>attribute-step works!</p>
+<div class="row">
+    
+    <div class="col-12">
+
+        <div class="card bg-primary shadow mb-2">
+
+            <div class="card-header">
+                <h5 class="card-title text-white m-0">Attributes</h5>
+            </div>
+
+            <div class="card-body">
+
+                <form [formGroup]="form">
+                    <table class="table table-sm text-center">
+                        <thead>
+                            <tr>
+                                <th class="col-1"></th>
+                                <th class="col-1">Race</th>
+                                <th class="col-1">Build Points</th>
+                                <th class="col-1">Increases</th>
+                                <th class="col-1">Bonuses</th>
+                                <th class="col-1">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody formGroupName="attributes">
+                            <span></span>
+                            <tr *ngFor="let attributeName of attributeNames" formGroupName="{{ attributeName }}">
+                                <td>{{ attributeName | titlecase }}</td>
+                                <td>{{ getAttributeMinValue(attributeName) }}</td>
+                                <td>
+                                    <select class="form-select form-select-sm text-center" formControlName="buildPoints">
+                                        <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm text-center" formControlName="increases">
+                                        <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
+                                    </select>
+                                </td>
+                                <td>0</td>
+                                <td [ngClass]="{ 'text-danger': isAttributeTotalValueGreaterThanMax(attributeName) }">
+                                    {{ getAttributeTotalValue(attributeName) }} / {{ getAttributeMaxValue(attributeName) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td [ngClass]="{ 'text-danger': totalBuildPointsSpent > maxBuildPoints }">
+                                    {{ totalBuildPointsSpent }} / {{ maxBuildPoints }}
+                                </td>
+                                <td>
+                                    {{ totalIncreasesSpent }} karma
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

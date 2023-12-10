@@ -19,5 +19,10 @@
             [character]="character"
         ></app-meta-type-step>
 
+        <app-attribute-step
+            *ngIf="editorStep === 'attributes'"
+            [character]="character"
+        ></app-attribute-step>
+
     </div>
 </div>

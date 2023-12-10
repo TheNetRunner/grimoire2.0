@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataStoreService } from '../../services/data-store.service';
 import { ShadowRun5ECharacter } from '../../models/character.inteface';
 import { priorityTable } from '../../data/priorityTable';
-import { MetaType } from '../../models/priorityTables.interface';
+import { MetaType } from '../../models/priority-tables.interface';
 import { IMAGE_SUFFEX } from '../../common/constants';
 import { MetaTypeDescription, metaTypeDescriptions } from '../../data/meta-type-descriptions';
 

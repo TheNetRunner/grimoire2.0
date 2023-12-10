@@ -5,7 +5,7 @@ import { DataStoreService } from '../../services/data-store.service';
 import { ShadowRun5ECharacter } from '../../models/character.inteface';
 import { PRIORITIES } from '../../common/constants';
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
-import { PriorityTable, PriorityRow } from '../../models/priorityTables.interface';
+import { PriorityTable, PriorityRow } from '../../models/priority-tables.interface';
 import { priorityTable } from '../../data/priorityTable';
 
 @Component({

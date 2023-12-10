@@ -9,7 +9,6 @@ export class RangeArrayPipe implements PipeTransform {
     let results = [];
 
     for (let i = start; i <= stop; i = i + step) {
-        console.log(i, results)
         results.push(i);
     }
 

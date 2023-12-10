@@ -1,4 +1,4 @@
-import { PriorityTable } from "../models/priorityTables.interface";
+import { PriorityTable } from "../models/priority-tables.interface";
 
 export const priorityTable: PriorityTable = {
 	a: {
