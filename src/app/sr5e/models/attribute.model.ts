@@ -16,8 +16,6 @@ export enum SpecialAttributeName {
 }
 
 export interface Attribute {
-    minimum: number;
-    maximum: number;
     buildPoints: number;
     increases: number;
 }

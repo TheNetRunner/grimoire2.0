@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { ShadowRun5ECharacter } from '../models/character.model';
-import { AttributeName, AttributesTableRow } from '../models/attribute.model';
+import { Attribute, AttributeName, AttributesTableRow, SpecialAttributeName } from '../models/attribute.model';
 import { MetaTypeName } from '../models/meta-types.model';
 
 import { priorityTable } from '../data/priority-table';
@@ -37,64 +37,115 @@ export class CharacterService {
         return maxBuildPoints;
     }
 
-    calculateAttributeIncreasesCost(character: ShadowRun5ECharacter, attributeName: string): void {
+    getTotalSpecialBuildPointsSpent(character: ShadowRun5ECharacter): number {
+        let totalSpecialBuildPoints = 0;
 
+        for (const specialAttributeName in character.specialAttributes) {
+            if (character.specialAttributes.hasOwnProperty(specialAttributeName)) {
+                const specialAttribute = character.specialAttributes[specialAttributeName as keyof typeof character.specialAttributes];
+
+                totalSpecialBuildPoints = totalSpecialBuildPoints + specialAttribute.buildPoints;
+            }
+        }
+
+        return totalSpecialBuildPoints;
+    }
+
+    getMaxSpecialBuildPoints(character: ShadowRun5ECharacter): number {
+        let specialBuildPoints = 0;
+        const characterMetaTypePriority = character.priorities.metaType;
+        const priorityTableRow = this.getPriorityRow(characterMetaTypePriority);
+
+        if (priorityTableRow) {
+            for(const metaType of priorityTableRow.metaTypes) {
+                if(metaType.name === character.metaType) {
+                    specialBuildPoints = metaType.specialAttrPoints;
+                }
+            }
+        }
+
+        return specialBuildPoints;
 
     }
 
-    calculateAttributeTotalValue(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
-        const startingValue = this.calculateAttributeMinAndMax(character, attributeName)[0];
-		const buildPoints = character.attributes[attributeName].buildPoints;
-		const increases = character.attributes[attributeName].increases;
+    calAttributeTotalValue(character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): number {
+        const attribute = this.getCharacterAttributeByName(character, attributeName);
+
+        const startingValue = this.calAttributeMinAndMax(character, attributeName)[0];
+		const buildPoints = attribute.buildPoints;
+		const increases = attribute.increases;
 
 		return startingValue + buildPoints + increases;
     }
 
-    calculateTotalIncreasesSpent(character: ShadowRun5ECharacter): number {
+    calTotalAttributeIncreasesCost(character: ShadowRun5ECharacter): number {
         let totalIncreaseSpent = 0;
 
         for(const attributeName in character.attributes) {
             if (character.attributes.hasOwnProperty(attributeName)) {
-                totalIncreaseSpent += this.calculateAttributeIncreasesSpent(character, attributeName as AttributeName);
+                totalIncreaseSpent += this.calculateAttributeIncreasesCost(character, attributeName as AttributeName);
             }
         }
 
         return totalIncreaseSpent;
     }
 
-    private calculateAttributeIncreasesSpent(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
-        let total = 0;
+    calTotalSpecialAttributeIncreasesCost(character: ShadowRun5ECharacter): number {
+        let totalIncreaseSpent = 0;
 
-        const attributeStartingValue = this.calculateAttributeMinAndMax(character, attributeName)[0];
-        const attributeBuildPoints = character.attributes[attributeName].buildPoints;
-        const attributeValueBeforeIncreases = attributeStartingValue + attributeBuildPoints;
-        const attributeIncreases = character.attributes[attributeName].increases;
-        
-        for(let i = 1; i <= attributeIncreases; i++) {
-            const newRating = attributeValueBeforeIncreases + i;
-            total = total + (newRating * 5);
+        for(const attributeName in character.specialAttributes) {
+            if (character.specialAttributes.hasOwnProperty(attributeName)) {
+                totalIncreaseSpent += this.calculateAttributeIncreasesCost(character, attributeName as SpecialAttributeName);
+            }
         }
 
+        return totalIncreaseSpent;
+    }
+
+    private calculateAttributeIncreasesCost(
+        character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): number {
+        let total = 0;
+        const attribute = this.getCharacterAttributeByName(character, attributeName);
+
+        if (attribute) {
+            const attributeStartingValue = this.calAttributeMinAndMax(character, attributeName)[0];
+            const attributeBuildPoints = attribute.buildPoints;
+            const attributeValueBeforeIncreases = attributeStartingValue + attributeBuildPoints;
+            const attributeIncreases = attribute.increases;
+            
+            for(let i = 1; i <= attributeIncreases; i++) {
+                const newRating = attributeValueBeforeIncreases + i;
+                total = total + (newRating * 5);
+            }
+        }
         return total;
 
     }
 
-    calculateAttributeMinAndMax(character: ShadowRun5ECharacter, attributeName: AttributeName): number[] {
-        let attrMinAndMax: number[] = [];
+    calAttributeMinAndMax(character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): number[] {
+        let minAndMax: number[] = [0, 0];
+        let attributeTableRow = this.getAttributeTableRow(character.metaType);
 
-        const attributesTableRow = this.getAttributeTableRow(character.metaType);
-
-        if(attributesTableRow) {
-            attrMinAndMax.push(attributesTableRow.attributes[attributeName].minimum);
-            attrMinAndMax.push(attributesTableRow.attributes[attributeName].maximum);
+        if (attributeTableRow) {
+            minAndMax = [
+                attributeTableRow.attributes[attributeName].minimum,
+                attributeTableRow.attributes[attributeName].maximum,
+            ];
         }
+
+        return minAndMax
 
 		// if (character.qualities.exceptionalAttribute === attributeName) {
 		// 	attrMinAndMax[1] += 1;
 		// }
-
-		return attrMinAndMax;
 	}
+
+    calInitativeAttribute(character: ShadowRun5ECharacter): number {
+        const reaction = this.calAttributeTotalValue(character, AttributeName.Reaction);
+        const intuition = this.calAttributeTotalValue(character, AttributeName.Intuition);
+
+        return reaction + intuition;
+    }
 
     getAttributeTableRow(metaTypeName: MetaTypeName): AttributesTableRow | undefined {
         for(const tableRow of this.attributesTable) {
@@ -114,5 +165,18 @@ export class CharacterService {
         }
 
         return undefined;
+    }
+
+    private getCharacterAttributeByName(
+        character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): Attribute {
+        let attribute: Attribute | undefined;
+
+        if (attributeName === SpecialAttributeName.Edge) {
+            attribute = character.specialAttributes[attributeName];
+        } else {
+            attribute = character.attributes[attributeName];
+        }
+
+        return attribute;
     }
 } 

@@ -21,6 +21,7 @@ export interface ShadowRun5ECharacter {
 	levelOfPlay: LevelOfPlay;
 	totalKarma: number;
     startingKarma: number;
+    nuyen: number;
 	bio: string;
 	metaType: MetaTypeName;
 	priorities: {

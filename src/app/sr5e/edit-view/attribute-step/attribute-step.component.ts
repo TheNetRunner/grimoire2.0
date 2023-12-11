@@ -1,9 +1,9 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
 import { CharacterService } from '../../services/character.service';
-import { AttributeName } from '../../models/attribute.model';
+import { Attribute, AttributeName, SpecialAttributeName } from '../../models/attribute.model';
 import { ShadowRun5ECharacter } from '../../models/character.model';
 
 const attributeFormValidators = [Validators.required, Validators.min(0), Validators.max(99), Validators.pattern('^[0-9]*$')];
@@ -13,21 +13,29 @@ const attributeFormValidators = [Validators.required, Validators.min(0), Validat
   templateUrl: './attribute-step.component.html',
   styleUrl: './attribute-step.component.css'
 })
-export class AttributeStepComponent {
+export class AttributeStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
     private dataStoreService = inject(DataStoreService);
     private characterService = inject(CharacterService);
 
 	@Input() character!: ShadowRun5ECharacter;
-    attributeNames: AttributeName[] = Object.values(AttributeName);
-	form!: FormGroup;
 
-    	ngOnInit(): void {
-		this.generateAttributesForm();
+    attributeNames: AttributeName[] = Object.values(AttributeName);
+    specialAttributeNames: SpecialAttributeName[] = Object.values(SpecialAttributeName);
+	attributeForm!: FormGroup;
+    specialAttributeForm!: FormGroup;
+
+    ngOnInit(): void {
+		this.generateForms();
 	}
 
+    generateForms(): void {
+        this.generateAttributesForm();
+        this.generateSpecialAttributeForm();
+    }
+
 	generateAttributesForm(): void {
-		this.form = this.formBuilder.group({
+		this.attributeForm = this.formBuilder.group({
             attributes: this.formBuilder.group({
                 body: this.formBuilder.group({
                     buildPoints: [this.character.attributes.body.buildPoints, attributeFormValidators],
@@ -64,15 +72,32 @@ export class AttributeStepComponent {
             }),
 		});
 
-		this.form.valueChanges.subscribe((formData: any) => {
-			if (this.form.valid) {
+		this.attributeForm.valueChanges.subscribe((formData: any) => {
+			if (this.attributeForm.valid) {
                 this.dataStoreService.updateCharacter(this.character.id, formData);
 			}
 		});
 	}
 
+    generateSpecialAttributeForm(): void {
+        this.specialAttributeForm = this.formBuilder.group({
+            specialAttributes: this.formBuilder.group({
+                edge: this.formBuilder.group({
+                    buildPoints: [this.character.specialAttributes.edge.buildPoints, attributeFormValidators],
+                    increases: [this.character.specialAttributes.edge.increases, attributeFormValidators],
+                }),
+            }),
+        });
+
+        this.specialAttributeForm.valueChanges.subscribe((formData: any) => {
+            if (this.attributeForm.valid) {
+                this.dataStoreService.updateCharacter(this.character.id, formData);
+            }
+        });
+    }
+
     getAttributeFormGroupByName(attributeName: AttributeName): FormGroup | undefined {
-        const attributesFormGroup = this.form.get('attributes') as FormGroup;
+        const attributesFormGroup = this.attributeForm.get('attributes') as FormGroup;
         const attributeFormGroup = attributesFormGroup?.get(attributeName) as FormGroup;
         return attributeFormGroup;
     }
@@ -87,19 +112,19 @@ export class AttributeStepComponent {
         return attributeFormGroup?.get(controlName)?.touched;
     }
 
-    getAttributeTotalValue(attributeName: AttributeName): number { 
-        return this.characterService.calculateAttributeTotalValue(this.character, attributeName);
+    getAttributeTotalValue(attributeName: AttributeName | SpecialAttributeName): number { 
+        return this.characterService.calAttributeTotalValue(this.character, attributeName);
     }
 
-    getAttributeMinValue(attributeName: AttributeName): number {
-        return this.characterService.calculateAttributeMinAndMax(this.character, attributeName)[0];
+    getAttributeMinValue(attributeName: AttributeName | SpecialAttributeName): number {
+        return this.characterService.calAttributeMinAndMax(this.character, attributeName)[0];
     }
 
-    getAttributeMaxValue(attributeName: AttributeName): number {
-        return this.characterService.calculateAttributeMinAndMax(this.character, attributeName)[1];
+    getAttributeMaxValue(attributeName: AttributeName | SpecialAttributeName): number {
+        return this.characterService.calAttributeMinAndMax(this.character, attributeName)[1];
     }
 
-    isAttributeTotalValueGreaterThanMax(attributeName: AttributeName): boolean {
+    isAttributeTotalValueGreaterThanMax(attributeName: AttributeName | SpecialAttributeName): boolean {
         return this.getAttributeTotalValue(attributeName) > this.getAttributeMaxValue(attributeName);
     }
 
@@ -111,7 +136,23 @@ export class AttributeStepComponent {
         return this.characterService.getMaxBuildPoints(this.character);
     }
 
-    get totalIncreasesSpent(): number {
-        return this.characterService.calculateTotalIncreasesSpent(this.character);
+    get totalSpecialBuildPointsSpent(): number {
+        return this.characterService.getTotalSpecialBuildPointsSpent(this.character);
+    }
+
+    get maxSpecialBuildPoints(): number {
+        return this.characterService.getMaxSpecialBuildPoints(this.character);
+    }
+
+    get totalAttributeIncreasesCost(): number {
+        return this.characterService.calTotalAttributeIncreasesCost(this.character);
+    }
+
+    get totalSpecialAttributeIncreasesCost(): number {
+        return this.characterService.calTotalSpecialAttributeIncreasesCost(this.character);
+    }
+
+    get initiativeValue(): number {
+        return this.characterService.calInitativeAttribute(this.character);
     }
 }

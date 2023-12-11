@@ -1,7 +1,8 @@
+import { ShadowRun5ECharacter } from '../models/character.model';
 import { MetaTypeName } from '../models/meta-types.model';
 import { LevelOfPlay, Priority } from '../models/priority-table.model';
 
-export const newCharacterObject = {
+export const newCharacterObject: ShadowRun5ECharacter = {
     id: "",
     name: "New Character",
     role: "face",
@@ -32,58 +33,40 @@ export const newCharacterObject = {
 	},
 	attributes: {
 		body: {
-            maximum: 6,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         agility: {
-            maximum: 6,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         reaction: {
-            maximum: 6,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         strength: {
-            maximum: 6,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         willPower: {
-            maximum: 6,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         logic: {
-            maximum: 6,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         intuition: {
-            maximum: 6,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
         charisma: {
-            maximum: 6,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
 	},
     specialAttributes: {
         edge: {
-            maximum: 7,
-            minimum: 1,
             buildPoints: 0,
             increases: 0
         },
