@@ -47,12 +47,22 @@ export class PrioritiesStepComponent {
         });
 
 		this.form.valueChanges.subscribe((formData: any) => {
+            console.log(this.character.priorities.metaType !== formData.priorities.metaType);
             if(this.character.priorities.metaType !== formData.priorities.metaType) {
-                this.character.metaType = MetaTypeName.human;
+                this.handleMetaTypePriorityChange();
             }
 
             this.dataStoreService.updateCharacter(this.character.id, formData);
 		});
+    }
+
+    handleMetaTypePriorityChange(): void {
+        const update = {
+            metaType: MetaTypeName.human,
+            image: "human_one"
+        }
+
+        this.dataStoreService.updateCharacter(this.character.id, update);
     }
 
     getPriorityRow(priority: Priority): PriorityTableRow | undefined {

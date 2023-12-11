@@ -36,7 +36,7 @@ export class DataStoreService {
     }
 
     // Update
-    updateCharacter(characterId: string, characterUpdates: ShadowRun5ECharacter): void {
+    updateCharacter(characterId: string, characterUpdates: any): void {
         this.databaseService.updateItem(SHADOW_RUN_CHARACTERS_TABLE_NAME, characterId, characterUpdates);
     }
 
