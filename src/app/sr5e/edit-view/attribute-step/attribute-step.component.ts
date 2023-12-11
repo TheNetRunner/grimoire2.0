@@ -5,6 +5,7 @@ import { DataStoreService } from '../../services/data-store.service';
 import { CharacterService } from '../../services/character.service';
 import { Attribute, AttributeName, SpecialAttributeName } from '../../models/attribute.model';
 import { ShadowRun5ECharacter } from '../../models/character.model';
+import { PHYSICAL_LIMIT, SOCIAL_LIMIT, MENTAL_LIMIT } from '../../common/constants';
 
 const attributeFormValidators = [Validators.required, Validators.min(0), Validators.max(99), Validators.pattern('^[0-9]*$')];
 
@@ -24,6 +25,9 @@ export class AttributeStepComponent implements OnInit {
     specialAttributeNames: SpecialAttributeName[] = Object.values(SpecialAttributeName);
 	attributeForm!: FormGroup;
     specialAttributeForm!: FormGroup;
+    physicalLimitText = PHYSICAL_LIMIT;
+    mentalLimitText = MENTAL_LIMIT;
+    socialLimitText = SOCIAL_LIMIT;
 
     ngOnInit(): void {
 		this.generateForms();
@@ -154,5 +158,17 @@ export class AttributeStepComponent implements OnInit {
 
     get initiativeValue(): number {
         return this.characterService.calInitativeAttribute(this.character);
+    }
+
+    get physicalLimit(): number {
+        return this.characterService.calPhysicalLimit(this.character);
+    }
+
+    get mentalLimit(): number {
+        return this.characterService.calMentalLimit(this.character);
+    }
+
+    get socialLimit(): number {
+        return this.characterService.calSocialLimit(this.character);
     }
 }

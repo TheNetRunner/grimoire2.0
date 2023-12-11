@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from '../app-routing.module';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { SharedModule } from '../shared/shared.module';
 import { Sr5eRoutingModule } from './sr5e-routing.module';
@@ -35,7 +36,8 @@ import { NavbarComponent } from './edit-view/navbar/navbar.component';
     SharedModule,
     AppRoutingModule,
     Sr5eRoutingModule,
-    NgbModule
+    NgbModule, 
+    NgbTooltipModule
   ]
 })
 export class Sr5eModule { }

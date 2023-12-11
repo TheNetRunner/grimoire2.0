@@ -140,11 +140,60 @@ export class CharacterService {
 		// }
 	}
 
+    calEssence(character: ShadowRun5ECharacter): number {
+        return 6;
+    }
+
     calInitativeAttribute(character: ShadowRun5ECharacter): number {
         const reaction = this.calAttributeTotalValue(character, AttributeName.Reaction);
         const intuition = this.calAttributeTotalValue(character, AttributeName.Intuition);
 
         return reaction + intuition;
+    }
+
+    calPhysicalLimit(character: ShadowRun5ECharacter): number {
+        let limit = 0;
+
+        const strength = this.calAttributeTotalValue(character, AttributeName.Strength);
+        const body = this.calAttributeTotalValue(character, AttributeName.Body);
+        const reaction = this.calAttributeTotalValue(character, AttributeName.Reaction);
+
+        limit = Math.ceil(((strength * 2) + body + reaction) / 3);
+
+        return limit;
+    }
+
+    calMentalLimit(character: ShadowRun5ECharacter): number {
+        let limit = 0;
+
+        const logic = this.calAttributeTotalValue(character, AttributeName.Logic);
+        const willPower = this.calAttributeTotalValue(character, AttributeName.WillPower);
+        const intuition = this.calAttributeTotalValue(character, AttributeName.Intuition);
+
+        limit = Math.ceil(((logic * 2) + willPower + intuition) / 3);
+
+        return limit;
+    }
+
+    calSocialLimit(character: ShadowRun5ECharacter): number {
+        let limit = 0;
+
+        const charisma = this.calAttributeTotalValue(character, AttributeName.Charisma);
+        const willPower = this.calAttributeTotalValue(character, AttributeName.WillPower);
+        const essence = this.calEssence(character);
+
+        limit = Math.ceil(((charisma * 2) + willPower + essence) / 3);
+
+        return limit;
+    }
+
+    calPhysicalConditionMonitor(character: ShadowRun5ECharacter): number {
+        let limit = 0;
+        const body = this.calAttributeTotalValue(character, AttributeName.Body);
+
+        limit = (body / 2) + 8;
+
+        return limit;
     }
 
     getAttributeTableRow(metaTypeName: MetaTypeName): AttributesTableRow | undefined {

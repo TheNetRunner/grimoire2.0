@@ -11,7 +11,7 @@
             <div class="card-body">
 
                 <form [formGroup]="attributeForm">
-                    <table class="table table-sm text-center">
+                    <table class="table table-sm text-center m-0">
                         <thead>
                             <tr>
                                 <th class="col-1"></th>
@@ -68,6 +68,19 @@
                 </form>
 
             </div>
+            <div class="card-footer">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <span ngbTooltip="{{ physicalLimitText }}" placement="bottom">Physical Limit: {{ physicalLimit }}</span>
+                    </div>
+                    <div class="col-md-4">
+                        <span ngbTooltip="{{ mentalLimitText }}" placement="bottom">Mental Limit: {{ mentalLimit }}</span>
+                    </div>
+                    <div class="col-md-4">
+                        <span ngbTooltip="{{ socialLimitText }}" placement="bottom">Social Limit: {{ socialLimit }}</span>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
@@ -88,7 +101,7 @@
             <div class="card-body">
 
                 <form [formGroup]="specialAttributeForm">
-                    <table class="table table-sm text-center">
+                    <table class="table table-sm text-center m-0">
                         <thead>
                             <tr>
                                 <th class="col-1"></th>
