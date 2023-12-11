@@ -17,6 +17,7 @@ import { MetaTypeStepComponent } from './edit-view/meta-type-step/meta-type-step
 import { PrioritiesStepComponent } from './edit-view/priorities-step/priorities-step.component';
 import { AttributeStepComponent } from './edit-view/attribute-step/attribute-step.component';
 import { NavbarComponent } from './edit-view/navbar/navbar.component';
+import { MagicResonanceStepComponent } from './edit-view/magic-resonance-step/magic-resonance-step.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NavbarComponent } from './edit-view/navbar/navbar.component';
     MetaTypeStepComponent,
     PrioritiesStepComponent,
     AttributeStepComponent,
-    NavbarComponent
+    NavbarComponent,
+    MagicResonanceStepComponent
   ],
   imports: [
     CommonModule,

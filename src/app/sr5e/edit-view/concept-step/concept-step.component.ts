@@ -25,7 +25,6 @@ export class ConceptStepComponent {
 
     ngOnInit() {
         this.generateForms();
-        this.setMetaTypeOptions();
     }
 
     generateForms() {
@@ -79,14 +78,6 @@ export class ConceptStepComponent {
             }
         });
 
-    }
-
-    setMetaTypeOptions(): void {
-        let options = ['human'];
-
-        // code to get options goes here
-
-        this.metaTypeOptions = options;
     }
 
     get isNameFieldValid(): boolean | undefined {

@@ -24,5 +24,10 @@
             [character]="character"
         ></app-attribute-step>
 
+        <app-magic-resonance-step
+            *ngIf="editorStep === 'magic-resonance'"
+            [character]="character"
+        ></app-magic-resonance-step>
+
     </div>
 </div>
