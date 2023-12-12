@@ -101,9 +101,9 @@
                         <label class="form-label col-md-6 col-form-label" for="levelOfPlay">Level of Play</label>
                         <div class="col-md-6">
                             <select class="form-select col-md-4" id="levelOfPlay" formControlName="levelOfPlay">
-                                <option [ngValue]="'normal'">Normal</option>
-                                <option [ngValue]="'street'">Street</option>
-                                <option [ngValue]="'prime'">Prime</option>
+                                <option *ngFor="let levelOfPlay of levelsOfPlay"[ngValue]="levelOfPlay">
+                                    {{ levelOfPlay | titlecase }}
+                                </option>
                             </select>
                         </div>
                     </div>

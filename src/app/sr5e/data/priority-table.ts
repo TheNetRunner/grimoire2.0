@@ -1,5 +1,7 @@
-import { PriorityTableRow, Priority } from "../models/priority-table.model";
+import { PriorityTableRow, Priority, LevelOfPlay } from "../models/priority-table.model";
 import { MetaTypeName } from "../models/meta-types.model";
+import { MagicUserType, Magician } from "../models/magic.model";
+import { Adept, AspectedMagician, MysticAdept, Technomancer } from "../models/magic.model";
 
 export const priorityTable: PriorityTableRow[] = [
 	{
@@ -37,6 +39,13 @@ export const priorityTable: PriorityTableRow[] = [
                 description: "Resonance 6, two Rating 5 Resonance skills, 5 complex forms"
             },
         ],
+        magicResonance: {
+            [MagicUserType.Magician]: { magic: 6, magicSkills: { rating: 5, qty: 2 }, spells: 10 },
+            [MagicUserType.MysticAdept]: { magic: 6, magicSkills: { rating: 5, qty: 2 }, spells: 10 },
+            [MagicUserType.Technomancer]: { resonance: 6, resonanceSkills: { rating: 5, qty: 2 }, complexForms: 5 },
+            [MagicUserType.Adept]: null,
+            [MagicUserType.AspectedMagician]: null,
+        },
 		skills: {
 			skillPoints: 46,
 			skillGroupPoints: 10,
@@ -90,14 +99,21 @@ export const priorityTable: PriorityTableRow[] = [
                 description: "Magic 5, two Rating 4 Magical skill groups"
             }
         ],
+        magicResonance: {
+            [MagicUserType.Magician]: { magic: 4, magicSkills: { rating: 4, qty: 2 }, spells: 7 },
+            [MagicUserType.MysticAdept]: { magic: 4, magicSkills: { rating: 4, qty: 2 }, spells: 7 },
+            [MagicUserType.Technomancer]: { resonance: 4, resonanceSkills: { rating: 4, qty: 2 }, complexForms: 2 },
+            [MagicUserType.Adept]: { magic: 6, activeSkills: { rating: 4, qty: 1 } },
+            [MagicUserType.AspectedMagician]: { magic: 5, magicSkillGroups: { rating: 4, qty: 2 } },
+        },
 		skills: {
 			skillPoints: 36,
 			skillGroupPoints: 5,
 		},
 		resources: {
-			street: 50000,
-			normal: 275000,
-			prime: 325000,
+			[LevelOfPlay.Street]: 50000,
+			[LevelOfPlay.Normal]: 275000,
+			[LevelOfPlay.Prime]: 325000,
 		},
 	},
 	{
@@ -139,14 +155,21 @@ export const priorityTable: PriorityTableRow[] = [
                 description: "Magic 3, one Rating 2 Magical skill group"
             }
         ],
+        magicResonance: {
+            [MagicUserType.Magician]: { magic: 3, magicSkills: { rating: 5, qty: 0 }, spells: 5 },
+            [MagicUserType.MysticAdept]: { magic: 3, magicSkills: { rating: 5, qty: 0 }, spells: 5 },
+            [MagicUserType.Technomancer]: { resonance: 3, resonanceSkills: { rating: 5, qty: 0 }, complexForms: 1 },
+            [MagicUserType.Adept]: { magic: 4, activeSkills: { rating: 2, qty: 1 } },
+            [MagicUserType.AspectedMagician]: { magic: 3, magicSkillGroups: { rating: 2, qty: 1 }  },
+        },
 		skills: {
 			skillPoints: 28,
 			skillGroupPoints: 2,
 		},
 		resources: {
-			street: 25000,
-			normal: 140000,
-			prime: 210000,
+			[LevelOfPlay.Street]: 25000,
+			[LevelOfPlay.Normal]: 140000,
+			[LevelOfPlay.Prime]: 210000,
 		},
 	},
 	{
@@ -172,14 +195,21 @@ export const priorityTable: PriorityTableRow[] = [
                 description: "Magic 2"
             }
         ],
+        magicResonance: {
+            [MagicUserType.Magician]: null,
+            [MagicUserType.MysticAdept]: null,
+            [MagicUserType.Technomancer]: null,
+            [MagicUserType.Adept]: { magic: 2, activeSkills: { rating: 2, qty: 0 } },
+            [MagicUserType.AspectedMagician]: { magic: 2, magicSkillGroups: { rating: 2, qty: 0 }  },
+        },
 		skills: {
 			skillPoints: 22,
 			skillGroupPoints: 0,
 		},
 		resources: {
-			street: 15000,
-			normal: 50000,
-			prime: 150000,
+			[LevelOfPlay.Street]: 15000,
+			[LevelOfPlay.Normal]: 50000,
+			[LevelOfPlay.Prime]: 150000,
 		},
 	},
     {
@@ -192,14 +222,21 @@ export const priorityTable: PriorityTableRow[] = [
 		],
 		attributePoints: 12,
 		magicResonanceText: [],
+        magicResonance: {
+            [MagicUserType.Magician]: null,
+            [MagicUserType.MysticAdept]: null,
+            [MagicUserType.Technomancer]: null,
+            [MagicUserType.Adept]: null,
+            [MagicUserType.AspectedMagician]: null,
+        },
 		skills: {
 			skillPoints: 18,
 			skillGroupPoints: 0,
 		},
 		resources: {
-			street: 6000,
-			normal: 6000,
-			prime: 100000,
+			[LevelOfPlay.Street]: 6000,
+			[LevelOfPlay.Normal]: 6000,
+			[LevelOfPlay.Prime]: 100000,
 		},
 	},
 ];

@@ -25,39 +25,50 @@
         <div class="card bg-primary shadow mb-2" *ngIf="attributeForm">
 
             <div class="card-header">
-                <h5 class="card-title text-white m-0">Magic User Type</h5>
+                <h5 class="card-title text-white m-0">Magic Attribute</h5>
             </div>
             
-            <div class="card-body" >
+            <div class="card-body">
 
                 <form [formGroup]="attributeForm">
-                    <table class="table table-sm text-center m-0" >
+                    <table class="table table-sm text-center m-0">
                         <thead>
                             <tr>
                                 <th class="col-1"></th>
+                                <th class="col-1">Priority</th>
                                 <th class="col-1">Build Points</th>
                                 <th class="col-1">Increases</th>
                                 <th class="col-1">Bonuses</th>
                                 <th class="col-1">Total</th>
                             </tr>
                         </thead>
-                        <tbody formGroupName="attributes">
+                        <tbody>
                             <tr>
                                 <td>{{ attributeName | titlecase }}</td>
                                 <td>
-                                    <select class="form-select form-select-sm text-center" formControlName="buildPoints">
+                                    {{ magicalAttributeMinimum }}
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm text-center" formControlName="magicBuildPoints">
                                         <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="form-select form-select-sm text-center" formControlName="increases">
+                                    <select class="form-select form-select-sm text-center" formControlName="magicIncreases">
                                         <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
                                     </select>
                                 </td>
                                 <td>0</td>
                                 <td [ngClass]="{ 'text-danger': magicalAttributeTotal > 6}">
-                                     0 / 6
+                                     {{ magicalAttributeTotal }} / 6
                                 </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td [ngClass]="{ 'text-danger': totalSpecialBuildPointsSpent > maxSpecialBuildPoints}">
+                                    {{ totalSpecialBuildPointsSpent }} / {{ maxSpecialBuildPoints }}
+                                </td>
+                                <td colspan="3"></td>
                             </tr>
                         </tbody>
                     </table>

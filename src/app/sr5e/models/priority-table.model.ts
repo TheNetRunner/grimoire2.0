@@ -1,4 +1,6 @@
 import { MetaType } from "./meta-types.model";
+import { MagicUserType } from "./magic.model";
+import { Adept, AspectedMagician, Magician, MysticAdept, Technomancer } from "./magic.model";
 
 export enum Priority {
     A = 'a',
@@ -23,6 +25,13 @@ export interface PriorityTableRow {
 		skillPoints: number;
 		skillGroupPoints: number;
 	};
+    magicResonance: {
+        [MagicUserType.Adept]: Adept | null;
+        [MagicUserType.Magician]: Magician | null;
+        [MagicUserType.AspectedMagician]: AspectedMagician | null;
+        [MagicUserType.MysticAdept]: MysticAdept | null;
+        [MagicUserType.Technomancer]: Technomancer | null;
+    },
 	resources: {
 		[LevelOfPlay.Street]: number;
         [LevelOfPlay.Normal]: number;
@@ -30,43 +39,7 @@ export interface PriorityTableRow {
 	};
 }
 
-interface MagicResonanceText {
+export interface MagicResonanceText {
     title: string;
     description: string;
-}
-
-interface MagicalStartingAllowance {}
-
-interface MysticAdept extends MagicalStartingAllowance {
-    magic: number;
-    skills: {
-        rating: number;
-        qty: number;
-    };
-    spells: number;
-}
-
-interface Technomancer extends MagicalStartingAllowance {
-    resonance: number;
-    skills: {
-        rating: number;
-        qty: number;
-    };
-    complexForms: number;
-}
-
-interface Adept extends MagicalStartingAllowance {
-    magic: number;
-    activeSkills: {
-        rating: number;
-        qty: number;
-    };
-}
-
-interface AspectedMagician extends MagicalStartingAllowance {
-    magic: number;
-    skillGroups: {
-        rating: number;
-        qty: number;
-    };
 }

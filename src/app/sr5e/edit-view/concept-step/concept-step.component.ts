@@ -5,6 +5,7 @@ import { DataStoreService } from '../../services/data-store.service';
 
 import { ShadowRun5ECharacter } from '../../models/character.model';
 import { CharacterService } from '../../services/character.service';
+import { LevelOfPlay } from '../../models/priority-table.model';
 
 
 @Component({
@@ -15,13 +16,13 @@ import { CharacterService } from '../../services/character.service';
 export class ConceptStepComponent {
     private formBuilder = inject(FormBuilder);
     private dataStoreService = inject(DataStoreService);
-    private characterService = inject(CharacterService);
 
     @Input() character!: ShadowRun5ECharacter
 
     personalInfoForm!: FormGroup;
     gameSettingsForm!: FormGroup;
     bioForm!: FormGroup;
+    levelsOfPlay: LevelOfPlay[] = Object.values(LevelOfPlay);
 
     metaTypeOptions: string[] = [];
 

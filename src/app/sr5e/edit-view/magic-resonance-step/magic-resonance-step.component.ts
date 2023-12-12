@@ -20,22 +20,23 @@ export class MagicResonanceStepComponent implements OnInit {
 
     @Input() character!: ShadowRun5ECharacter;
 
-    magicUserTypeOptions: MagicUserType[] = Object.values(MagicUserType);
+    magicUserTypeOptions: MagicUserType[] = [];
 
     magicUserTypeForm!: FormGroup;
     attributeForm: FormGroup | null = null;
 
 
     ngOnInit(): void {
+        this.setMagicUserTypeOptions();
         this.generateForms();
     }
 
-    generateForms(): void {
+    private generateForms(): void {
         this.generateMagicUserTypeForm();
         this.generateAttributeForm();        
     }
 
-    generateMagicUserTypeForm(): void {
+    private generateMagicUserTypeForm(): void {
         this.magicUserTypeForm = this.formGroupBuilder.group({
             magicUserType: [this.character.magicUserType]
         });
@@ -45,7 +46,12 @@ export class MagicResonanceStepComponent implements OnInit {
         });
     }
 
-    generateAttributeForm(): void {
+    private handleMagicUserTypeChange(formData: any): void {
+        this.generateAttributeForm();
+        this.dataStoreService.updateCharacter(this.character.id, formData);
+    }
+
+    private generateAttributeForm(): void {
         if(this.character.magicUserType && this.character.magicUserType !== MagicUserType.Technomancer) {
             this.generateMagicAttributeForm();
         }
@@ -55,25 +61,54 @@ export class MagicResonanceStepComponent implements OnInit {
         }
     }
 
-    generateMagicAttributeForm(): void {
+    private generateMagicAttributeForm(): void {
         this.attributeForm = this.formGroupBuilder.group({
             magicBuildPoints: [this.character.magic.attribute.buildPoints, attributeFormValidators],
             magicIncreases: [this.character.magic.attribute.increases, attributeFormValidators]
         });
 
+        this.attributeForm.valueChanges.subscribe((formData: any) => {
+            const updates = {
+                magic: {
+                    attribute: {
+                        buildPoints: formData.magicBuildPoints,
+                        increases: formData.magicIncreases
+                    }
+                }
+            };
+            this.dataStoreService.updateCharacter(this.character.id, updates);
+        });
+
     }
 
-    generateResonanceForm(): void {
+    private generateResonanceForm(): void {
         this.attributeForm = this.formGroupBuilder.group({
-            magicBuildPoints: [this.character.resonance.attribute.buildPoints, attributeFormValidators],
-            magicIncreases: [this.character.resonance.attribute.increases, attributeFormValidators]
+            resonanceBuildPoints: [this.character.resonance.attribute.buildPoints, attributeFormValidators],
+            resonanceIncreases: [this.character.resonance.attribute.increases, attributeFormValidators]
+        });
+
+        this.attributeForm.valueChanges.subscribe((formData: any) => {
+            const updates = {
+                resonance: {
+                    attribute: {
+                        buildPoints: formData.resonanceBuildPoints,
+                        increases: formData.resonanceIncreases
+                    }
+                }
+            };
+            this.dataStoreService.updateCharacter(this.character.id, updates);
         });
     }
 
-    handleMagicUserTypeChange(formData: any): void {
-        console.log(formData);
-        this.generateAttributeForm();
-        this.dataStoreService.updateCharacter(this.character.id, formData);
+
+
+    setMagicUserTypeOptions(): void {
+        this.magicUserTypeOptions = this.characterService.getMagicUserTypeOptions(this.character);
+    }
+
+
+    get magicalAttributeMinimum(): number {
+        return this.characterService.getMagicalAttributeMinimum(this.character);
     }
 
     get totalMagicalBuildPointsSpent(): number {

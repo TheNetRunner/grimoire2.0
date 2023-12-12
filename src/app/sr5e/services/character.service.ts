@@ -50,8 +50,12 @@ export class CharacterService {
             }
         }
 
+        totalSpecialBuildPoints += this.getTotalMagicalBuildPointsSpent(character);
+
         return totalSpecialBuildPoints;
     }
+
+
 
     getMaxSpecialBuildPoints(character: ShadowRun5ECharacter): number {
         let specialBuildPoints = 0;
@@ -231,6 +235,26 @@ export class CharacterService {
         return attribute;
     }
 
+    getMagicalAttributeMinimum(character: ShadowRun5ECharacter): number {
+        let minimum = 0;
+        const magicUserType = character.magicUserType;
+        const priorityTableRow = this.getPriorityRow(character.priorities.magicResonance);
+
+        if (magicUserType && priorityTableRow) {
+
+            if(magicUserType !== MagicUserType.Technomancer) {
+                minimum = priorityTableRow.magicResonance[magicUserType]?.magic || 0;
+            }
+
+            if(magicUserType === MagicUserType.Technomancer) {
+                minimum = priorityTableRow.magicResonance[magicUserType]?.resonance || 0;
+            }  
+            
+        }
+
+        return minimum;
+    }
+
     getTotalMagicalBuildPointsSpent(character: ShadowRun5ECharacter): number {
         let total = 0;
 
@@ -263,13 +287,33 @@ export class CharacterService {
         let total = 0;
 
         if(character.magicUserType && character.magicUserType !== MagicUserType.Technomancer) {
-            total = character.magic.attribute.buildPoints + character.magic.attribute.increases;
+            const minimum = this.getMagicalAttributeMinimum(character);
+            total = minimum + character.magic.attribute.buildPoints + character.magic.attribute.increases;
         }
 
         if(character.magicUserType && character.magicUserType === MagicUserType.Technomancer) {
-            total = character.resonance.attribute.buildPoints + character.resonance.attribute.increases;
+            const minimum = this.getMagicalAttributeMinimum(character);
+            total = minimum + character.resonance.attribute.buildPoints + character.resonance.attribute.increases;
         }
 
         return total;
+    }
+
+    getMagicUserTypeOptions(character: ShadowRun5ECharacter): MagicUserType[] {
+        let options: MagicUserType[] = [];
+
+        const priorityTableRow = this.getPriorityRow(character.priorities.magicResonance);
+        const priotityMagicUserTypes = priorityTableRow?.magicResonance;
+
+        for(const magicUserType in priotityMagicUserTypes) {
+            const magicUserTypeStartingValues = priotityMagicUserTypes[magicUserType as keyof typeof priotityMagicUserTypes];
+            if(priotityMagicUserTypes) {
+                if(magicUserTypeStartingValues) {
+                    options.push(magicUserType as MagicUserType);
+                }
+            }
+        }
+
+        return options;
     }
 } 
