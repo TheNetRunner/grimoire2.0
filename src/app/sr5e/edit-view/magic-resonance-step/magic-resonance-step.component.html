@@ -22,7 +22,7 @@
     </div>
 
     <div class="col-md-7">
-        <div class="card bg-primary shadow mb-2" *ngIf="attributeForm">
+        <div class="card bg-primary shadow mb-2">
 
             <div class="card-header">
                 <h5 class="card-title text-white m-0">Magic Attribute</h5>
@@ -30,7 +30,7 @@
             
             <div class="card-body">
 
-                <form [formGroup]="attributeForm">
+                <form [formGroup]="attributeForm" *ngIf="attributeForm">
                     <table class="table table-sm text-center m-0">
                         <thead>
                             <tr>
