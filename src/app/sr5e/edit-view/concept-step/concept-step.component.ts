@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataStoreService } from '../../services/data-store.service';
 
 import { ShadowRun5ECharacter } from '../../models/character.model';
+import { CharacterService } from '../../services/character.service';
 
 
 @Component({
@@ -13,7 +14,8 @@ import { ShadowRun5ECharacter } from '../../models/character.model';
 })
 export class ConceptStepComponent {
     private formBuilder = inject(FormBuilder);
-    private dataStoreService = inject (DataStoreService);;
+    private dataStoreService = inject(DataStoreService);
+    private characterService = inject(CharacterService);
 
     @Input() character!: ShadowRun5ECharacter
 
@@ -78,6 +80,11 @@ export class ConceptStepComponent {
             }
         });
 
+    }
+
+    handleRoleChange(formData: any): void {
+        let updates = formData;
+        
     }
 
     get isNameFieldValid(): boolean | undefined {

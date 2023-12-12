@@ -1,1 +1,71 @@
-<p>magic-resonance-step works!</p>
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="card bg-primary shadow mb-2">
+
+            <div class="card-header">
+                <h5 class="card-title text-white m-0">Magic User Type</h5>
+            </div>
+            
+            <div class="card-body">
+                <form [formGroup]="magicUserTypeForm">
+                    <select class="form-select" formControlName="magicUserType">
+                        <option [ngValue]="null">None</option>
+                        <option *ngFor="let magicUserType of magicUserTypeOptions" [ngValue]="magicUserType">
+                            {{ magicUserType | titlecase }}
+                        </option>
+                    </select>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-7">
+        <div class="card bg-primary shadow mb-2" *ngIf="attributeForm">
+
+            <div class="card-header">
+                <h5 class="card-title text-white m-0">Magic User Type</h5>
+            </div>
+            
+            <div class="card-body" >
+
+                <form [formGroup]="attributeForm">
+                    <table class="table table-sm text-center m-0" >
+                        <thead>
+                            <tr>
+                                <th class="col-1"></th>
+                                <th class="col-1">Build Points</th>
+                                <th class="col-1">Increases</th>
+                                <th class="col-1">Bonuses</th>
+                                <th class="col-1">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody formGroupName="attributes">
+                            <tr>
+                                <td>{{ attributeName | titlecase }}</td>
+                                <td>
+                                    <select class="form-select form-select-sm text-center" formControlName="buildPoints">
+                                        <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm text-center" formControlName="increases">
+                                        <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
+                                    </select>
+                                </td>
+                                <td>0</td>
+                                <td [ngClass]="{ 'text-danger': magicalAttributeTotal > 6}">
+                                     0 / 6
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

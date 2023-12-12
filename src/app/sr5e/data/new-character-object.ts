@@ -6,6 +6,7 @@ export const newCharacterObject: ShadowRun5ECharacter = {
     id: "",
     name: "New Character",
     role: "face",
+    magicUserType: null,
     ethnicity: "",
     age: "",
     gender: "",
@@ -76,4 +77,20 @@ export const newCharacterObject: ShadowRun5ECharacter = {
 		negative: [],
 		attribute: ""
 	},
+    magic: {
+        attribute: {
+            buildPoints: 0,
+            increases: 0
+        },
+        magicalSkills: [],
+        spells: [],
+    },
+    resonance: {
+        attribute: {
+            buildPoints: 0,
+            increases: 0
+        },
+        resonanceSkills: [],
+        complexForms: [],
+    }
 }

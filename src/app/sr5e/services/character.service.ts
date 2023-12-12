@@ -3,10 +3,12 @@ import { Injectable } from '@angular/core';
 import { ShadowRun5ECharacter } from '../models/character.model';
 import { Attribute, AttributeName, AttributesTableRow, SpecialAttributeName } from '../models/attribute.model';
 import { MetaTypeName } from '../models/meta-types.model';
+import { MagicUserType } from '../models/magic.model';
 
 import { priorityTable } from '../data/priority-table';
 import { attributesTable } from '../data/meta-type-attribute-table';
 import { Priority, PriorityTableRow } from '../models/priority-table.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -83,7 +85,7 @@ export class CharacterService {
 
         for(const attributeName in character.attributes) {
             if (character.attributes.hasOwnProperty(attributeName)) {
-                totalIncreaseSpent += this.calculateAttributeIncreasesCost(character, attributeName as AttributeName);
+                totalIncreaseSpent += this.calAttributeIncreasesCost(character, attributeName as AttributeName);
             }
         }
 
@@ -95,14 +97,14 @@ export class CharacterService {
 
         for(const attributeName in character.specialAttributes) {
             if (character.specialAttributes.hasOwnProperty(attributeName)) {
-                totalIncreaseSpent += this.calculateAttributeIncreasesCost(character, attributeName as SpecialAttributeName);
+                totalIncreaseSpent += this.calAttributeIncreasesCost(character, attributeName as SpecialAttributeName);
             }
         }
 
         return totalIncreaseSpent;
     }
 
-    private calculateAttributeIncreasesCost(
+    private calAttributeIncreasesCost(
         character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): number {
         let total = 0;
         const attribute = this.getCharacterAttributeByName(character, attributeName);
@@ -227,5 +229,47 @@ export class CharacterService {
         }
 
         return attribute;
+    }
+
+    getTotalMagicalBuildPointsSpent(character: ShadowRun5ECharacter): number {
+        let total = 0;
+
+        if(character.magicUserType && character.magicUserType !== MagicUserType.Technomancer) {
+            total = character.magic.attribute.buildPoints;
+        }
+
+        if(character.magicUserType && character.magicUserType === MagicUserType.Technomancer) {
+            total = character.resonance.attribute.buildPoints;
+        }
+
+        return total;
+    }
+
+    getTotalMagicalIncreases(character: ShadowRun5ECharacter): number {
+        let total = 0;
+
+        if(character.magicUserType && character.magicUserType !== MagicUserType.Technomancer) {
+            total = character.magic.attribute.buildPoints;
+        }
+
+        if(character.magicUserType && character.magicUserType === MagicUserType.Technomancer) {
+            total = character.resonance.attribute.buildPoints;
+        }
+
+        return total;
+    }
+
+    getMagicalAttributeTotal(character: ShadowRun5ECharacter): number {
+        let total = 0;
+
+        if(character.magicUserType && character.magicUserType !== MagicUserType.Technomancer) {
+            total = character.magic.attribute.buildPoints + character.magic.attribute.increases;
+        }
+
+        if(character.magicUserType && character.magicUserType === MagicUserType.Technomancer) {
+            total = character.resonance.attribute.buildPoints + character.resonance.attribute.increases;
+        }
+
+        return total;
     }
 } 

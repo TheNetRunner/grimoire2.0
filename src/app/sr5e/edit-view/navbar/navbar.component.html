@@ -13,7 +13,8 @@
                             [routerLink]="['.']" 
                             routerLinkActive="active" 
                             [routerLinkActiveOptions]="{ exact: true }"
-                            [queryParams]="{ 'step': step }" 
+                            [queryParams]="{ 'step': step }"
+                            (click)="isCollapsed = !isCollapsed" 
                         >{{ step | charReplacement: "-": " " | titlecase }}</a>
                     </li>
 
