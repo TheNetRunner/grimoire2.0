@@ -4,21 +4,19 @@
                 <div class="col-6">
                     <div class="d-flex align-middle">
                         <h5 class="pe-4">{{ spell.name  | titlecase }}</h5>
-                        <h6 class="fst-italic text-body-tertiary">(
-                            <span *ngIf="spell.direct">Direct</span>
-                            <span *ngIf="!spell.direct">Indirect</span>
-                            <span *ngIf="spell.elemental">, Elemental</span>
-                            )
+                        <h6 class="fst-italic text-body-tertiary">
+                            {{ spell.keyWords | json | titlecase }}
                         </h6>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-outline-primary p-1" *ngIf="buttonLabel">
+                        <button class="btn btn-outline-primary p-1" *ngIf="buttonLabel" (click)="emitButtonClick()">
                             {{ buttonLabel }}
                         </button>
                         <button class="btn py-0 px-4" (click)="isCollapsed = !isCollapsed">
-                            <i class="bi bi-arrow-down-square-fill fs-4"></i>
+                            <i *ngIf="isCollapsed" class="bi bi-arrow-down-square-fill fs-4"></i>
+                            <i *ngIf="!isCollapsed" class="bi bi-arrow-up-square-fill fs-4"></i>
                         </button>
                     </div>
                 </div>

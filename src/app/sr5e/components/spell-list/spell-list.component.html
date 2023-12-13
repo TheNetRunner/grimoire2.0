@@ -1,9 +1,17 @@
 
 <ul class="list-group list-group-flush mb-2">
     <li class="list-group-item bg-primary">
+        <div class="d-flex justify-content-between">
             <h5 class="card-title text-white mx-0">{{ listTitle }}</h5>
+            <h6 class="card-title text-body-tertiary mx-0" *ngIf="listTitleSecond">{{ listTitleSecond }}</h6>
+        </div>
     </li>
     <div>
-        <app-spell-list-item *ngFor="let spell of spellList" [spell]="spell" [buttonLabel]="itemButtonLabel"></app-spell-list-item>
+        <app-spell-list-item 
+            *ngFor="let spell of spellList" 
+            [spell]="spell" 
+            [buttonLabel]="itemButtonLabel"
+            (buttonClickEvent)="emitItemButtonClick($event)"
+        ></app-spell-list-item>
     </div>
 </ul>

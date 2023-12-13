@@ -8,7 +8,7 @@ export interface ShadowRun5ECharacter {
 	id: string;
     name: string;
     role: string;
-    magicUserType: MagicUserType | null;
+    magicUserType: MagicUserType;
     ethnicity: string;
     age: string;
     gender: string;
@@ -51,7 +51,6 @@ export interface ShadowRun5ECharacter {
         resonanceSkills: string[];
         complexForms: string[];
     }
-
 }
 
 

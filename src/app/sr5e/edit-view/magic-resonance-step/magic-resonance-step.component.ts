@@ -67,46 +67,30 @@ export class MagicResonanceStepComponent implements OnInit {
 
     private generateMagicAttributeForm(): void {
         this.attributeForm = this.formGroupBuilder.group({
-            magicBuildPoints: [this.character.magic.attribute.buildPoints, attributeFormValidators],
-            magicIncreases: [this.character.magic.attribute.increases, attributeFormValidators]
+            buildPoints: [this.character.magic.attribute.buildPoints, attributeFormValidators],
+            increases: [this.character.magic.attribute.increases, attributeFormValidators]
         });
 
         this.attributeForm.valueChanges.subscribe((formData: any) => {
-            const currentMagic = this.character.magic;
+            this.character.magic.attribute.buildPoints = formData.buildPoints;
+            this.character.magic.attribute.increases = formData.increases;
 
-            const updates = {
-                magic: {
-                    ...currentMagic,
-                    attribute: {
-                        buildPoints: formData.magicBuildPoints,
-                        increases: formData.magicIncreases
-                    }
-                }
-            };
-            this.dataStoreService.updateCharacter(this.character.id, updates);
+            this.dataStoreService.updateCharacter(this.character.id, this.character);
         });
 
     }
 
     private generateResonanceForm(): void {
         this.attributeForm = this.formGroupBuilder.group({
-            resonanceBuildPoints: [this.character.resonance.attribute.buildPoints, attributeFormValidators],
-            resonanceIncreases: [this.character.resonance.attribute.increases, attributeFormValidators]
+            buildPoints: [this.character.magic.attribute.buildPoints, attributeFormValidators],
+            increases: [this.character.magic.attribute.increases, attributeFormValidators]
         });
 
         this.attributeForm.valueChanges.subscribe((formData: any) => {
-            const currentResonance = this.character.resonance;
+            this.character.resonance.attribute.buildPoints = formData.buildPoints;
+            this.character.resonance.attribute.increases = formData.increases;
 
-            const updates = {
-                resonance: {
-                    ...currentResonance,
-                    attribute: {
-                        buildPoints: formData.resonanceBuildPoints,
-                        increases: formData.resonanceIncreases
-                    }
-                }
-            };
-            this.dataStoreService.updateCharacter(this.character.id, updates);
+            this.dataStoreService.updateCharacter(this.character.id, this.character);
         });
     }
 
@@ -129,6 +113,28 @@ export class MagicResonanceStepComponent implements OnInit {
         }
         
         this.availableSpells = availableSpells;
+    }
+
+    learnSpell(emitedSpell: Spell): void {
+        this.character.magic.spells.push(emitedSpell);
+
+        this.dataStoreService.updateCharacter(this.character.id, this.character);
+        this.setAvailableSpells();
+    }
+
+    unlearnSpell(emitedSpell: Spell): void {
+        const currentSpells = this.character.magic.spells;
+
+        for(const spell of currentSpells) {
+            if(spell.name === emitedSpell.name) {
+                currentSpells.splice(currentSpells.indexOf(spell), 1);
+            }
+        }
+
+        this.character.magic.spells = currentSpells;
+
+        this.dataStoreService.updateCharacter(this.character.id, this.character);
+        this.setAvailableSpells();
     }
 
     get characterMagicUserType(): MagicUserType | null {
@@ -171,6 +177,10 @@ export class MagicResonanceStepComponent implements OnInit {
 
     get characterSpells(): Spell[] {
         return this.character.magic.spells;
+    }
+
+    get characterRemainingFreeSpells(): number {
+        return this.characterService.getRemainingFreeSpells(this.character);
     }
 
 }

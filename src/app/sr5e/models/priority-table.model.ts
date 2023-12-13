@@ -31,6 +31,7 @@ export interface PriorityTableRow {
         [MagicUserType.AspectedMagician]: AspectedMagician | null;
         [MagicUserType.MysticAdept]: MysticAdept | null;
         [MagicUserType.Technomancer]: Technomancer | null;
+        [MagicUserType.None]: null;
     },
 	resources: {
 		[LevelOfPlay.Street]: number;

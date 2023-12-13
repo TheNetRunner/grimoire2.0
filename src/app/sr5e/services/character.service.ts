@@ -316,4 +316,20 @@ export class CharacterService {
 
         return options;
     }
+
+    getRemainingFreeSpells(character: ShadowRun5ECharacter): number {
+        let freeSpells = 0;
+
+        const characterSpellsLength = character.magic.spells.length;
+        
+        const magicUserType = character.magicUserType;
+        const priorityTableRow = this.getPriorityRow(character.priorities.magicResonance);
+        const magicUserTypeStartingValues = priorityTableRow?.magicResonance[magicUserType];
+
+        if(magicUserTypeStartingValues && 'spells' in magicUserTypeStartingValues) {
+            freeSpells = magicUserTypeStartingValues.spells - characterSpellsLength;
+        }
+
+        return freeSpells;
+    }
 } 

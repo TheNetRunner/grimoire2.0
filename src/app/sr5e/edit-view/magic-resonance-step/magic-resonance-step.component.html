@@ -10,7 +10,6 @@
             <div class="card-body">
                 <form [formGroup]="magicUserTypeForm">
                     <select class="form-select" formControlName="magicUserType">
-                        <option [ngValue]="null">None</option>
                         <option *ngFor="let magicUserType of magicUserTypeOptions" [ngValue]="magicUserType">
                             {{ magicUserType | titlecase }}
                         </option>
@@ -49,13 +48,13 @@
                                     {{ magicalAttributeMinimum }}
                                 </td>
                                 <td>
-                                    <select class="form-select form-select-sm text-center" formControlName="magicBuildPoints">
+                                    <select class="form-select form-select-sm text-center" formControlName="buildPoints">
                                         <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="form-select form-select-sm text-center" formControlName="magicIncreases">
-                                        <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
+                                    <select class="form-select form-select-sm text-center" formControlName="increases">
+                                        <option *ngFor="let i of 11 | rangeArray" [ngValue]="i">{{ i }}</option>
                                     </select>
                                 </td>
                                 <td>0</td>
@@ -67,7 +66,7 @@
                                 <td colspan="2"></td>
                                 <td [ngClass]="{ 'text-danger': totalSpecialBuildPointsSpent > maxSpecialBuildPoints}">
                                     {{ totalSpecialBuildPointsSpent }} / {{ maxSpecialBuildPoints }}
-                                    <i class="bi bi-exclamation-diamond-fill text-warning warning-flash" *ngIf="totalSpecialBuildPointsSpent > maxSpecialBuildPoints"></i>
+                                    <i class="bi bi-exclamation-diamond-fill text-warning warning-flash"        *ngIf="totalSpecialBuildPointsSpent > maxSpecialBuildPoints"></i>
                                 </td>
                                 <td colspan="3"></td>
                             </tr>
@@ -88,8 +87,10 @@
     <div class="col-12">
         <app-spell-list 
             [listTitle]="'Known Spells'" 
+            [listTitleSecond]="'Remaining Free Spells: ' + characterRemainingFreeSpells"
             [spellList]="characterSpells" 
             [itemButtonLabel]="'Unlearn'"
+            (itemButtonClick)="unlearnSpell($event)"
         ></app-spell-list>
     </div>
 </div>
@@ -100,6 +101,7 @@
             [listTitle]="'Available Spells'" 
             [spellList]="availableSpells" 
             [itemButtonLabel]="'Learn'"
+            (itemButtonClick)="learnSpell($event)"
         ></app-spell-list>
     </div>
 </div>

@@ -10,11 +10,11 @@ export class SpellListItemComponent {
 
     @Input() spell!: Spell;
     @Input() buttonLabel: string = ""
-    @Output() buttonClick = new EventEmitter<Spell>();
+    @Output() buttonClickEvent = new EventEmitter<Spell>();
 
     isCollapsed = true;
 
     emitButtonClick(): void {
-        this.buttonClick.emit(this.spell);
+        this.buttonClickEvent.emit(this.spell);
     }
 }

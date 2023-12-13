@@ -45,6 +45,7 @@ export const priorityTable: PriorityTableRow[] = [
             [MagicUserType.Technomancer]: { resonance: 6, resonanceSkills: { rating: 5, qty: 2 }, complexForms: 5 },
             [MagicUserType.Adept]: null,
             [MagicUserType.AspectedMagician]: null,
+            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 46,
@@ -105,6 +106,7 @@ export const priorityTable: PriorityTableRow[] = [
             [MagicUserType.Technomancer]: { resonance: 4, resonanceSkills: { rating: 4, qty: 2 }, complexForms: 2 },
             [MagicUserType.Adept]: { magic: 6, activeSkills: { rating: 4, qty: 1 } },
             [MagicUserType.AspectedMagician]: { magic: 5, magicSkillGroups: { rating: 4, qty: 2 } },
+            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 36,
@@ -161,6 +163,7 @@ export const priorityTable: PriorityTableRow[] = [
             [MagicUserType.Technomancer]: { resonance: 3, resonanceSkills: { rating: 5, qty: 0 }, complexForms: 1 },
             [MagicUserType.Adept]: { magic: 4, activeSkills: { rating: 2, qty: 1 } },
             [MagicUserType.AspectedMagician]: { magic: 3, magicSkillGroups: { rating: 2, qty: 1 }  },
+            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 28,
@@ -201,6 +204,7 @@ export const priorityTable: PriorityTableRow[] = [
             [MagicUserType.Technomancer]: null,
             [MagicUserType.Adept]: { magic: 2, activeSkills: { rating: 2, qty: 0 } },
             [MagicUserType.AspectedMagician]: { magic: 2, magicSkillGroups: { rating: 2, qty: 0 }  },
+            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 22,
@@ -228,6 +232,7 @@ export const priorityTable: PriorityTableRow[] = [
             [MagicUserType.Technomancer]: null,
             [MagicUserType.Adept]: null,
             [MagicUserType.AspectedMagician]: null,
+            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 18,

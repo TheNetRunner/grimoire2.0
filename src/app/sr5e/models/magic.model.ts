@@ -1,4 +1,5 @@
 export enum MagicUserType {
+    None = "",
     Adept = "adept",
     AspectedMagician = "aspected magician",
     Magician = "magician",
@@ -25,7 +26,7 @@ export interface MysticAdept {
 }
 
 export interface Technomancer {
-    resonance: number;
+   resonance: number;
    resonanceSkills: {
         rating: number;
         qty: number;
@@ -53,11 +54,10 @@ export interface Spell {
     name: string;
     page: string;
     type: "physical" | "mana";
-    direct: "direct" | "indirect";
+    keyWords: string[];
     range: string;
     damange: "physical" | "stun";
     duration: "instantaneous" | "sustained" | "permanent";
     drain: number;
-    elemental: boolean;
     description: string;
 }

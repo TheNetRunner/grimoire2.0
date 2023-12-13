@@ -1,4 +1,5 @@
 import { ShadowRun5ECharacter } from '../models/character.model';
+import { MagicUserType } from '../models/magic.model';
 import { MetaTypeName } from '../models/meta-types.model';
 import { LevelOfPlay, Priority } from '../models/priority-table.model';
 
@@ -6,7 +7,7 @@ export const newCharacterObject: ShadowRun5ECharacter = {
     id: "",
     name: "New Character",
     role: "face",
-    magicUserType: null,
+    magicUserType: MagicUserType.None,
     ethnicity: "",
     age: "",
     gender: "",
