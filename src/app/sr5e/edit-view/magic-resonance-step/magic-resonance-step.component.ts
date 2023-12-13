@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataStoreService } from '../../services/data-store.service';
 import { CharacterService } from '../../services/character.service';
 import { ShadowRun5ECharacter } from '../../models/character.model';
-import { MagicUserType } from '../../models/magic.model';
+import { MagicUserType, Spell } from '../../models/magic.model';
+import { allSpells } from '../../data/spells.data';
 
 const attributeFormValidators = [Validators.required, Validators.min(0), Validators.max(99), Validators.pattern('^[0-9]*$')];
 
@@ -21,6 +22,7 @@ export class MagicResonanceStepComponent implements OnInit {
     @Input() character!: ShadowRun5ECharacter;
 
     magicUserTypeOptions: MagicUserType[] = [];
+    availableSpells: Spell[] = allSpells;
 
     magicUserTypeForm!: FormGroup;
     attributeForm: FormGroup | null = null;
@@ -29,11 +31,13 @@ export class MagicResonanceStepComponent implements OnInit {
     ngOnInit(): void {
         this.setMagicUserTypeOptions();
         this.generateForms();
+        this.setAvailableSpells();
     }
 
     private generateForms(): void {
         this.generateMagicUserTypeForm();
-        this.generateAttributeForm();        
+        this.generateAttributeForm();      
+        
     }
 
     private generateMagicUserTypeForm(): void {
@@ -68,8 +72,11 @@ export class MagicResonanceStepComponent implements OnInit {
         });
 
         this.attributeForm.valueChanges.subscribe((formData: any) => {
+            const currentMagic = this.character.magic;
+
             const updates = {
                 magic: {
+                    ...currentMagic,
                     attribute: {
                         buildPoints: formData.magicBuildPoints,
                         increases: formData.magicIncreases
@@ -88,8 +95,11 @@ export class MagicResonanceStepComponent implements OnInit {
         });
 
         this.attributeForm.valueChanges.subscribe((formData: any) => {
+            const currentResonance = this.character.resonance;
+
             const updates = {
                 resonance: {
+                    ...currentResonance,
                     attribute: {
                         buildPoints: formData.resonanceBuildPoints,
                         increases: formData.resonanceIncreases
@@ -100,12 +110,30 @@ export class MagicResonanceStepComponent implements OnInit {
         });
     }
 
-
-
     setMagicUserTypeOptions(): void {
         this.magicUserTypeOptions = this.characterService.getMagicUserTypeOptions(this.character);
     }
 
+    setAvailableSpells(): void {
+        this.setAvailableCombatSpells();
+    }
+
+    private setAvailableCombatSpells(): void {
+        const characterSpells = this.character.magic.spells;
+        const availableSpells: Spell[] = [];
+
+        for(const spell of allSpells) {
+            if(!characterSpells.find(characterSpell => characterSpell.name === spell.name)) {
+                availableSpells.push(spell);
+            }
+        }
+        
+        this.availableSpells = availableSpells;
+    }
+
+    get characterMagicUserType(): MagicUserType | null {
+        return this.character.magicUserType;
+    }
 
     get magicalAttributeMinimum(): number {
         return this.characterService.getMagicalAttributeMinimum(this.character);
@@ -141,7 +169,8 @@ export class MagicResonanceStepComponent implements OnInit {
         return attributeName;
     }
 
-
-
+    get characterSpells(): Spell[] {
+        return this.character.magic.spells;
+    }
 
 }

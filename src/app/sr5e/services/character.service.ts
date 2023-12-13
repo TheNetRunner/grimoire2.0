@@ -5,8 +5,8 @@ import { Attribute, AttributeName, AttributesTableRow, SpecialAttributeName } fr
 import { MetaTypeName } from '../models/meta-types.model';
 import { MagicUserType } from '../models/magic.model';
 
-import { priorityTable } from '../data/priority-table';
-import { attributesTable } from '../data/meta-type-attribute-table';
+import { priorityTable } from '../data/priority-table.data';
+import { attributesTable } from '../data/meta-type-attribute-table.data';
 import { Priority, PriorityTableRow } from '../models/priority-table.model';
 
 

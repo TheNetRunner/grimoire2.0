@@ -2,6 +2,7 @@ import { Attribute, Attributes, SpecialAttributes } from './attribute.model';
 import { MagicUserType } from './magic.model';
 import { MetaTypeName } from './meta-types.model';
 import { LevelOfPlay, Priority } from './priority-table.model';
+import { Spell } from './magic.model';
 
 export interface ShadowRun5ECharacter {
 	id: string;
@@ -43,7 +44,7 @@ export interface ShadowRun5ECharacter {
     magic: {
         attribute: Attribute;
         magicalSkills: string[];
-        spells: string[];
+        spells: Spell[];
     }
     resonance: {
         attribute: Attribute;

@@ -9,8 +9,8 @@ import { ShadowRun5ECharacter } from '../../models/character.model';
 import { MetaTypeName } from '../../models/meta-types.model';
 
 import { IMAGE_SUFFEX } from '../../common/constants';
-import { metaTypeDescriptions } from '../../data/meta-type-descriptions';
-import { attributesTable } from '../../data/meta-type-attribute-table';
+import { metaTypeDescriptions } from '../../data/meta-type-descriptions.data';
+import { attributesTable } from '../../data/meta-type-attribute-table.data';
 
 
 @Component({

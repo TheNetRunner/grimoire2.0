@@ -18,6 +18,9 @@ import { PrioritiesStepComponent } from './edit-view/priorities-step/priorities-
 import { AttributeStepComponent } from './edit-view/attribute-step/attribute-step.component';
 import { NavbarComponent } from './edit-view/navbar/navbar.component';
 import { MagicResonanceStepComponent } from './edit-view/magic-resonance-step/magic-resonance-step.component';
+import { SpellSelectorComponent } from './modals/spell-selector/spell-selector.component';
+import { SpellListComponent } from './components/spell-list/spell-list.component';
+import { SpellListItemComponent } from './components/spell-list-item/spell-list-item.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { MagicResonanceStepComponent } from './edit-view/magic-resonance-step/ma
     PrioritiesStepComponent,
     AttributeStepComponent,
     NavbarComponent,
-    MagicResonanceStepComponent
+    MagicResonanceStepComponent,
+    SpellSelectorComponent,
+    SpellListComponent,
+    SpellListItemComponent,
   ],
   imports: [
     CommonModule,

@@ -48,3 +48,16 @@ export interface AspectedMagician {
         qty: number;
     };
 }
+
+export interface Spell {
+    name: string;
+    page: string;
+    type: "physical" | "mana";
+    direct: "direct" | "indirect";
+    range: string;
+    damange: "physical" | "stun";
+    duration: "instantaneous" | "sustained" | "permanent";
+    drain: number;
+    elemental: boolean;
+    description: string;
+}

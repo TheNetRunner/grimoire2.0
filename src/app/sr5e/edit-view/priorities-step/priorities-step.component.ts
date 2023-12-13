@@ -8,7 +8,7 @@ import { LevelOfPlay, Priority, PriorityTableRow } from '../../models/priority-t
 import { ShadowRun5ECharacter } from '../../models/character.model';
 
 
-import { priorityTable } from '../../data/priority-table';
+import { priorityTable } from '../../data/priority-table.data';
 
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
 import { MetaTypeName } from '../../models/meta-types.model';

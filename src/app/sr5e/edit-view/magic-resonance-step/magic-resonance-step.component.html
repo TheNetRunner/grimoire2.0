@@ -67,6 +67,7 @@
                                 <td colspan="2"></td>
                                 <td [ngClass]="{ 'text-danger': totalSpecialBuildPointsSpent > maxSpecialBuildPoints}">
                                     {{ totalSpecialBuildPointsSpent }} / {{ maxSpecialBuildPoints }}
+                                    <i class="bi bi-exclamation-diamond-fill text-warning warning-flash" *ngIf="totalSpecialBuildPointsSpent > maxSpecialBuildPoints"></i>
                                 </td>
                                 <td colspan="3"></td>
                             </tr>
@@ -79,4 +80,26 @@
 
     </div>
 
+</div>
+
+
+
+<div class="row" *ngIf="characterMagicUserType === 'magician' || characterMagicUserType === 'mystic adept'">
+    <div class="col-12">
+        <app-spell-list 
+            [listTitle]="'Known Spells'" 
+            [spellList]="characterSpells" 
+            [itemButtonLabel]="'Unlearn'"
+        ></app-spell-list>
+    </div>
+</div>
+
+<div class="row" *ngIf="characterMagicUserType === 'magician' || characterMagicUserType === 'mystic adept'">
+    <div class="col-12">
+        <app-spell-list 
+            [listTitle]="'Available Spells'" 
+            [spellList]="availableSpells" 
+            [itemButtonLabel]="'Learn'"
+        ></app-spell-list>
+    </div>
 </div>

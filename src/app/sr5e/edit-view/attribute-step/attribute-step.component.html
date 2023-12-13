@@ -39,6 +39,10 @@
                                 <td>0</td>
                                 <td [ngClass]="{ 'text-danger': isAttributeTotalValueGreaterThanMax(attributeName) }">
                                     {{ getAttributeTotalValue(attributeName) }} / {{ getAttributeMaxValue(attributeName) }}
+                                    <i 
+                                        class="bi bi-exclamation-diamond-fill text-warning warning-flash px-1"
+                                        *ngIf="isAttributeTotalValueGreaterThanMax(attributeName)"
+                                    ></i>
                                 </td>
                             </tr>
                             <tr>
@@ -46,6 +50,10 @@
                                 <td></td>
                                 <td [ngClass]="{ 'text-danger': totalBuildPointsSpent > maxBuildPoints }">
                                     {{ totalBuildPointsSpent }} / {{ maxBuildPoints }}
+                                    <i 
+                                        class="bi bi-exclamation-diamond-fill text-warning warning-flash px-1"
+                                        *ngIf="totalBuildPointsSpent > maxBuildPoints"
+                                    ></i>
                                 </td>
                                 <td>
                                     {{ totalAttributeIncreasesCost }} karma
@@ -136,6 +144,10 @@
                                 <td></td>
                                 <td [ngClass]="{ 'text-danger': totalSpecialBuildPointsSpent > maxSpecialBuildPoints }">
                                     {{ totalSpecialBuildPointsSpent }} / {{ maxSpecialBuildPoints }}
+                                    <i 
+                                        class="bi bi-exclamation-diamond-fill text-warning warning-flash px-1"
+                                        *ngIf="totalSpecialBuildPointsSpent > maxSpecialBuildPoints"
+                                    ></i>
                                 </td>
                                 <td>
                                     {{ totalSpecialAttributeIncreasesCost }} karma

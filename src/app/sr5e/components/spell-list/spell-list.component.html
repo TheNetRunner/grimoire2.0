@@ -1,0 +1,9 @@
+
+<ul class="list-group list-group-flush mb-2">
+    <li class="list-group-item bg-primary">
+            <h5 class="card-title text-white mx-0">{{ listTitle }}</h5>
+    </li>
+    <div>
+        <app-spell-list-item *ngFor="let spell of spellList" [spell]="spell" [buttonLabel]="itemButtonLabel"></app-spell-list-item>
+    </div>
+</ul>
