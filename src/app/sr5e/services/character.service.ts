@@ -327,7 +327,11 @@ export class CharacterService {
         const magicUserTypeStartingValues = priorityTableRow?.magicResonance[magicUserType];
 
         if(magicUserTypeStartingValues && 'spells' in magicUserTypeStartingValues) {
-            freeSpells = magicUserTypeStartingValues.spells - characterSpellsLength;
+            const calculation = magicUserTypeStartingValues.spells - characterSpellsLength;
+
+            if (calculation > 0) {
+                freeSpells = calculation;
+            }
         }
 
         return freeSpells;
