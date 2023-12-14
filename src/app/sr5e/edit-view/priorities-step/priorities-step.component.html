@@ -1,6 +1,6 @@
 <div class="row">
     
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="card bg-primary shadow mb-2">
 
@@ -12,45 +12,45 @@
                 <form [formGroup]="prioritiesFormGroup">
                     <div class="row text-center justify-content-between">
 
-                        <div class="col-lg-2 gx-2">
+                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
                             <label class="form-label" for="metatype">Meta Type</label>
-                            <select class="form-select" formControlName="metaType">
+                            <select class="form-select text-center w-70" formControlName="metaType">
                                 <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
                                     {{ priority | titlecase }}
                                 </option>
                             </select>
                         </div>
 
-                        <div class="col-lg-2 gx-2">
+                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
                             <label class="form-label" for="attributes">Attributes</label>
-                            <select class="form-select" formControlName="attributes">
+                            <select class="form-select text-center w-70" formControlName="attributes">
                                 <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
                                     {{ priority | titlecase }}
                                 </option>
                             </select>
                         </div>
 
-                        <div class="col-lg-3 gx-2">
-                            <label class="form-label" for="magicResonance">Magic / Resonance</label>
-                            <select class="form-select" formControlName="magicResonance">
+                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
+                            <label class="form-label text-nowrap" for="magicResonance">Magic / Resonance</label>
+                            <select class="form-select text-center w-70" formControlName="magicResonance">
                                 <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
                                     {{ priority | titlecase }}
                                 </option>
                             </select>
                         </div>
                         
-                        <div class="col-lg-2 gx-2">
+                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
                             <label class="form-label" for="skills">Skills</label>
-                            <select class="form-select" formControlName="skills">
+                            <select class="form-select text-center w-70" formControlName="skills">
                                 <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
                                     {{ priority | titlecase }}
                                 </option>
                             </select>
                         </div>
 
-                        <div class="col-lg-2 gx-2">
+                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
                             <label class="form-label" for="resources">Resources</label>
-                            <select class="form-select" formControlName="resources">
+                            <select class="form-select text-center w-70" formControlName="resources">
                                 <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
                                     {{ priority | titlecase }}
                                 </option>

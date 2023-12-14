@@ -15,6 +15,14 @@ html, body {
     font-size: 0.65rem;
 }
 
+.w-60 {
+    width: 60%!important;
+}
+
+.w-70 {
+    width: 70%!important;
+}
+
 .warning-flash {
     animation: warning-flash 2s ease-in-out infinite;
 }
