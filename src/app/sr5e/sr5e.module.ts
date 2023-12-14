@@ -17,10 +17,13 @@ import { MetaTypeStepComponent } from './edit-view/meta-type-step/meta-type-step
 import { PrioritiesStepComponent } from './edit-view/priorities-step/priorities-step.component';
 import { AttributeStepComponent } from './edit-view/attribute-step/attribute-step.component';
 import { NavbarComponent } from './edit-view/navbar/navbar.component';
-import { MagicResonanceStepComponent } from './edit-view/magic-resonance-step/magic-resonance-step.component';
-import { SpellSelectorComponent } from './modals/spell-selector/spell-selector.component';
 import { SpellListComponent } from './components/spell-list/spell-list.component';
 import { SpellListItemComponent } from './components/spell-list-item/spell-list-item.component';
+import { MagicianStepComponent } from './edit-view/magician-step/magician-step.component';
+import { MysticAdeptStepComponent } from './edit-view/mystic-adept-step/mystic-adept-step.component';
+import { AdeptStepComponent } from './edit-view/adept-step/adept-step.component';
+import { AspectedMagicianStepComponent } from './edit-view/aspected-magician-step/aspected-magician-step.component';
+import { TechnomancerStepComponent } from './edit-view/technomancer-step/technomancer-step.component';
 
 @NgModule({
   declarations: [
@@ -33,10 +36,13 @@ import { SpellListItemComponent } from './components/spell-list-item/spell-list-
     PrioritiesStepComponent,
     AttributeStepComponent,
     NavbarComponent,
-    MagicResonanceStepComponent,
-    SpellSelectorComponent,
     SpellListComponent,
     SpellListItemComponent,
+    MagicianStepComponent,
+    MysticAdeptStepComponent,
+    AdeptStepComponent,
+    AspectedMagicianStepComponent,
+    TechnomancerStepComponent,
   ],
   imports: [
     CommonModule,

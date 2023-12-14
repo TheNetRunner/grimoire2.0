@@ -3,17 +3,7 @@ import { ActivatedRoute, Router, Params } from "@angular/router";
 
 import { DataStoreService } from '../../services/data-store.service';
 import { ShadowRun5ECharacter } from '../../models/character.model';
-
-export const editorSteps = [
-	"concept",
-	"priorities",
-	"meta-type",
-	"attributes",
-	"magic-resonance",
-	"qualities",
-	"skills",
-	"equipment",
-];
+import { EDITOR_STEPS } from '../../common/constants';
 
 @Component({
   selector: 'app-edit-view',
@@ -26,7 +16,8 @@ export class EditViewComponent {
     private dataStoreService = inject (DataStoreService);
 
     characterId: string = "";
-    editorStep: string = "concept";
+    editorSteps: string[] = EDITOR_STEPS;
+    currentEditorStep: string = "concept";
     character!: ShadowRun5ECharacter;
 
     ngOnInit(): void {
@@ -36,8 +27,8 @@ export class EditViewComponent {
     initEditor(): void {
 		this.activedRoute.queryParams.subscribe((queryParams) => {
 			const providedStep = queryParams["step"];
-			if (editorSteps.includes(providedStep)) {
-				this.editorStep = providedStep;
+			if (this.editorSteps.includes(providedStep)) {
+				this.currentEditorStep = providedStep;
 				this.setCharacter();
 			} else {
 				this.redirect();

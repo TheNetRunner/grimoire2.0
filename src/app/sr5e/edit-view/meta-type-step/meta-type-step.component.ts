@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataStoreService } from '../../services/data-store.service';
 import { CharacterService } from '../../services/character.service';
 
-import { MetaType, MetaTypeDescription } from '../../models/meta-types.model';
+import { MetaTypeStartingValues, MetaTypeDescription } from '../../models/meta-types.model';
 import { ShadowRun5ECharacter } from '../../models/character.model';
 import { MetaTypeName } from '../../models/meta-types.model';
 
@@ -69,9 +69,8 @@ export class MetaTypeStepComponent implements OnInit {
         this.dataStoreService.updateCharacter(this.character.id, formData);
     }
 
-    getMetaTypeOptions(): MetaType[] | undefined {
-        const priorityTableRow = this.characterService.getPriorityRow(this.character.priorities.metaType);
-        return priorityTableRow?.metaTypes;
+    getMetaTypeOptions(): MetaTypeStartingValues[] {
+        return this.characterService.getPriorityMetaTypes(this.character.priorities.metaType)
     }
 
     getMetaTypeFormValue(): string {
@@ -95,7 +94,6 @@ export class MetaTypeStepComponent implements OnInit {
     }
 
     get metaTypeRacial(): string {
-        const tableRow = this.characterService.getAttributeTableRow(this.character.metaType);
-        return tableRow?.racial || "";
+        return this.characterService.getMetaTypeRecialAbility(this.character);
     }
 }

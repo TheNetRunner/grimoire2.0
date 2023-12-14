@@ -103,25 +103,25 @@
 
                                 <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.metaType === priority }">
                                     <ul class="list-unstyled">
-                                        <li *ngFor="let metaType of getPriorityRow(priority)?.metaTypes">
+                                        <li *ngFor="let metaType of getPriorityMetaTypes(priority)">
                                             {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
                                         </li>
                                     </ul>
                                 </td>
 
                                 <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.attributes === priority }">
-                                    {{ getPriorityRow(priority)?.attributePoints }}
+                                    {{ getPriorityAttributePoints(priority) }}
                                 </td>
 
                                 <td [ngClass]="{ 'text-info': this.character.priorities.magicResonance === priority }">
                                     <ul class="list-unstyled">
-                                        <li *ngFor="let text of getPriorityRow(priority)?.magicResonanceText">
+                                        <li *ngFor="let text of getPriorityMagicResonanceText(priority)">
                                             <strong class="text-secondary">{{ text.title }}: </strong>{{ text.description }}
                                         </li>
                                     </ul>
                                 </td>
                                 <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.skills === priority }">
-                                    {{ getPriorityRow(priority)?.skills?.skillPoints }}/{{ getPriorityRow(priority)?.skills?.skillGroupPoints }}
+                                    {{ getPrioritySkillsPoints(priority).skillPoints }}/{{ getPrioritySkillsPoints(priority).skillGroupPoints }}
                                 </td>
                                 <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.resources === priority }">
                                     {{ getLevelOfPlayResources(priority, character. levelOfPlay) }} &#165;

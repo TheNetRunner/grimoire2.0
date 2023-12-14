@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpellSelectorComponent } from './spell-selector.component';
+import { AdeptStepComponent } from './adept-step.component';
 
-describe('SpellSelectorComponent', () => {
-  let component: SpellSelectorComponent;
-  let fixture: ComponentFixture<SpellSelectorComponent>;
+describe('AdeptStepComponent', () => {
+  let component: AdeptStepComponent;
+  let fixture: ComponentFixture<AdeptStepComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SpellSelectorComponent]
+      declarations: [AdeptStepComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(SpellSelectorComponent);
+    fixture = TestBed.createComponent(AdeptStepComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

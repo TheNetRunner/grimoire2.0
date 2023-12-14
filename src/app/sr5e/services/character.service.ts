@@ -1,339 +1,592 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { ShadowRun5ECharacter } from '../models/character.model';
-import { Attribute, AttributeName, AttributesTableRow, SpecialAttributeName } from '../models/attribute.model';
-import { MetaTypeName } from '../models/meta-types.model';
-import { MagicUserType } from '../models/magic.model';
+import { Attribute, AttributeName, SpecialAttributeName } from '../models/attribute.model';
+import { LevelOfPlayName, MagicResonanceText, MagicalStartingValues, Priority, PriorityTableRow, ResourceStartingValues } from '../models/priority-table.model';
+import { MetaTypeStartingValues, MetaTypeName } from '../models/meta-types.model';
+import { MetaTypeAttributesTableRow } from '../models/meta-type-attribute-table.model';
 
 import { priorityTable } from '../data/priority-table.data';
 import { attributesTable } from '../data/meta-type-attribute-table.data';
-import { Priority, PriorityTableRow } from '../models/priority-table.model';
+import { MagicUserType } from '../models/magic.model';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CharacterService {
-    private priorityTable = priorityTable;
-    private attributesTable = attributesTable;
-
-
-    getTotalBuildPointsSpent(character: ShadowRun5ECharacter): number {
+        // Atrributes
+    
+    getAttributeBuildPoints(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
         let totalBuildPoints = 0;
+        const attribute = this.getAttribute(character, attributeName);
 
-        for (const attributeName in character.attributes) {
-            if (character.attributes.hasOwnProperty(attributeName)) {
-                const attribute = character.attributes[attributeName as keyof typeof character.attributes];
-
-                totalBuildPoints = totalBuildPoints + attribute.buildPoints;
-            }
+        if (attribute) {
+            totalBuildPoints = attribute.buildPoints;
         }
 
         return totalBuildPoints;
     }
 
-    getMaxBuildPoints(character: ShadowRun5ECharacter): number {
-        const characterAttributePriority = character.priorities.attributes;
-        const maxBuildPoints = this.getPriorityRow(characterAttributePriority)?.attributePoints || 0;
+    getAllAttributeBuildPoints(character: ShadowRun5ECharacter): number {
+        let totalBuildPoints = 0;
+        const attributes = this.getAllAttributes(character);
 
-        return maxBuildPoints;
-    }
-
-    getTotalSpecialBuildPointsSpent(character: ShadowRun5ECharacter): number {
-        let totalSpecialBuildPoints = 0;
-
-        for (const specialAttributeName in character.specialAttributes) {
-            if (character.specialAttributes.hasOwnProperty(specialAttributeName)) {
-                const specialAttribute = character.specialAttributes[specialAttributeName as keyof typeof character.specialAttributes];
-
-                totalSpecialBuildPoints = totalSpecialBuildPoints + specialAttribute.buildPoints;
-            }
+        for (const attribute in attributes) {
+            totalBuildPoints = totalBuildPoints + attributes[attribute].buildPoints;
         }
 
-        totalSpecialBuildPoints += this.getTotalMagicalBuildPointsSpent(character);
-
-        return totalSpecialBuildPoints;
+        return totalBuildPoints;
     }
 
-
-
-    getMaxSpecialBuildPoints(character: ShadowRun5ECharacter): number {
-        let specialBuildPoints = 0;
-        const characterMetaTypePriority = character.priorities.metaType;
-        const priorityTableRow = this.getPriorityRow(characterMetaTypePriority);
-
-        if (priorityTableRow) {
-            for(const metaType of priorityTableRow.metaTypes) {
-                if(metaType.name === character.metaType) {
-                    specialBuildPoints = metaType.specialAttrPoints;
-                }
-            }
-        }
-
-        return specialBuildPoints;
-
-    }
-
-    calAttributeTotalValue(character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): number {
-        const attribute = this.getCharacterAttributeByName(character, attributeName);
-
-        const startingValue = this.calAttributeMinAndMax(character, attributeName)[0];
-		const buildPoints = attribute.buildPoints;
-		const increases = attribute.increases;
-
-		return startingValue + buildPoints + increases;
-    }
-
-    calTotalAttributeIncreasesCost(character: ShadowRun5ECharacter): number {
-        let totalIncreaseSpent = 0;
-
-        for(const attributeName in character.attributes) {
-            if (character.attributes.hasOwnProperty(attributeName)) {
-                totalIncreaseSpent += this.calAttributeIncreasesCost(character, attributeName as AttributeName);
-            }
-        }
-
-        return totalIncreaseSpent;
-    }
-
-    calTotalSpecialAttributeIncreasesCost(character: ShadowRun5ECharacter): number {
-        let totalIncreaseSpent = 0;
-
-        for(const attributeName in character.specialAttributes) {
-            if (character.specialAttributes.hasOwnProperty(attributeName)) {
-                totalIncreaseSpent += this.calAttributeIncreasesCost(character, attributeName as SpecialAttributeName);
-            }
-        }
-
-        return totalIncreaseSpent;
-    }
-
-    private calAttributeIncreasesCost(
-        character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): number {
-        let total = 0;
-        const attribute = this.getCharacterAttributeByName(character, attributeName);
+    getAttributeIncreases(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
+        let totalIncreases = 0;
+        const attribute = this.getAttribute(character, attributeName);
 
         if (attribute) {
-            const attributeStartingValue = this.calAttributeMinAndMax(character, attributeName)[0];
-            const attributeBuildPoints = attribute.buildPoints;
+            totalIncreases = attribute.increases;
+        }
+
+        return totalIncreases;
+    }
+
+    attributeTotalValue(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
+        const minimumValue = this.getAttributeMinimumValue(character, attributeName);
+        const buildPoints = this.getAttributeBuildPoints(character, attributeName);
+        const increases = this.getAttributeIncreases(character, attributeName);
+
+		return minimumValue + buildPoints + increases;
+    }
+
+    allAttributeTotalIncreasesCost(character: ShadowRun5ECharacter): number {
+        let totalIncreaseSpent = 0;
+        const attributes = this.getAllAttributes(character);
+
+        for (const attribute in attributes) {
+            totalIncreaseSpent = totalIncreaseSpent + this.attributeTotalIncreasesCost(character, attribute as AttributeName);
+        }
+
+        return totalIncreaseSpent;
+    }
+
+    attributeTotalIncreasesCost(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
+        let totalIncreaseSpent = 0;
+        const attribute = this.getAttribute(character, attributeName);
+
+        if (attribute) {
+            const attributeStartingValue = this.getAttributeMinimumValue(character, attributeName);
+            const attributeBuildPoints = this.getAttributeBuildPoints(character, attributeName);
             const attributeValueBeforeIncreases = attributeStartingValue + attributeBuildPoints;
+
             const attributeIncreases = attribute.increases;
             
             for(let i = 1; i <= attributeIncreases; i++) {
+                // The calculation is the (new rating * 5) CRB:107
                 const newRating = attributeValueBeforeIncreases + i;
-                total = total + (newRating * 5);
+                totalIncreaseSpent = totalIncreaseSpent + (newRating * 5);
             }
         }
-        return total;
 
+        return totalIncreaseSpent;
     }
 
-    calAttributeMinAndMax(character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): number[] {
-        let minAndMax: number[] = [0, 0];
-        let attributeTableRow = this.getAttributeTableRow(character.metaType);
+    isAttributeValueValid(character: ShadowRun5ECharacter, attributeName: AttributeName): boolean {
+        const attribute = this.getAttribute(character, attributeName);
+        const attributeTotalValue = this.attributeTotalValue(character, attributeName);
+        const attributeMaximumValue = this.getAttributeMaximumValue(character, attributeName);
 
-        if (attributeTableRow) {
-            minAndMax = [
-                attributeTableRow.attributes[attributeName].minimum,
-                attributeTableRow.attributes[attributeName].maximum,
-            ];
+        if (attribute && attributeTotalValue > attributeMaximumValue) {
+            return true;
         }
 
-        return minAndMax
-
-		// if (character.qualities.exceptionalAttribute === attributeName) {
-		// 	attrMinAndMax[1] += 1;
-		// }
-	}
-
-    calEssence(character: ShadowRun5ECharacter): number {
-        return 6;
+        return false;
     }
 
-    calInitativeAttribute(character: ShadowRun5ECharacter): number {
-        const reaction = this.calAttributeTotalValue(character, AttributeName.Reaction);
-        const intuition = this.calAttributeTotalValue(character, AttributeName.Intuition);
+    private getAllAttributes(character: ShadowRun5ECharacter): Attribute[] {
+        let attributes: Attribute[] = [];
 
-        return reaction + intuition;
+        for (const attributeName in character.attributes) {
+            attributes.push(character.attributes[attributeName as keyof typeof character.attributes]);
+        }
+
+        return attributes;
     }
 
-    calPhysicalLimit(character: ShadowRun5ECharacter): number {
+    private getAttribute(character: ShadowRun5ECharacter, attributeName: AttributeName): Attribute | undefined {
+        let attribute = undefined;
+
+        if (character.attributes[attributeName as keyof typeof character.attributes]) {
+            attribute = character.attributes[attributeName as keyof typeof character.attributes];
+        }
+
+        return attribute;
+    }
+
+    // Attribute Table
+
+    getAttributeMinimumValue(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
+        let startingValue = 0;
+
+        const characterMetaType = character.metaType;
+        const characterMetaTypeTableRow = this.getAttributeTableRow(characterMetaType);
+
+        if (characterMetaTypeTableRow) {
+            startingValue = characterMetaTypeTableRow.attributes[attributeName].minimum;
+        }
+
+        return startingValue;
+
+    }
+
+    getAttributeMaximumValue(character: ShadowRun5ECharacter, attributeName: AttributeName): number {
+        let maximumValue = 5;
+
+        const characterMetaType = character.metaType;
+        const characterMetaTypeTableRow = this.getAttributeTableRow(characterMetaType);
+
+        if (characterMetaTypeTableRow) {
+            maximumValue = characterMetaTypeTableRow.attributes[attributeName].maximum;
+        }
+
+        return maximumValue;
+    }
+
+    getMetaTypeRecialAbility(character: ShadowRun5ECharacter): string {
+        let racialAbility = '';
+
+        const characterMetaType = character.metaType;
+        const characterMetaTypeTableRow = this.getAttributeTableRow(characterMetaType);
+
+        if (characterMetaTypeTableRow) {
+            racialAbility = characterMetaTypeTableRow.racial;
+        }
+
+        return racialAbility;
+    }
+
+    private getAttributeTableRow(metaTypeName: MetaTypeName): MetaTypeAttributesTableRow | undefined {
+        let tableRow = undefined;
+
+        for (const tableRow of attributesTable) {
+            if (tableRow.metaTypeName === metaTypeName) {
+                return tableRow;
+            }
+        }
+
+        return tableRow;
+    }
+
+    // Special Attributes
+
+    getSpecialAttributeBuildPoints(character: ShadowRun5ECharacter, attributeName: SpecialAttributeName): number {
+        let totalBuildPoints = 0;
+        const attribute = this.getSpecialAttribute(character, attributeName);
+
+        if (attribute) {
+            totalBuildPoints = attribute.buildPoints;
+        }
+
+        return totalBuildPoints;
+    }
+
+    getAllSpecialAttributeBuildPoints(character: ShadowRun5ECharacter): number {
+        let totalBuildPoints = 0;
+        const attributes = this.getAllSpecialAttributes(character);
+
+        for (const attribute of attributes) {
+            totalBuildPoints = totalBuildPoints + attribute.buildPoints;
+        }
+
+        return totalBuildPoints;
+    }
+
+    getSpecialAttributeIncreases(character: ShadowRun5ECharacter, specialAttributeName: SpecialAttributeName): number {
+        let totalIncreases = 0;
+        const attribute = this.getSpecialAttribute(character, specialAttributeName);
+
+        if (attribute) {
+            totalIncreases = character.specialAttributes[specialAttributeName as keyof typeof character.specialAttributes].increases;
+        }
+
+        return totalIncreases;
+    }
+
+    getSpecialAttributeMaximumValue(character: ShadowRun5ECharacter, specialAttributeName: SpecialAttributeName): number {
+        let maximumValue = 6;
+
+
+        if (specialAttributeName === SpecialAttributeName.Edge) {
+            maximumValue = this.getEdgeMaximumValue(character);
+        }
+
+        return maximumValue;
+    }
+
+    private getEdgeMaximumValue(character: ShadowRun5ECharacter): number {
+        let minimumValue = 6;
+
+        if (character.metaType === MetaTypeName.human) {
+            minimumValue = 7;
+        }
+
+        return minimumValue;
+    }
+
+    getSpecialAttributeMinimumValue(character: ShadowRun5ECharacter, specialAttributeName: SpecialAttributeName): number {
+        let maximumValue = 1;
+
+
+        if (specialAttributeName === SpecialAttributeName.Magic) {
+            
+        }
+
+        return maximumValue;
+    }
+
+    isSpecialAttributeValueValid(character: ShadowRun5ECharacter, specialAttributeName: SpecialAttributeName): boolean {
+        const attribute = this.getSpecialAttribute(character, specialAttributeName);
+        const attributeTotalValue = this.specialAttributeTotalValue(character, specialAttributeName);
+        const attributeMaximumValue = this.getSpecialAttributeMaximumValue(character, specialAttributeName);
+
+        if (attribute && attributeTotalValue > attributeMaximumValue) {
+            return true;
+        }
+
+        return false;
+    }
+
+    specialAttributeTotalValue(character: ShadowRun5ECharacter, specialAttributeName: SpecialAttributeName): number {
+        const buildPoints = this.getSpecialAttributeBuildPoints(character, specialAttributeName);
+        const increases = this.getSpecialAttributeIncreases(character, specialAttributeName);
+
+        return buildPoints + increases;
+    }
+
+    private getAllSpecialAttributes(character: ShadowRun5ECharacter): Attribute[] {
+        let attributes: Attribute[] = [];
+
+        for (const attributeName in character.specialAttributes) {
+            attributes.push(character.specialAttributes[attributeName as keyof typeof character.specialAttributes]);
+        }
+
+        return attributes;
+    }
+
+    private getSpecialAttribute(character: ShadowRun5ECharacter, attributeName: SpecialAttributeName): Attribute | undefined {
+        let attribute = undefined;
+
+        if (character.specialAttributes[attributeName as keyof typeof character.specialAttributes]) {
+            attribute = character.specialAttributes[attributeName as keyof typeof character.specialAttributes];
+        }
+
+        return attribute;
+    }
+
+    // Essence
+    getEssence(character: ShadowRun5ECharacter): number {
+        let essence = 6;
+        return essence;
+    }
+
+    // Final Calculations CRB:101
+    initiative(character: ShadowRun5ECharacter): number {
+        let initiative = 0;
+
+        const reaction = this.attributeTotalValue(character, AttributeName.Reaction);
+        const intuition = this.attributeTotalValue(character, AttributeName.Intuition);
+
+        initiative = reaction + intuition;
+
+        return initiative;
+    }
+
+    astralInitiative(character: ShadowRun5ECharacter): number {
+        let initiative = 0;
+
+        const intuition = this.attributeTotalValue(character, AttributeName.Intuition);
+
+        initiative = intuition * 2;
+
+        return initiative;
+    }
+
+    matrixARInitiative(character: ShadowRun5ECharacter): number {
+        let initiative = 0;
+
+        const intuition = this.attributeTotalValue(character, AttributeName.Intuition);
+        const reaction = this.attributeTotalValue(character, AttributeName.Reaction);
+
+        initiative = intuition + reaction;
+
+        return initiative;
+    }
+    
+    physicalLimit(character: ShadowRun5ECharacter): number {
         let limit = 0;
 
-        const strength = this.calAttributeTotalValue(character, AttributeName.Strength);
-        const body = this.calAttributeTotalValue(character, AttributeName.Body);
-        const reaction = this.calAttributeTotalValue(character, AttributeName.Reaction);
+        const strength = this.attributeTotalValue(character, AttributeName.Strength);
+        const body = this.attributeTotalValue(character, AttributeName.Body);
+        const reaction = this.attributeTotalValue(character, AttributeName.Reaction);
 
         limit = Math.ceil(((strength * 2) + body + reaction) / 3);
 
         return limit;
     }
 
-    calMentalLimit(character: ShadowRun5ECharacter): number {
+    mentalLimit(character: ShadowRun5ECharacter): number {
         let limit = 0;
 
-        const logic = this.calAttributeTotalValue(character, AttributeName.Logic);
-        const willPower = this.calAttributeTotalValue(character, AttributeName.WillPower);
-        const intuition = this.calAttributeTotalValue(character, AttributeName.Intuition);
+        const logic = this.attributeTotalValue(character, AttributeName.Logic);
+        const willPower = this.attributeTotalValue(character, AttributeName.WillPower);
+        const intuition = this.attributeTotalValue(character, AttributeName.Intuition);
 
         limit = Math.ceil(((logic * 2) + willPower + intuition) / 3);
 
         return limit;
     }
 
-    calSocialLimit(character: ShadowRun5ECharacter): number {
+    socialLimit(character: ShadowRun5ECharacter): number {
         let limit = 0;
 
-        const charisma = this.calAttributeTotalValue(character, AttributeName.Charisma);
-        const willPower = this.calAttributeTotalValue(character, AttributeName.WillPower);
-        const essence = this.calEssence(character);
+        const charisma = this.attributeTotalValue(character, AttributeName.Charisma);
+        const willPower = this.attributeTotalValue(character, AttributeName.Charisma);
+        const essence = this.getEssence(character);
 
         limit = Math.ceil(((charisma * 2) + willPower + essence) / 3);
 
         return limit;
     }
 
-    calPhysicalConditionMonitor(character: ShadowRun5ECharacter): number {
+    physicalConditionMonitor(character: ShadowRun5ECharacter): number {
         let limit = 0;
-        const body = this.calAttributeTotalValue(character, AttributeName.Body);
+        const body = this.attributeTotalValue(character, AttributeName.Body);
 
         limit = (body / 2) + 8;
 
         return limit;
     }
 
-    getAttributeTableRow(metaTypeName: MetaTypeName): AttributesTableRow | undefined {
-        for(const tableRow of this.attributesTable) {
-            if(tableRow.metaTypeName === metaTypeName) {
-                return tableRow;
-            }
-        }
+    stunConditionMonitor(character: ShadowRun5ECharacter): number {
+        let limit = 0;
+        const willPower = this.attributeTotalValue(character, AttributeName.WillPower);
 
-        return undefined;
+        limit = (willPower / 2) + 8;
+
+        return limit;
     }
 
-    getPriorityRow(priority: Priority): PriorityTableRow | undefined {
-        for(const priorityRow of this.priorityTable) {
-            if(priorityRow.name === priority) {
-                return priorityRow;
-            }
-        }
+    conditionMonitorOverflow(character: ShadowRun5ECharacter): number {
+        let limit = 0;
+        const body = this.attributeTotalValue(character, AttributeName.Body);
 
-        return undefined;
+        limit = body;
+
+        return limit;
     }
 
-    private getCharacterAttributeByName(
-        character: ShadowRun5ECharacter, attributeName: AttributeName | SpecialAttributeName): Attribute {
-        let attribute: Attribute | undefined;
+    // Priorities Table
 
-        if (attributeName === SpecialAttributeName.Edge) {
-            attribute = character.specialAttributes[attributeName];
-        } else {
-            attribute = character.attributes[attributeName];
-        }
+    getPriorityAttributePoints(priority: Priority): number {
+        const maxBuildPoints = this.getPriorityRow(priority)?.attributePoints || 0;
 
-        return attribute;
+        return maxBuildPoints;
     }
 
-    getMagicalAttributeMinimum(character: ShadowRun5ECharacter): number {
-        let minimum = 0;
-        const magicUserType = character.magicUserType;
-        const priorityTableRow = this.getPriorityRow(character.priorities.magicResonance);
+    getPrioritySkillsPoints(priority: Priority): { skillPoints: number, skillGroupPoints: number } {
+        let skillPoints = { skillPoints: 0, skillGroupPoints: 0 };
 
-        if (magicUserType && priorityTableRow) {
+        const priorityTableRow = this.getPriorityRow(priority);
 
-            if(magicUserType !== MagicUserType.Technomancer) {
-                minimum = priorityTableRow.magicResonance[magicUserType]?.magic || 0;
-            }
-
-            if(magicUserType === MagicUserType.Technomancer) {
-                minimum = priorityTableRow.magicResonance[magicUserType]?.resonance || 0;
-            }  
-            
+        if (priorityTableRow) {
+            skillPoints = priorityTableRow.skills;
         }
 
-        return minimum;
+        return skillPoints;
     }
 
-    getTotalMagicalBuildPointsSpent(character: ShadowRun5ECharacter): number {
-        let total = 0;
+    getPriorityResourceAmounts(priority: Priority): ResourceStartingValues | undefined {
+        let resourceStartingValues: ResourceStartingValues | undefined;
 
-        if(character.magicUserType && character.magicUserType !== MagicUserType.Technomancer) {
-            total = character.magic.attribute.buildPoints;
+        const priorityTableRow = this.getPriorityRow(priority);
+
+        if (priorityTableRow) {
+            resourceStartingValues = priorityTableRow.resourceStartingValues;
         }
 
-        if(character.magicUserType && character.magicUserType === MagicUserType.Technomancer) {
-            total = character.resonance.attribute.buildPoints;
-        }
-
-        return total;
+        return resourceStartingValues;
     }
 
-    getTotalMagicalIncreases(character: ShadowRun5ECharacter): number {
-        let total = 0;
+    getPriorityMetaTypes(priority: Priority): MetaTypeStartingValues[] {
+        let metaTypes: MetaTypeStartingValues[] = [];
 
-        if(character.magicUserType && character.magicUserType !== MagicUserType.Technomancer) {
-            total = character.magic.attribute.buildPoints;
+        const priorityTableRow = this.getPriorityRow(priority);
+
+        if (priorityTableRow) {
+            metaTypes = priorityTableRow.metaTypes;
         }
 
-        if(character.magicUserType && character.magicUserType === MagicUserType.Technomancer) {
-            total = character.resonance.attribute.buildPoints;
-        }
-
-        return total;
+        return metaTypes;
     }
 
-    getMagicalAttributeTotal(character: ShadowRun5ECharacter): number {
-        let total = 0;
+    getPriotityMetaTypeSpecialAttributePoints(character: ShadowRun5ECharacter): number {
+        let specialAttributePoints = 0;
 
-        if(character.magicUserType && character.magicUserType !== MagicUserType.Technomancer) {
-            const minimum = this.getMagicalAttributeMinimum(character);
-            total = minimum + character.magic.attribute.buildPoints + character.magic.attribute.increases;
-        }
+        const characterMetaTypePriority = character.priorities.metaType;
+        const priorityTableRow = this.getPriorityRow(characterMetaTypePriority);
 
-        if(character.magicUserType && character.magicUserType === MagicUserType.Technomancer) {
-            const minimum = this.getMagicalAttributeMinimum(character);
-            total = minimum + character.resonance.attribute.buildPoints + character.resonance.attribute.increases;
-        }
-
-        return total;
-    }
-
-    getMagicUserTypeOptions(character: ShadowRun5ECharacter): MagicUserType[] {
-        let options: MagicUserType[] = [];
-
-        const priorityTableRow = this.getPriorityRow(character.priorities.magicResonance);
-        const priotityMagicUserTypes = priorityTableRow?.magicResonance;
-
-        for(const magicUserType in priotityMagicUserTypes) {
-            const magicUserTypeStartingValues = priotityMagicUserTypes[magicUserType as keyof typeof priotityMagicUserTypes];
-            if(priotityMagicUserTypes) {
-                if(magicUserTypeStartingValues) {
-                    options.push(magicUserType as MagicUserType);
+        if(priorityTableRow) {
+            for(const metaType of priorityTableRow.metaTypes) {
+                if(metaType.name === character.metaType) {
+                    specialAttributePoints = metaType.specialAttrPoints;
                 }
             }
         }
 
-        return options;
+        return specialAttributePoints;
+
     }
 
-    getRemainingFreeSpells(character: ShadowRun5ECharacter): number {
-        let freeSpells = 0;
+    getPriorityMagicResonanceText(priority: Priority): MagicResonanceText[]{
+        let magicResonanceText: MagicResonanceText[] = [];
 
-        const characterSpellsLength = character.magic.spells.length;
-        
-        const magicUserType = character.magicUserType;
-        const priorityTableRow = this.getPriorityRow(character.priorities.magicResonance);
-        const magicUserTypeStartingValues = priorityTableRow?.magicResonance[magicUserType];
+        const priorityTableRow = this.getPriorityRow(priority);
 
-        if(magicUserTypeStartingValues && 'spells' in magicUserTypeStartingValues) {
-            const calculation = magicUserTypeStartingValues.spells - characterSpellsLength;
+        if (priorityTableRow) {
+            magicResonanceText = priorityTableRow.magicResonanceText;
+        }
 
-            if (calculation > 0) {
-                freeSpells = calculation;
+        return magicResonanceText;
+    }
+
+    getCharacterPriorityAttributePoints(character: ShadowRun5ECharacter): number {
+        const characterAttributePriority = character.priorities.attributes;
+        const maxBuildPoints = this.getPriorityRow(characterAttributePriority)?.attributePoints || 0;
+
+        return maxBuildPoints;
+    }
+
+    getCharacterPrioritySkillsPoints(character: ShadowRun5ECharacter): { skillPoints: number, skillGroupPoints: number } {
+        let skillPoints = { skillPoints: 0, skillGroupPoints: 0 };
+
+        const characterSkillsPriority = character.priorities.skills;
+        const priorityTableRow = this.getPriorityRow(characterSkillsPriority);
+
+        if (priorityTableRow) {
+            skillPoints = priorityTableRow.skills;
+        }
+
+        return skillPoints;
+    }
+
+    getCharacterPriorityResourceAmount(character: ShadowRun5ECharacter): number {
+        let resourceAmount = 0;
+
+        const characterResourcesPriority = character.priorities.resources;
+        const characterLevelOfPlay = character.levelOfPlay;
+        const priorityTableRow = this.getPriorityRow(characterResourcesPriority);
+
+        if (priorityTableRow) {
+            resourceAmount = priorityTableRow.resourceStartingValues[characterLevelOfPlay];
+        }
+
+        return resourceAmount;
+    }
+
+    getCharacterPriorityMetaTypes(character: ShadowRun5ECharacter): MetaTypeStartingValues[] {
+        let metaTypes: MetaTypeStartingValues[] = [];
+
+        const characterMetaTypePriority = character.priorities.metaType;
+        const priorityTableRow = this.getPriorityRow(characterMetaTypePriority);
+
+        if (priorityTableRow) {
+            metaTypes = priorityTableRow.metaTypes;
+        }
+
+        return metaTypes;
+    }
+
+    getCharacterPriotityMetaTypeSpecialAttributePoints(character: ShadowRun5ECharacter): number {
+        let specialAttributePoints = 0;
+
+        const characterMetaTypePriority = character.priorities.metaType;
+        const priorityTableRow = this.getPriorityRow(characterMetaTypePriority);
+
+        if(priorityTableRow) {
+            for(const metaType of priorityTableRow.metaTypes) {
+                if(metaType.name === character.metaType) {
+                    specialAttributePoints = metaType.specialAttrPoints;
+                }
             }
         }
 
-        return freeSpells;
+        return specialAttributePoints;
+
+    }
+
+    getCharacterPriorityMagicResonanceStartingValues(character: ShadowRun5ECharacter): MagicalStartingValues | undefined {
+        let startingValues: MagicalStartingValues | undefined;
+
+        const characterMagicResonancePriority = character.priorities.magicResonance;
+        const priorityTableRow = this.getPriorityRow(characterMagicResonancePriority);
+
+        if (priorityTableRow) {
+            startingValues = priorityTableRow.magicResonance[character.magicUserType as keyof typeof priorityTableRow.magicResonance];
+        }
+
+        return startingValues;
+    }
+
+    private getPriorityRow(priority: Priority): PriorityTableRow | undefined {
+        return priorityTable.find((row) => row.name === priority);
+    }
+
+    // Skills
+
+    // Magic / Resonance
+    getMagicalMinimumValue(character: ShadowRun5ECharacter): number {
+        let minimumValue = 0;
+
+        const magicUserTypeStartingValues = this.getMagicUserTypeStartingValues(character);
+        
+        if(magicUserTypeStartingValues && magicUserTypeStartingValues.magic) {
+            minimumValue = magicUserTypeStartingValues.magic;
+        }
+
+        if(magicUserTypeStartingValues && magicUserTypeStartingValues.resonance) {
+            minimumValue = magicUserTypeStartingValues.resonance;
+        }
+
+        return minimumValue;
+    }
+
+    getMagicMaximumValue(): number {
+        //TODO: Add logic for exceplional attribute
+        return 6;
+    }
+
+    private getMagicUserTypeStartingValues(character: ShadowRun5ECharacter): MagicalStartingValues | undefined {
+        let startingValues: MagicalStartingValues | undefined;
+
+        const characterMagicPriority = character.priorities.magicResonance;
+        const priorityTableRow = this.getPriorityRow(characterMagicPriority);
+
+        if (priorityTableRow) {
+            startingValues = priorityTableRow.magicResonance[character.magicUserType as keyof typeof priorityTableRow.magicResonance];
+        }
+
+        return startingValues;
+    }
+
+    // Validators
+    isCharacterTechnomancer(character: ShadowRun5ECharacter): boolean {
+        return character.magicUserType === MagicUserType.Technomancer;
+    }
+
+    isCharacterMagicUser(character: ShadowRun5ECharacter): boolean {
+        if(character.magicUserType !== MagicUserType.None && !this.isCharacterTechnomancer(character)) {
+            return true;
+        }
+
+        return false;
     }
 } 

@@ -13,6 +13,8 @@ export enum AttributeName {
 
 export enum SpecialAttributeName {
     Edge = "edge",
+    Magic = "magic",
+    Resonance = "resonance",
 }
 
 export interface Attribute {
@@ -39,9 +41,11 @@ export interface AttributeMinMax {
 export interface AttributesTableRow {
     metaTypeName: MetaTypeName;
     racial: string;
-    attributes: Record<AttributeName | SpecialAttributeName, AttributeMinMax>;
+    attributes: Attributes;
 }
 
 export interface SpecialAttributes {
     [SpecialAttributeName.Edge]: Attribute;
+    [SpecialAttributeName.Magic]: Attribute;
+    [SpecialAttributeName.Resonance]: Attribute;
 }

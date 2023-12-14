@@ -6,7 +6,7 @@ export enum MetaTypeName {
     troll = "troll",
 }
 
-export interface MetaType {
+export interface MetaTypeStartingValues {
 	name: MetaTypeName;
 	specialAttrPoints: number;
 }

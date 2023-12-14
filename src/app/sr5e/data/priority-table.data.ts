@@ -1,4 +1,4 @@
-import { PriorityTableRow, Priority, LevelOfPlay } from "../models/priority-table.model";
+import { PriorityTableRow, Priority, LevelOfPlayName } from "../models/priority-table.model";
 import { MetaTypeName } from "../models/meta-types.model";
 import { MagicUserType, Magician } from "../models/magic.model";
 import { Adept, AspectedMagician, MysticAdept, Technomancer } from "../models/magic.model";
@@ -43,18 +43,15 @@ export const priorityTable: PriorityTableRow[] = [
             [MagicUserType.Magician]: { magic: 6, magicSkills: { rating: 5, qty: 2 }, spells: 10 },
             [MagicUserType.MysticAdept]: { magic: 6, magicSkills: { rating: 5, qty: 2 }, spells: 10 },
             [MagicUserType.Technomancer]: { resonance: 6, resonanceSkills: { rating: 5, qty: 2 }, complexForms: 5 },
-            [MagicUserType.Adept]: null,
-            [MagicUserType.AspectedMagician]: null,
-            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 46,
 			skillGroupPoints: 10,
 		},
-		resources: {
-			street: 75000,
-			normal: 450000,
-			prime: 500000,
+		resourceStartingValues: {
+			[LevelOfPlayName.Street]: 75000,
+			[LevelOfPlayName.Normal]: 450000,
+			[LevelOfPlayName.Prime]: 500000,
 		},
 	},
 	{
@@ -104,18 +101,17 @@ export const priorityTable: PriorityTableRow[] = [
             [MagicUserType.Magician]: { magic: 4, magicSkills: { rating: 4, qty: 2 }, spells: 7 },
             [MagicUserType.MysticAdept]: { magic: 4, magicSkills: { rating: 4, qty: 2 }, spells: 7 },
             [MagicUserType.Technomancer]: { resonance: 4, resonanceSkills: { rating: 4, qty: 2 }, complexForms: 2 },
-            [MagicUserType.Adept]: { magic: 6, activeSkills: { rating: 4, qty: 1 } },
+            [MagicUserType.Adept]: { magic: 6, adeptActiveSkills: { rating: 4, qty: 1 } },
             [MagicUserType.AspectedMagician]: { magic: 5, magicSkillGroups: { rating: 4, qty: 2 } },
-            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 36,
 			skillGroupPoints: 5,
 		},
-		resources: {
-			[LevelOfPlay.Street]: 50000,
-			[LevelOfPlay.Normal]: 275000,
-			[LevelOfPlay.Prime]: 325000,
+		resourceStartingValues: {
+			[LevelOfPlayName.Street]: 50000,
+			[LevelOfPlayName.Normal]: 275000,
+			[LevelOfPlayName.Prime]: 325000,
 		},
 	},
 	{
@@ -161,18 +157,17 @@ export const priorityTable: PriorityTableRow[] = [
             [MagicUserType.Magician]: { magic: 3, magicSkills: { rating: 5, qty: 0 }, spells: 5 },
             [MagicUserType.MysticAdept]: { magic: 3, magicSkills: { rating: 5, qty: 0 }, spells: 5 },
             [MagicUserType.Technomancer]: { resonance: 3, resonanceSkills: { rating: 5, qty: 0 }, complexForms: 1 },
-            [MagicUserType.Adept]: { magic: 4, activeSkills: { rating: 2, qty: 1 } },
+            [MagicUserType.Adept]: { magic: 4, adeptActiveSkills: { rating: 2, qty: 1 } },
             [MagicUserType.AspectedMagician]: { magic: 3, magicSkillGroups: { rating: 2, qty: 1 }  },
-            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 28,
 			skillGroupPoints: 2,
 		},
-		resources: {
-			[LevelOfPlay.Street]: 25000,
-			[LevelOfPlay.Normal]: 140000,
-			[LevelOfPlay.Prime]: 210000,
+		resourceStartingValues: {
+			[LevelOfPlayName.Street]: 25000,
+			[LevelOfPlayName.Normal]: 140000,
+			[LevelOfPlayName.Prime]: 210000,
 		},
 	},
 	{
@@ -199,21 +194,17 @@ export const priorityTable: PriorityTableRow[] = [
             }
         ],
         magicResonance: {
-            [MagicUserType.Magician]: null,
-            [MagicUserType.MysticAdept]: null,
-            [MagicUserType.Technomancer]: null,
-            [MagicUserType.Adept]: { magic: 2, activeSkills: { rating: 2, qty: 0 } },
+            [MagicUserType.Adept]: { magic: 2, adeptActiveSkills: { rating: 0, qty: 0 } },
             [MagicUserType.AspectedMagician]: { magic: 2, magicSkillGroups: { rating: 2, qty: 0 }  },
-            [MagicUserType.None]: null,
         },
 		skills: {
 			skillPoints: 22,
 			skillGroupPoints: 0,
 		},
-		resources: {
-			[LevelOfPlay.Street]: 15000,
-			[LevelOfPlay.Normal]: 50000,
-			[LevelOfPlay.Prime]: 150000,
+		resourceStartingValues: {
+			[LevelOfPlayName.Street]: 15000,
+			[LevelOfPlayName.Normal]: 50000,
+			[LevelOfPlayName.Prime]: 150000,
 		},
 	},
     {
@@ -226,22 +217,15 @@ export const priorityTable: PriorityTableRow[] = [
 		],
 		attributePoints: 12,
 		magicResonanceText: [],
-        magicResonance: {
-            [MagicUserType.Magician]: null,
-            [MagicUserType.MysticAdept]: null,
-            [MagicUserType.Technomancer]: null,
-            [MagicUserType.Adept]: null,
-            [MagicUserType.AspectedMagician]: null,
-            [MagicUserType.None]: null,
-        },
+        magicResonance: {},
 		skills: {
 			skillPoints: 18,
 			skillGroupPoints: 0,
 		},
-		resources: {
-			[LevelOfPlay.Street]: 6000,
-			[LevelOfPlay.Normal]: 6000,
-			[LevelOfPlay.Prime]: 100000,
+		resourceStartingValues: {
+			[LevelOfPlayName.Street]: 6000,
+			[LevelOfPlayName.Normal]: 6000,
+			[LevelOfPlayName.Prime]: 100000,
 		},
 	},
 ];

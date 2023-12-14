@@ -1,33 +1,53 @@
-<app-navbar *ngIf="character" [characterName]="character.name"></app-navbar>
+<app-navbar *ngIf="character" [characterName]="character.name" [editorSteps]="editorSteps"></app-navbar>
 
 <div class="container-xxl">
     <!-- {{ character | json }} -->
     <div *ngIf="character">
 
         <app-concept-step
-            *ngIf="editorStep === 'concept'"
+            *ngIf="currentEditorStep === 'concept'"
             [character]="character"
         ></app-concept-step>
 
         <app-priorities-step
-            *ngIf="editorStep === 'priorities'"
+            *ngIf="currentEditorStep === 'priorities'"
             [character]="character"
         ></app-priorities-step>
 
         <app-meta-type-step
-            *ngIf="editorStep === 'meta-type'"
+            *ngIf="currentEditorStep === 'meta-type'"
             [character]="character"
         ></app-meta-type-step>
 
         <app-attribute-step
-            *ngIf="editorStep === 'attributes'"
+            *ngIf="currentEditorStep === 'attributes'"
             [character]="character"
         ></app-attribute-step>
 
-        <app-magic-resonance-step
-            *ngIf="editorStep === 'magic-resonance'"
+        <app-magician-step
+            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'magician'"
             [character]="character"
-        ></app-magic-resonance-step>
+        ></app-magician-step>
+
+        <app-adept-step
+            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'adept'"
+            [character]="character"
+        ></app-adept-step>
+
+        <app-technomancer-step
+            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'technomancer'"
+            [character]="character"
+        ></app-technomancer-step>
+
+        <app-mystic-adept-step
+            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'mystic adept'"
+            [character]="character"
+        ></app-mystic-adept-step>
+
+        <app-aspected-magician-step
+            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'aspected magician'"
+            [character]="character"
+        ></app-aspected-magician-step>
 
     </div>
 </div>

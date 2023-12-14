@@ -15,6 +15,8 @@ export class SpellListComponent {
     @Input() itemButtonLabel: string = '';
     @Output() itemButtonClick = new EventEmitter<Spell>();
 
+    isCollapsed: boolean = true;
+
     emitItemButtonClick(spell: Spell): void {
         this.itemButtonClick.emit(spell);
     }

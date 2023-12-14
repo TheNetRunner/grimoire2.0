@@ -1,12 +1,22 @@
 
 <ul class="list-group list-group-flush mb-2">
     <li class="list-group-item bg-primary">
-        <div class="d-flex justify-content-between">
-            <h5 class="card-title text-white mx-0">{{ listTitle }}</h5>
-            <h6 class="card-title text-body-tertiary mx-0" *ngIf="listTitleSecond">{{ listTitleSecond }}</h6>
+        <div class="row">
+            <div class="col-6">
+                <h5 class="card-title text-white mx-0">{{ listTitle }}</h5>
+            </div>
+            <div class="col-6">
+                <div class="d-flex justify-content-end">
+                    <span class="card-title text-body-tertiary mx-0 align-text-bottom" *ngIf="listTitleSecond">{{ listTitleSecond }}</span>
+                    <button class="btn py-0 px-4" (click)="collapse.toggle()" (click)="isCollapsed = !isCollapsed">
+                        <i *ngIf="isCollapsed" class="bi bi-arrow-down-square-fill fs-4"></i>
+                        <i *ngIf="!isCollapsed" class="bi bi-arrow-up-square-fill fs-4"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </li>
-    <div>
+    <div #collapse="ngbCollapse" [ngbCollapse]="isCollapsed" [animation]="true">
         <app-spell-list-item 
             *ngFor="let spell of spellList" 
             [spell]="spell" 

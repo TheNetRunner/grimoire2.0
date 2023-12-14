@@ -1,11 +1,11 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
 import { CharacterService } from '../../services/character.service';
 import { Attribute, AttributeName, SpecialAttributeName } from '../../models/attribute.model';
 import { ShadowRun5ECharacter } from '../../models/character.model';
-import { PHYSICAL_LIMIT, SOCIAL_LIMIT, MENTAL_LIMIT } from '../../common/constants';
+import { PHYSICAL_LIMIT_TEXT, SOCIAL_LIMIT_TEXT, MENTAL_LIMIT_TEXT } from '../../common/constants';
 
 const attributeFormValidators = [Validators.required, Validators.min(0), Validators.max(99), Validators.pattern('^[0-9]*$')];
 
@@ -22,16 +22,34 @@ export class AttributeStepComponent implements OnInit {
 	@Input() character!: ShadowRun5ECharacter;
 
     attributeNames: AttributeName[] = Object.values(AttributeName);
-    specialAttributeNames: SpecialAttributeName[] = Object.values(SpecialAttributeName);
+    specialAttributeNames: SpecialAttributeName[] = [];
 	attributeForm!: FormGroup;
     specialAttributeForm!: FormGroup;
-    physicalLimitText = PHYSICAL_LIMIT;
-    mentalLimitText = MENTAL_LIMIT;
-    socialLimitText = SOCIAL_LIMIT;
+
+    physicalLimitText = PHYSICAL_LIMIT_TEXT;
+    mentalLimitText = MENTAL_LIMIT_TEXT;
+    socialLimitText = SOCIAL_LIMIT_TEXT;
 
     ngOnInit(): void {
+        this.setSpecialAttributeNames();
 		this.generateForms();
 	}
+
+    setSpecialAttributeNames(): void {
+        let specialAttributeNames: SpecialAttributeName[] = [SpecialAttributeName.Edge];
+        const isCharacterMagicUser = this.characterService.isCharacterMagicUser(this.character);
+        const isCharacterTechnomancer = this.characterService.isCharacterTechnomancer(this.character);
+
+        if(isCharacterMagicUser) {
+            specialAttributeNames.push(SpecialAttributeName.Magic);
+        }
+
+        if(isCharacterTechnomancer) {
+            specialAttributeNames.push(SpecialAttributeName.Resonance);
+        }
+
+        this.specialAttributeNames = specialAttributeNames;
+    }
 
     generateForms(): void {
         this.generateAttributesForm();
@@ -85,17 +103,22 @@ export class AttributeStepComponent implements OnInit {
 
     generateSpecialAttributeForm(): void {
         this.specialAttributeForm = this.formBuilder.group({
-            specialAttributes: this.formBuilder.group({
-                edge: this.formBuilder.group({
-                    buildPoints: [this.character.specialAttributes.edge.buildPoints, attributeFormValidators],
-                    increases: [this.character.specialAttributes.edge.increases, attributeFormValidators],
-                }),
-            }),
         });
 
+        for(const specialAttributeName of this.specialAttributeNames) {
+            this.specialAttributeForm.addControl(specialAttributeName, this.formBuilder.group({
+                buildPoints: [this.character.specialAttributes[specialAttributeName].buildPoints, attributeFormValidators],
+                increases: [this.character.specialAttributes[specialAttributeName].increases, attributeFormValidators],
+            }));
+        }
+
         this.specialAttributeForm.valueChanges.subscribe((formData: any) => {
-            if (this.attributeForm.valid) {
-                this.dataStoreService.updateCharacter(this.character.id, formData);
+            const update = {
+                specialAttributes: formData
+            }
+
+            if (this.specialAttributeForm.valid) {
+                this.dataStoreService.updateCharacter(this.character.id, update);
             }
         });
     }
@@ -116,59 +139,77 @@ export class AttributeStepComponent implements OnInit {
         return attributeFormGroup?.get(controlName)?.touched;
     }
 
-    getAttributeTotalValue(attributeName: AttributeName | SpecialAttributeName): number { 
-        return this.characterService.calAttributeTotalValue(this.character, attributeName);
+    // Attribute
+
+    getAttributeTotalValue(attributeName: AttributeName): number { 
+        return this.characterService.attributeTotalValue(this.character, attributeName);
     }
 
-    getAttributeMinValue(attributeName: AttributeName | SpecialAttributeName): number {
-        return this.characterService.calAttributeMinAndMax(this.character, attributeName)[0];
+    getAttributeMinValue(attributeName: AttributeName): number {
+        return this.characterService.getAttributeMinimumValue(this.character, attributeName);
     }
 
-    getAttributeMaxValue(attributeName: AttributeName | SpecialAttributeName): number {
-        return this.characterService.calAttributeMinAndMax(this.character, attributeName)[1];
+    getAttributeMaxValue(attributeName: AttributeName): number {
+        return this.characterService.getAttributeMaximumValue(this.character, attributeName);
     }
 
-    isAttributeTotalValueGreaterThanMax(attributeName: AttributeName | SpecialAttributeName): boolean {
-        return this.getAttributeTotalValue(attributeName) > this.getAttributeMaxValue(attributeName);
+    isAttributeTotalValueGreaterThanMax(attributeName: AttributeName): boolean {
+        return this.characterService.isAttributeValueValid(this.character, attributeName);
     }
 
-    get totalBuildPointsSpent(): number {
-        return this.characterService.getTotalBuildPointsSpent(this.character);
+    get getAllAttributeBuildPoints(): number {
+        return this.characterService.getAllAttributeBuildPoints(this.character);
     }
 
-    get maxBuildPoints(): number {
-        return this.characterService.getMaxBuildPoints(this.character);
+    get allAttributeTotalIncreasesCost(): number {
+        return this.characterService.allAttributeTotalIncreasesCost(this.character);
     }
 
-    get totalSpecialBuildPointsSpent(): number {
-        return this.characterService.getTotalSpecialBuildPointsSpent(this.character);
+    get initiative(): number {
+        return this.characterService.initiative(this.character);
     }
 
-    get maxSpecialBuildPoints(): number {
-        return this.characterService.getMaxSpecialBuildPoints(this.character);
+    get priorityAttributePoints(): number {
+        return this.characterService.getCharacterPriorityAttributePoints(this.character);
     }
 
-    get totalAttributeIncreasesCost(): number {
-        return this.characterService.calTotalAttributeIncreasesCost(this.character);
+    // Special Attribute
+
+    getSpecialAttributeTotalValue(specialAttributeName: SpecialAttributeName): number { 
+        return this.characterService.specialAttributeTotalValue(this.character, specialAttributeName);
     }
 
-    get totalSpecialAttributeIncreasesCost(): number {
-        return this.characterService.calTotalSpecialAttributeIncreasesCost(this.character);
+    getSpecialAttributeMinValue(specialAttributeName: SpecialAttributeName): number {
+        return this.characterService.getSpecialAttributeMinimumValue(this.character, specialAttributeName);
     }
 
-    get initiativeValue(): number {
-        return this.characterService.calInitativeAttribute(this.character);
+    getSpecialAttributeMaxValue(specialAttributeName: SpecialAttributeName): number {
+        return this.characterService.getSpecialAttributeMaximumValue(this.character, specialAttributeName);
     }
+
+    isSpecialAttributeTotalValueGreaterThanMax(specialAttributeName: SpecialAttributeName): boolean {
+        return this.characterService.isSpecialAttributeValueValid(this.character, specialAttributeName);
+    }
+
+    get allSpecialAttributeBuildPoints(): number {
+        return this.characterService.getAllSpecialAttributeBuildPoints(this.character);
+    }
+
+    get prioritySpecialAttributePoints(): number {
+        return this.characterService.getPriotityMetaTypeSpecialAttributePoints(this.character);
+    }
+
+    // Limits
 
     get physicalLimit(): number {
-        return this.characterService.calPhysicalLimit(this.character);
+        return this.characterService.physicalLimit(this.character);
     }
 
     get mentalLimit(): number {
-        return this.characterService.calMentalLimit(this.character);
+        return this.characterService.mentalLimit(this.character);
     }
 
     get socialLimit(): number {
-        return this.characterService.calSocialLimit(this.character);
+        return this.characterService.socialLimit(this.character);
     }
 }

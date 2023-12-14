@@ -1,12 +1,12 @@
-import { ShadowRun5ECharacter } from '../models/character.model';
+import { RoleName, ShadowRun5ECharacter } from '../models/character.model';
 import { MagicUserType } from '../models/magic.model';
 import { MetaTypeName } from '../models/meta-types.model';
-import { LevelOfPlay, Priority } from '../models/priority-table.model';
+import { LevelOfPlayName, Priority } from '../models/priority-table.model';
 
 export const newCharacterObject: ShadowRun5ECharacter = {
     id: "",
     name: "New Character",
-    role: "face",
+    role: RoleName.FACE,
     magicUserType: MagicUserType.None,
     ethnicity: "",
     age: "",
@@ -20,7 +20,7 @@ export const newCharacterObject: ShadowRun5ECharacter = {
     notoriety: "",
     image: "human_one",
     publicAwareness: "",
-	levelOfPlay: LevelOfPlay.Normal,
+	levelOfPlay: LevelOfPlayName.Normal,
 	totalKarma: 25,
     startingKarma: 25,
     nuyen: 0,
@@ -72,26 +72,18 @@ export const newCharacterObject: ShadowRun5ECharacter = {
             buildPoints: 0,
             increases: 0
         },
+        magic: {
+            buildPoints: 0,
+            increases: 0
+        },
+        resonance: {
+            buildPoints: 0,
+            increases: 0
+        }
     },
 	qualities: {
 		positive: [],
 		negative: [],
 		attribute: ""
-	},
-    magic: {
-        attribute: {
-            buildPoints: 0,
-            increases: 0
-        },
-        magicalSkills: [],
-        spells: [],
-    },
-    resonance: {
-        attribute: {
-            buildPoints: 0,
-            increases: 0
-        },
-        resonanceSkills: [],
-        complexForms: [],
-    }
+	}
 }

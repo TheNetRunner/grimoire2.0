@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-
-import { editorSteps } from '../../pages/edit-view/edit-view.component';
+import { EDITOR_STEPS } from '../../common/constants';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +9,7 @@ import { editorSteps } from '../../pages/edit-view/edit-view.component';
 export class NavbarComponent {
 
     @Input() characterName: string = "";
+    @Input() editorSteps: string[] = EDITOR_STEPS;
 
     isCollapsed = true;
-    editorSteps = editorSteps;
 }

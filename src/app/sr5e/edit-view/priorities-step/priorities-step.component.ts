@@ -3,15 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CharacterService } from '../../services/character.service';
 import { DataStoreService } from '../../services/data-store.service';
-
-import { LevelOfPlay, Priority, PriorityTableRow } from '../../models/priority-table.model';
+import { LevelOfPlayName, MagicResonanceText, Priority, PriorityTableRow } from '../../models/priority-table.model';
 import { ShadowRun5ECharacter } from '../../models/character.model';
-
-
 import { priorityTable } from '../../data/priority-table.data';
-
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
-import { MetaTypeName } from '../../models/meta-types.model';
+import { MetaTypeName, MetaTypeStartingValues } from '../../models/meta-types.model';
 
 @Component({
   selector: 'app-priorities-step',
@@ -65,13 +61,32 @@ export class PrioritiesStepComponent {
         this.dataStoreService.updateCharacter(this.character.id, update);
     }
 
-    getPriorityRow(priority: Priority): PriorityTableRow | undefined {
-        return this.characterService.getPriorityRow(priority);
+    getLevelOfPlayResources(priority: Priority, levelOfPlay: LevelOfPlayName): number {
+        let amount = 0;
+        const priorityResourceAmounts = this.characterService.getPriorityResourceAmounts(priority);
+
+        if(priorityResourceAmounts) {
+            amount = priorityResourceAmounts[levelOfPlay];
+        }
+
+        return amount;
     }
 
-    getLevelOfPlayResources(priority: Priority, levelOfPlay: LevelOfPlay): number {
-        const priorityRow = this.characterService.getPriorityRow(priority);
-        return priorityRow?.resources[levelOfPlay] || 0;
+    getPriorityMetaTypes(priority: Priority): MetaTypeStartingValues[] {
+        return this.characterService.getPriorityMetaTypes(priority);
+    }
+
+    getPriorityAttributePoints(priority: Priority): number {
+        return this.characterService.getPriorityAttributePoints(priority);
+    }
+
+    getPrioritySkillsPoints(priority: Priority): { skillPoints: number, skillGroupPoints: number } {
+        return this.characterService.getPrioritySkillsPoints(priority);
+    }
+
+    getPriorityMagicResonanceText(priority: Priority): MagicResonanceText[] {
+        return this.characterService.getPriorityMagicResonanceText(priority);
+
     }
 
     get prioritiesFormGroup(): FormGroup {

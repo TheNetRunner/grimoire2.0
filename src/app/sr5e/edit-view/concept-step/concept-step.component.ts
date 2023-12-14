@@ -5,7 +5,8 @@ import { DataStoreService } from '../../services/data-store.service';
 
 import { ShadowRun5ECharacter } from '../../models/character.model';
 import { CharacterService } from '../../services/character.service';
-import { LevelOfPlay } from '../../models/priority-table.model';
+import { LevelOfPlayName } from '../../models/priority-table.model';
+import { RoleName } from '../../models/character.model';
 
 
 @Component({
@@ -19,10 +20,11 @@ export class ConceptStepComponent {
 
     @Input() character!: ShadowRun5ECharacter
 
+    roleOptions: string[] = Object.values(RoleName);
     personalInfoForm!: FormGroup;
     gameSettingsForm!: FormGroup;
     bioForm!: FormGroup;
-    levelsOfPlay: LevelOfPlay[] = Object.values(LevelOfPlay);
+    levelsOfPlay: LevelOfPlayName[] = Object.values(LevelOfPlayName);
 
     metaTypeOptions: string[] = [];
 
@@ -82,12 +84,7 @@ export class ConceptStepComponent {
         });
 
     }
-
-    handleRoleChange(formData: any): void {
-        let updates = formData;
-        
-    }
-
+    
     get isNameFieldValid(): boolean | undefined {
         return this.personalInfoForm.get("name")?.valid;
     }

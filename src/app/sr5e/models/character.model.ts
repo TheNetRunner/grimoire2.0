@@ -1,13 +1,24 @@
 import { Attribute, Attributes, SpecialAttributes } from './attribute.model';
-import { MagicUserType } from './magic.model';
+import { MagicUserType, MysticAdept, AspectedMagician, Magician, Technomancer, Adept, } from './magic.model';
 import { MetaTypeName } from './meta-types.model';
-import { LevelOfPlay, Priority } from './priority-table.model';
+import { LevelOfPlayName, Priority } from './priority-table.model';
 import { Spell } from './magic.model';
+
+export enum RoleName { 
+    DECKER = 'decker',
+    FACE = 'face',
+    SPELL_CASTER = 'spellcaster',
+    ADEPT = 'adept',
+    RIGGER = 'rigger',
+    SAMURAI = 'samurai',
+    STREET_SAMURAI = 'street Samurai',
+    TECHNOMANCER = 'technomancer'
+}
 
 export interface ShadowRun5ECharacter {
 	id: string;
     name: string;
-    role: string;
+    role: RoleName;
     magicUserType: MagicUserType;
     ethnicity: string;
     age: string;
@@ -21,7 +32,7 @@ export interface ShadowRun5ECharacter {
     streetCred: string;
     notoriety: string;
     publicAwareness: string;
-	levelOfPlay: LevelOfPlay;
+	levelOfPlay: LevelOfPlayName;
 	totalKarma: number;
     startingKarma: number;
     nuyen: number;
@@ -41,16 +52,7 @@ export interface ShadowRun5ECharacter {
 		negative: string[];
 		attribute: string;
 	};
-    magic: {
-        attribute: Attribute;
-        magicalSkills: string[];
-        spells: Spell[];
-    }
-    resonance: {
-        attribute: Attribute;
-        resonanceSkills: string[];
-        complexForms: string[];
-    }
+    magic?: Magician | MysticAdept | AspectedMagician | Technomancer | Adept;
 }
 
 
