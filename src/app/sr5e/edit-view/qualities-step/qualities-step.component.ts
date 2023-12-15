@@ -52,7 +52,7 @@ export class QualitiesStepComponent implements OnInit {
     }
 
     private removeExceptionalAttributeQuality(): void {
-        this.character.qualities.positive = this.character.qualities.positive.filter(q => q.name !== "Exceptional Attribute");
+        this.character.qualities.positive = this.character.qualities.positive.filter(q => q.name !== "exceptional attribute");
     }
 
     // Negative Qualities

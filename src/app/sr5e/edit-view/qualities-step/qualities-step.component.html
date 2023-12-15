@@ -20,8 +20,8 @@
                 <app-exceptional-quality-list-item
                     *ngIf="quality.name === 'exceptional attribute'"
                     [quality]="quality"
-                    [buttonLabel]="'Add'"
-                    (buttonClickEvent)="addPositiveQuality($event)"
+                    [buttonLabel]="'remove'"
+                    (buttonClickEvent)="removePositiveQuality($event)"
                     (exceptionalAttributeChangeEvent)="handleExceptionalAttributeChange($event)"
                 ></app-exceptional-quality-list-item>
             </div>
