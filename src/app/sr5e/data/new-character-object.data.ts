@@ -84,6 +84,5 @@ export const newCharacterObject: ShadowRun5ECharacter = {
 	qualities: {
 		positive: [],
 		negative: [],
-		attribute: ""
 	}
 }

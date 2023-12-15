@@ -24,7 +24,12 @@
                         </thead>
                         <tbody formGroupName="attributes">
                             <tr *ngFor="let attributeName of attributeNames" formGroupName="{{ attributeName }}">
-                                <td>{{ attributeName | titlecase }}</td>
+                                <td>
+                                    <span ngbTooltip="Exceptional Attribute" placement="end">
+                                        {{ attributeName | titlecase }}
+                                        <i class="bi bi-lightning-charge-fill text-warning" *ngIf="isAttributeExceptional(attributeName)"></i>
+                                    </span>
+                                </td>
                                 <td>{{ getAttributeMinValue(attributeName) }}</td>
                                 <td>
                                     <select class="form-select form-select-sm text-center" formControlName="buildPoints">

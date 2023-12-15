@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
@@ -9,30 +9,33 @@ import { LevelOfPlayName } from '../../models/priority-table.model';
 import { RoleName } from '../../models/character.model';
 
 
+
 @Component({
   selector: 'app-concept-step',
   templateUrl: './concept-step.component.html',
   styleUrl: './concept-step.component.css'
 })
-export class ConceptStepComponent {
+export class ConceptStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
+    private characterService = inject(CharacterService);
     private dataStoreService = inject(DataStoreService);
 
     @Input() character!: ShadowRun5ECharacter
 
     roleOptions: string[] = Object.values(RoleName);
+    levelsOfPlay: LevelOfPlayName[] = Object.values(LevelOfPlayName);
+    
+
     personalInfoForm!: FormGroup;
     gameSettingsForm!: FormGroup;
     bioForm!: FormGroup;
-    levelsOfPlay: LevelOfPlayName[] = Object.values(LevelOfPlayName);
+    magicUserTypeForm!: FormGroup;
 
-    metaTypeOptions: string[] = [];
-
-    ngOnInit() {
+    ngOnInit(): void {
         this.generateForms();
     }
 
-    generateForms() {
+    generateForms(): void {
         this.generatePersonalInfoForm();
         this.generateGameSettingsForm();
         this.generateBioForm();
@@ -84,7 +87,7 @@ export class ConceptStepComponent {
         });
 
     }
-    
+
     get isNameFieldValid(): boolean | undefined {
         return this.personalInfoForm.get("name")?.valid;
     }

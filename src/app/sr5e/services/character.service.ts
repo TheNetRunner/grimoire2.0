@@ -1,14 +1,22 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { ShadowRun5ECharacter } from '../models/character.model';
 import { Attribute, AttributeName, SpecialAttributeName } from '../models/attribute.model';
-import { LevelOfPlayName, MagicResonanceText, MagicalStartingValues, Priority, PriorityTableRow, ResourceStartingValues } from '../models/priority-table.model';
+import { 
+    LevelOfPlayName, 
+    MagicResonanceText, 
+    MagicalStartingValues, 
+    Priority, 
+    PriorityTableRow, 
+    ResourceStartingValues 
+} from '../models/priority-table.model';
 import { MetaTypeStartingValues, MetaTypeName } from '../models/meta-types.model';
 import { MetaTypeAttributesTableRow } from '../models/meta-type-attribute-table.model';
-
+import { Quality } from '../models/quality.model';
 import { priorityTable } from '../data/priority-table.data';
 import { attributesTable } from '../data/meta-type-attribute-table.data';
 import { MagicUserType } from '../models/magic.model';
+import { positiveQualities, negativeQualities } from '../data/qualities.data';
 
 
 @Injectable({
@@ -143,9 +151,13 @@ export class CharacterService {
 
         const characterMetaType = character.metaType;
         const characterMetaTypeTableRow = this.getAttributeTableRow(characterMetaType);
+        const exceptionalAttribute = this.isAttributeExceptional(character, attributeName);
 
         if (characterMetaTypeTableRow) {
             maximumValue = characterMetaTypeTableRow.attributes[attributeName].maximum;
+        }
+        if (exceptionalAttribute) {
+            return maximumValue + 1;
         }
 
         return maximumValue;
@@ -542,7 +554,58 @@ export class CharacterService {
 
     // Skills
 
+    // Qualities
+    getUnselectedPositiveQualities(character: ShadowRun5ECharacter): Quality[] {
+        const selectedQualities = character.qualities.positive;
+        let diff: Quality[] = [];
+
+        for(const quality of positiveQualities) {
+            if(!selectedQualities.find(selectedQualities => selectedQualities.name === quality.name)) {
+                diff.push(quality);
+            }
+        }
+
+        return diff;
+    }
+
+    getUnselectedNegativeQualities(character: ShadowRun5ECharacter): Quality[] {
+        const selectedQualities = character.qualities.negative;
+        let diff: Quality[] = [];
+
+        for(const quality of negativeQualities) {
+            if(!selectedQualities.find(selectedQualities => selectedQualities.name === quality.name)) {
+                diff.push(quality);
+            }
+        }
+
+        return diff;
+    }
+
+    isAttributeExceptional(character: ShadowRun5ECharacter, attributeName: AttributeName): boolean {
+        const characterPositiveQualities = character.qualities.positive;
+        const exceptionalAttribute = characterPositiveQualities.find(quality => quality.name === "exceptional attribute");
+
+        if(exceptionalAttribute && exceptionalAttribute.attribute === attributeName) {
+            return true;
+        }
+
+        return false;
+    }
+
     // Magic / Resonance
+    getMagicUserTypeOptions(character: ShadowRun5ECharacter): MagicUserType[] {
+        let magicUserTypeOptions: MagicUserType[] = [MagicUserType.None];
+        
+        const characterMagicPriority = character.priorities.magicResonance;
+        const priorityTableRow = this.getPriorityRow(characterMagicPriority);
+
+        if (priorityTableRow) {
+            magicUserTypeOptions = Object.keys(priorityTableRow.magicResonance) as MagicUserType[];
+        }
+
+        return magicUserTypeOptions;
+    }
+
     getMagicalMinimumValue(character: ShadowRun5ECharacter): number {
         let minimumValue = 0;
 
@@ -575,6 +638,39 @@ export class CharacterService {
         }
 
         return startingValues;
+    }
+
+    // Karma
+    getRemainingStartingKarma(character: ShadowRun5ECharacter): number {
+        let remainingStartingKarma = this.getStartingKarma(character);
+
+        const positiveQualities = character.qualities.positive;
+        const negativeQualities = character.qualities.negative;
+
+        for(const positiveQuality of positiveQualities) {
+            remainingStartingKarma = remainingStartingKarma - positiveQuality.karmaCost;
+        }
+
+        for(const negativeQuality of negativeQualities) {
+            remainingStartingKarma = remainingStartingKarma + negativeQuality.karmaCost;
+        }
+
+        return remainingStartingKarma;
+
+    }
+
+    getStartingKarma(character: ShadowRun5ECharacter): number {
+        let startingKarma = 25;
+
+        if(character.levelOfPlay === LevelOfPlayName.Street) {
+            startingKarma = 13;
+        }
+
+        if(character.levelOfPlay === LevelOfPlayName.Prime) {
+            startingKarma = 35;
+        }
+
+        return startingKarma;
     }
 
     // Validators

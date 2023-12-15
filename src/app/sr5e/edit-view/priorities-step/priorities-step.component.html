@@ -1,6 +1,6 @@
 <div class="row">
     
-    <div class="col-md-12">
+    <div class="col-md-9">
 
         <div class="card bg-primary shadow mb-2">
 
@@ -66,6 +66,31 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow bg-primary">
+
+            <div class="card-header">
+                <h5 class="card-title text-white m-0">Magic User Type</h5>
+            </div>
+
+            <div class="card-body d-flex justify-content-end flex-column">
+                <form [formGroup]="magicUserTypeForm">
+
+                    <div class="input-group">
+                        <select class="form-select" formControlName="magicUserType" name="magicUserType">
+                            <option [ngValue]="''">-- None --</option>
+                            <option *ngFor="let magicUserType of magicUserTypeOptions" [ngValue]="magicUserType">
+                                {{ magicUserType | titlecase }}
+                            </option>
+                        </select>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>

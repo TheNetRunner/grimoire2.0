@@ -2,10 +2,10 @@
 
     <div class="row">
         <div class="col-6">
-            <div class="d-flex align-middle">
-                <h5 class="pe-4">{{ spell.name  | titlecase }}</h5>
+            <div class="d-flex align-middle justify-content-between">
+                <h5 class="pe-4">{{ quality.name  | titlecase }}</h5>
                 <h6 class="fst-italic text-body-tertiary">
-                    {{ spell.keyWords | json | titlecase }}
+                    {{ quality.karmaCost }} karma
                 </h6>
             </div>
         </div>
@@ -15,8 +15,8 @@
                     {{ buttonLabel }}
                 </button>
                 <button class="btn py-0 px-4" (click)="isCollapsed = !isCollapsed">
-                    <i *ngIf="isCollapsed" class="bi bi-arrow-down-square-fill fs-4"></i>
-                    <i *ngIf="!isCollapsed" class="bi bi-arrow-up-square-fill fs-4"></i>
+                    <i class="bi bi-arrow-down-square-fill fs-4" *ngIf="isCollapsed"></i>
+                    <i class="bi bi-arrow-up-square-fill fs-4" *ngIf="!isCollapsed"></i>
                 </button>
             </div>
         </div>
@@ -25,31 +25,23 @@
     <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
         <div class="d-flex justify-content-between">
             <span>
-                Type: {{ spell.type | titlecase }}
-            </span>
-            <span>
-                Range: {{ spell.range | titlecase }}
-            </span>
-            <span>
-                Damage: {{ spell.damange | titlecase }}
-            </span>
-            <span>
-                Duration: {{ spell.duration | titlecase }}
-            </span>
-            <span>
-                Drain: F {{ spell.drain }}
-            </span>
-            <span>
-                Source: {{ spell.page }}
+                Source: {{ quality.source }}
             </span>
         </div>
     </div>
 
     <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
         <div class="d-flex mt-3">
-            {{ spell.description }}
+            {{ quality.description }}
         </div>
-        
+    </div>
+
+    <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
+        <div class="d-flex mt-3">
+            <table class="">
+
+            </table>
+        </div>
     </div>
 
 </li>

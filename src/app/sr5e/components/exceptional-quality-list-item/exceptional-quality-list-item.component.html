@@ -1,0 +1,55 @@
+<li class="list-group-item">
+
+    <div class="row">
+        <div class="col-6">
+            <div class="d-flex align-middle justify-content-between">
+                <h5 class="pe-4">{{ quality.name  | titlecase }}</h5>
+                <h6 class="fst-italic text-body-tertiary">
+                    {{ quality.karmaCost }} karma
+                </h6>
+            </div>
+        </div>
+        <div class="col-3">
+            <select class="form-select form-select-sm text-center" 
+                [formControl]="attributeFormControl">
+                <option *ngFor="let attributeName of attributeNames" [ngValue]="attributeName">
+                    {{ attributeName | titlecase }}
+                </option>
+            </select>
+        </div>
+        <div class="col-3">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-outline-primary p-1" *ngIf="buttonLabel" (click)="emitButtonClick()">
+                    {{ buttonLabel }}
+                </button>
+                <button class="btn py-0 px-4" (click)="isCollapsed = !isCollapsed">
+                    <i class="bi bi-arrow-down-square-fill fs-4" *ngIf="isCollapsed"></i>
+                    <i class="bi bi-arrow-up-square-fill fs-4" *ngIf="!isCollapsed"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
+        <div class="d-flex justify-content-between">
+            <span>
+                Source: {{ quality.source }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
+        <div class="d-flex mt-3">
+            {{ quality.description }}
+        </div>
+    </div>
+
+    <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
+        <div class="d-flex mt-3">
+            <table class="">
+
+            </table>
+        </div>
+    </div>
+
+</li>

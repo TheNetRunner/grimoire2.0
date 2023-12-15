@@ -8,6 +8,7 @@ import { ShadowRun5ECharacter } from '../../models/character.model';
 import { priorityTable } from '../../data/priority-table.data';
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
 import { MetaTypeName, MetaTypeStartingValues } from '../../models/meta-types.model';
+import { MagicUserType } from '../../models/magic.model';
 
 @Component({
   selector: 'app-priorities-step',
@@ -22,14 +23,23 @@ export class PrioritiesStepComponent {
 	@Input() character!: ShadowRun5ECharacter;
 	availablePriorityOptions = Object.values(Priority);
     priorityTable: PriorityTableRow[] = priorityTable;
-    form!: FormGroup;
+    magicUserTypeOptions: MagicUserType[] = [];
+
+    priorityForm!: FormGroup;
+    magicUserTypeForm!: FormGroup;
 
 	ngOnInit(): void {
-		this.generatePriorityForm();
+        this.setMagicUserTypeOptions();
+		this.generateForms();
 	}
 
-	generatePriorityForm(): void {
-		this.form = this.formBuilder.group({
+    generateForms(): void {
+        this.generatePriorityForm();
+        this.generateMagicUserTypeForm();
+    }
+
+	private generatePriorityForm(): void {
+		this.priorityForm = this.formBuilder.group({
             priorities: this.formBuilder.group(
                 {
                     metaType: [this.character.priorities.metaType, [Validators.required]],
@@ -42,14 +52,29 @@ export class PrioritiesStepComponent {
             )
         });
 
-		this.form.valueChanges.subscribe((formData: any) => {
-            console.log(this.character.priorities.metaType !== formData.priorities.metaType);
+		this.priorityForm.valueChanges.subscribe((formData: any) => {
+
             if(this.character.priorities.metaType !== formData.priorities.metaType) {
                 this.handleMetaTypePriorityChange();
             }
 
+            if(this.character.priorities.magicResonance !== formData.priorities.magicResonance) {
+                this.handleMagicResonancePriorityChange();
+            }
+
             this.dataStoreService.updateCharacter(this.character.id, formData);
 		});
+    }
+
+    private generateMagicUserTypeForm(): void {
+        this.magicUserTypeForm = this.formBuilder.group({
+            magicUserType: [this.character.magicUserType]
+        });
+
+        this.magicUserTypeForm.valueChanges.subscribe((formData: any) => {
+            //TODO: create characerService method to handle magic user type change.
+            this.dataStoreService.updateCharacter(this.character.id, formData);
+        });
     }
 
     handleMetaTypePriorityChange(): void {
@@ -59,6 +84,24 @@ export class PrioritiesStepComponent {
         }
 
         this.dataStoreService.updateCharacter(this.character.id, update);
+    }
+
+    handleMagicResonancePriorityChange(): void {
+        this.character.magicUserType = MagicUserType.None;
+        this.character.magic = undefined;
+
+        this.setMagicUserTypeOptions();
+        this.resetMagicUserTypeForm();
+
+        this.dataStoreService.updateCharacter(this.character.id, this.character);
+    }
+
+    resetMagicUserTypeForm(): void {
+        this.magicUserTypeForm.get('magicUserType')?.setValue(MagicUserType.None);
+    }
+
+    setMagicUserTypeOptions(): void {
+        this.magicUserTypeOptions = this.characterService.getMagicUserTypeOptions(this.character);
     }
 
     getLevelOfPlayResources(priority: Priority, levelOfPlay: LevelOfPlayName): number {
@@ -90,11 +133,11 @@ export class PrioritiesStepComponent {
     }
 
     get prioritiesFormGroup(): FormGroup {
-        return this.form.get('priorities') as FormGroup;
+        return this.priorityForm.get('priorities') as FormGroup;
     }
 
     get isFormValid(): boolean {
-        return this.form.valid;
+        return this.priorityForm.valid;
     }
 
     get levelOfPlayKey(): string {

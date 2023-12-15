@@ -24,6 +24,9 @@ import { MysticAdeptStepComponent } from './edit-view/mystic-adept-step/mystic-a
 import { AdeptStepComponent } from './edit-view/adept-step/adept-step.component';
 import { AspectedMagicianStepComponent } from './edit-view/aspected-magician-step/aspected-magician-step.component';
 import { TechnomancerStepComponent } from './edit-view/technomancer-step/technomancer-step.component';
+import { QualitiesStepComponent } from './edit-view/qualities-step/qualities-step.component';
+import { QualityListItemComponent } from './components/quality-list-item/quality-list-item.component';
+import { ExceptionalQualityListItemComponent } from './components/exceptional-quality-list-item/exceptional-quality-list-item.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +46,9 @@ import { TechnomancerStepComponent } from './edit-view/technomancer-step/technom
     AdeptStepComponent,
     AspectedMagicianStepComponent,
     TechnomancerStepComponent,
+    QualitiesStepComponent,
+    QualityListItemComponent,
+    ExceptionalQualityListItemComponent,
   ],
   imports: [
     CommonModule,

@@ -157,6 +157,10 @@ export class AttributeStepComponent implements OnInit {
         return this.characterService.isAttributeValueValid(this.character, attributeName);
     }
 
+    isAttributeExceptional(AttributeName: AttributeName): boolean {
+        return this.characterService.isAttributeExceptional(this.character, AttributeName);
+    }
+
     get getAllAttributeBuildPoints(): number {
         return this.characterService.getAllAttributeBuildPoints(this.character);
     }

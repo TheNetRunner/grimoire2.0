@@ -1,7 +1,7 @@
 <app-navbar *ngIf="character" [characterName]="character.name" [editorSteps]="editorSteps"></app-navbar>
 
 <div class="container-xxl">
-    <!-- {{ character | json }} -->
+    {{ character | json }}
     <div *ngIf="character">
 
         <app-concept-step
@@ -18,6 +18,11 @@
             *ngIf="currentEditorStep === 'meta-type'"
             [character]="character"
         ></app-meta-type-step>
+
+        <app-qualities-step
+            *ngIf="currentEditorStep === 'qualities'"
+            [character]="character"
+        ></app-qualities-step>
 
         <app-attribute-step
             *ngIf="currentEditorStep === 'attributes'"

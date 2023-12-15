@@ -1,9 +1,9 @@
 <div class="row">
 
-    <div class="col-lg-9">
+    <div class="col-12">
         <div class="card bg-primary shadow my-2">
             <div class="card-header">
-                <h4 class="card-title text-white m-0">Personal Data</h4>
+                <h5 class="card-title text-white m-0">Personal Data</h5>
             </div>
             <div class="card-body">
                 <form [formGroup]="personalInfoForm">
@@ -81,12 +81,31 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="row">
+
+
+    <div class="col-lg-9">
+
+        <div class="card bg-primary shadow my-2">
+            <div class="card-header">
+                <h5 class="card-title text-white m-0">Back Story</h5>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="bioForm">
+                    <textarea class="form-control" formControlName="bio" rows="11" placeholder="Your characters back story....."></textarea>
+                </form>
+            </div>
+        </div>
+
+    </div>
 
     <div class="col-lg-3">
 
         <div class="card bg-primary shadow my-2">
             <div class="card-header">
-                <h4 class="card-title text-white m-0">Game Settings</h4>
+                <h5 class="card-title text-white m-0">Game Settings</h5>
             </div>
             <div class="card-body">
                 <form [formGroup]="gameSettingsForm">
@@ -102,24 +121,6 @@
                         </div>
                     </div>
 
-                </form>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="row">
-
-    <div class="col-12">
-
-        <div class="card bg-primary shadow my-2">
-            <div class="card-header">
-                <h4 class="card-title text-white m-0">Back Story</h4>
-            </div>
-            <div class="card-body">
-                <form [formGroup]="bioForm">
-                    <textarea class="form-control" formControlName="bio" rows="11" placeholder="Your characters back story....."></textarea>
                 </form>
             </div>
         </div>

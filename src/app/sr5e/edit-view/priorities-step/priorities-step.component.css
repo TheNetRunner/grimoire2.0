@@ -5,3 +5,7 @@
 td {
     color: rgb(130, 130, 130, 0.5)
 }
+
+.card {
+    min-height: 150px;
+}
