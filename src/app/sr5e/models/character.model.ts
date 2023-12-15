@@ -1,9 +1,8 @@
-import { Attribute, Attributes, SpecialAttributes } from './attribute.model';
+import { Attributes, SpecialAttributes } from './attribute.model';
 import { MagicUserType, MysticAdept, AspectedMagician, Magician, Technomancer, Adept, } from './magic.model';
 import { MetaTypeName } from './meta-types.model';
 import { LevelOfPlayName, Priority } from './priority-table.model';
-import { Spell } from './magic.model';
-import { Quality } from './quality.model';
+import { QualityReference } from './quality.model';
 
 export enum RoleName { 
     DECKER = 'decker',
@@ -49,8 +48,8 @@ export interface ShadowRun5ECharacter {
 	attributes: Attributes;
     specialAttributes: SpecialAttributes;
 	qualities: {
-		positive: Quality[];
-		negative: Quality[];
+		positive: QualityReference[];
+		negative: QualityReference[];
 	};
     magic?: Magician | MysticAdept | AspectedMagician | Technomancer | Adept;
 }

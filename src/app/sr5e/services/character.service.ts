@@ -12,11 +12,12 @@ import {
 } from '../models/priority-table.model';
 import { MetaTypeStartingValues, MetaTypeName } from '../models/meta-types.model';
 import { MetaTypeAttributesTableRow } from '../models/meta-type-attribute-table.model';
-import { Quality } from '../models/quality.model';
+import { Quality, QualityReference } from '../models/quality.model';
 import { priorityTable } from '../data/priority-table.data';
 import { attributesTable } from '../data/meta-type-attribute-table.data';
 import { MagicUserType } from '../models/magic.model';
 import { positiveQualities, negativeQualities } from '../data/qualities.data';
+
 
 
 @Injectable({
@@ -174,6 +175,17 @@ export class CharacterService {
         }
 
         return racialAbility;
+    }
+
+    isAttributeExceptional(character: ShadowRun5ECharacter, attributeName: AttributeName): boolean {
+        const characterPositiveQualities = character.qualities.positive;
+        const exceptionalAttribute = characterPositiveQualities.find(quality => quality.name === "exceptional attribute");
+
+        if(exceptionalAttribute && exceptionalAttribute.attribute === attributeName) {
+            return true;
+        }
+
+        return false;
     }
 
     private getAttributeTableRow(metaTypeName: MetaTypeName): MetaTypeAttributesTableRow | undefined {
@@ -560,7 +572,7 @@ export class CharacterService {
         let diff: Quality[] = [];
 
         for(const quality of positiveQualities) {
-            if(!selectedQualities.find(selectedQualities => selectedQualities.name === quality.name)) {
+            if(!selectedQualities.find(selectedQuality => selectedQuality.name === quality.name)) {
                 diff.push(quality);
             }
         }
@@ -573,7 +585,7 @@ export class CharacterService {
         let diff: Quality[] = [];
 
         for(const quality of negativeQualities) {
-            if(!selectedQualities.find(selectedQualities => selectedQualities.name === quality.name)) {
+            if(!selectedQualities.find(selectedQuality => selectedQuality.name === quality.name)) {
                 diff.push(quality);
             }
         }
@@ -581,15 +593,74 @@ export class CharacterService {
         return diff;
     }
 
-    isAttributeExceptional(character: ShadowRun5ECharacter, attributeName: AttributeName): boolean {
-        const characterPositiveQualities = character.qualities.positive;
-        const exceptionalAttribute = characterPositiveQualities.find(quality => quality.name === "exceptional attribute");
+    getAllSelectedPositiveQualities(character: ShadowRun5ECharacter): Quality[] {
+        let qualities: Quality[] = [];
+        const characterQualities = character.qualities.positive;
 
-        if(exceptionalAttribute && exceptionalAttribute.attribute === attributeName) {
-            return true;
+        for (const characterQuality of characterQualities) {
+            const quality = this.getQualityByName(characterQuality.name);
+
+            if(quality) {
+                qualities.push(quality);
+            }
+        }
+        
+        return qualities;
+    }
+
+    getAllSelectedNegativeQualities(character: ShadowRun5ECharacter): Quality[] {
+        let qualities: Quality[] = [];
+        const qualityRefernces = character.qualities.negative;
+
+        for (const characterQuality of qualityRefernces) {
+            const quality = this.getQualityByName(characterQuality.name);
+
+            if(quality) {
+                qualities.push(quality);
+            }
+        }
+        return qualities;
+    }
+
+    createQualityReference(qualityName: string): QualityReference {
+        const reference: QualityReference = { name: qualityName };
+        const qualityMaxRating = this.getQualityMaxRating(qualityName);
+
+        if(qualityName === 'exceptional attribute') {
+            reference.attribute = AttributeName.Body;
         }
 
-        return false;
+        if(qualityMaxRating > 1) {
+            reference.ratingValue = 1;
+        }
+
+        return reference;
+    }
+
+    getQualityByName(qualityName: string): Quality | undefined {
+        const allQualities = [...positiveQualities, ...negativeQualities];
+        return allQualities.find(quality => quality.name === qualityName);
+    }
+
+    getQualityMaxRating(qualityName: string): number {
+        const quality = this.getQualityByName(qualityName);
+
+        if(quality) {
+            return quality.maxRating;
+        }
+
+        return 0;
+    }
+
+    getQualityKarmaCost(currentRatingValue: number, qualityName: string): number {
+        let cost = 0;
+        const qualityKarmaCost = this.getQualityByName(qualityName)?.karmaCost;
+
+        if(qualityKarmaCost) {
+            cost = qualityKarmaCost * currentRatingValue;
+        }
+
+        return cost;
     }
 
     // Magic / Resonance
@@ -644,15 +715,26 @@ export class CharacterService {
     getRemainingStartingKarma(character: ShadowRun5ECharacter): number {
         let remainingStartingKarma = this.getStartingKarma(character);
 
-        const positiveQualities = character.qualities.positive;
-        const negativeQualities = character.qualities.negative;
+        const characterPositiveQualities = character.qualities.positive;
+        const characterNegativeQualities = character.qualities.negative;
 
-        for(const positiveQuality of positiveQualities) {
-            remainingStartingKarma = remainingStartingKarma - positiveQuality.karmaCost;
+        for(const characterPositiveQuality of characterPositiveQualities) {
+            const quality = this.getQualityByName(characterPositiveQuality.name);
+
+            if(quality) {
+                const ratingValue = characterPositiveQuality.ratingValue || 1;
+                remainingStartingKarma = remainingStartingKarma - (quality.karmaCost * ratingValue);
+            }
+            
         }
 
-        for(const negativeQuality of negativeQualities) {
-            remainingStartingKarma = remainingStartingKarma + negativeQuality.karmaCost;
+        for(const characterNegativeQuality of characterNegativeQualities) {
+            const quality = this.getQualityByName(characterNegativeQuality.name);
+
+            if(quality) {
+                const ratingValue = characterNegativeQuality.ratingValue || 1;
+                remainingStartingKarma = remainingStartingKarma + (quality.karmaCost * quality.karmaCost * ratingValue);
+            }
         }
 
         return remainingStartingKarma;

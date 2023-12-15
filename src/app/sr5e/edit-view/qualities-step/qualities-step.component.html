@@ -5,26 +5,15 @@
             <li class="list-group-item bg-primary sticky-top">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-white">Character Positive Qualities</h5>
-                    <span class="text-end text-info">Remaining Starting Karma: {{ remainingStartingKarma }}</span>
+                    <span class="text-end text-info">Remaining Starting Karma: {{ remainingStartingKarama }}</span>
                 </div>
             </li>
-            <div *ngFor="let quality of selectedPositiveQualities">
-                <app-quality-list-item
-                    *ngIf="quality.name !== 'exceptional attribute'"
-                    [quality]="quality"
-                    [buttonLabel]="'Remove'"
-                    (buttonClickEvent)="removePositiveQuality($event)"
-                ></app-quality-list-item>
 
-
-                <app-exceptional-quality-list-item
-                    *ngIf="quality.name === 'exceptional attribute'"
-                    [quality]="quality"
-                    [buttonLabel]="'remove'"
-                    (buttonClickEvent)="removePositiveQuality($event)"
-                    (exceptionalAttributeChangeEvent)="handleExceptionalAttributeChange($event)"
-                ></app-exceptional-quality-list-item>
-            </div>
+            <app-quality-selected-list-item
+                *ngFor="let quality of characterPositiveQualities"
+                [qualityReference]="quality"
+                (removeQualityEvent)="removePositiveQuality($event)"
+            ></app-quality-selected-list-item>
         </ul>
 
     </div>
@@ -37,12 +26,11 @@
                     <h5 class="text-white">Positive Qualities</h5>
                 </div>
             </li>
-            <app-quality-list-item
+            <app-quality-unselected-list-item
                 *ngFor="let quality of availablePositiveQualities"
                 [quality]="quality"
-                [buttonLabel]="'Add'"
-                (buttonClickEvent)="addPositiveQuality($event)"
-            ></app-quality-list-item>
+                (addQualityEvent)="addPositiveQuality($event)"
+            ></app-quality-unselected-list-item>
         </ul>
 
     </div>
@@ -55,16 +43,10 @@
             <li class="list-group-item bg-secondary sticky-top">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-white">Character Negative Qualities</h5>
-                    <span class="text-end text-info">Remaining Starting Karma: {{ remainingStartingKarma }}</span>
+                    <span class="text-end text-info">Remaining Starting Karma: {{ remainingStartingKarama }}</span>
                 </div>
             </li>
             
-            <app-quality-list-item
-                *ngFor="let quality of selectedNegativeQualities"
-                [quality]="quality"
-                [buttonLabel]="'Remove'"
-                (buttonClickEvent)="removeNegativeQuality($event)"
-            ></app-quality-list-item>
         </ul>
 
     </div>
@@ -77,13 +59,11 @@
                     <h5 class="text-white">Negative Qualities</h5>
                 </div>
             </li>
-
-            <app-quality-list-item
+            <app-quality-unselected-list-item
                 *ngFor="let quality of availableNegativeQualities"
                 [quality]="quality"
-                [buttonLabel]="'Add'"
-                (buttonClickEvent)="addNegativeQuality($event)"
-            ></app-quality-list-item>
+                (addQualityEvent)="addNegativeQuality($event)"
+            ></app-quality-unselected-list-item>
         </ul>
 
     </div>

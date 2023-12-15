@@ -5,6 +5,11 @@ export interface Quality {
     description: string;
     karmaCost: number;
     source: string;
+    maxRating: number;
+}
+
+export interface QualityReference {
+    name: string;
     attribute?: AttributeName;
-    rating?: number;
+    ratingValue?: number;
 }

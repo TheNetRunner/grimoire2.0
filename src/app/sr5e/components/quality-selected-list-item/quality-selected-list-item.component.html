@@ -1,0 +1,52 @@
+<li class="list-group-item">
+
+    <div class="row align-items-center">
+
+        <div class="col-5">
+            <h6 class="pe-4">{{ qualityReference.name  | titlecase }}</h6>
+            <h6 class="fst-italic text-body-tertiary">
+                {{ getQualityKarmaCost() }} karama
+            </h6>
+        </div>
+
+        <div class="col-3 text-center">
+            <div *ngIf="getQualityMaxRating(qualityReference.name) > 1">
+                <label class="form-label form-label-sm" >Rating</label>
+                <select class="form-select form-select-sm px-2 text-center">
+                    <option *ngFor="let i of getQualityMaxRating(qualityReference.name) | rangeArray : 1" [ngValue]="i">
+                        {{ i }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-outline-primary mx-2" (click)="emitRemoveQualityEvent()">
+                    Remove
+                </button>
+                <button class="btn py-0 px-2" (click)="isCollapsed = !isCollapsed">
+                    <i *ngIf="isCollapsed" class="bi bi-arrow-down-square-fill fs-4"></i>
+                    <i *ngIf="!isCollapsed" class="bi bi-arrow-up-square-fill fs-4"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
+        <div class="d-flex justify-content-between">
+            <span>
+                Source: {{ quality?.source }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
+        <div class="d-flex mt-3">
+            {{ quality?.description }}
+        </div>
+        
+    </div>
+
+</li>

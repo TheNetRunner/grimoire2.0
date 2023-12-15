@@ -25,8 +25,8 @@ import { AdeptStepComponent } from './edit-view/adept-step/adept-step.component'
 import { AspectedMagicianStepComponent } from './edit-view/aspected-magician-step/aspected-magician-step.component';
 import { TechnomancerStepComponent } from './edit-view/technomancer-step/technomancer-step.component';
 import { QualitiesStepComponent } from './edit-view/qualities-step/qualities-step.component';
-import { QualityListItemComponent } from './components/quality-list-item/quality-list-item.component';
-import { ExceptionalQualityListItemComponent } from './components/exceptional-quality-list-item/exceptional-quality-list-item.component';
+import { QualityUnselectedListItemComponent } from './components/quality-unselected-list-item/quality-unselected-list-item.component';
+import { QualitySelectedListItemComponent } from './components/quality-selected-list-item/quality-selected-list-item.component';
 
 @NgModule({
   declarations: [
@@ -47,8 +47,8 @@ import { ExceptionalQualityListItemComponent } from './components/exceptional-qu
     AspectedMagicianStepComponent,
     TechnomancerStepComponent,
     QualitiesStepComponent,
-    QualityListItemComponent,
-    ExceptionalQualityListItemComponent,
+    QualityUnselectedListItemComponent,
+    QualitySelectedListItemComponent,
   ],
   imports: [
     CommonModule,

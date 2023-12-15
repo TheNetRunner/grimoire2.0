@@ -1,28 +1,6 @@
 <div class="row">
-        <div class="col-md-4">
-
-        <div class="card bg-primary shadow mb-2">
-
-            <div class="card-header">
-                <h5 class="card-title text-white m-0">Image</h5>
-            </div>
-            
-            <div class="card-body">
-                <div class="d-flex justify-content-center mb-2">
-                    <img class="card-img mb-2" [src]="getImageUrl()">
-                </div>
-                <form [formGroup]="imageForm">
-                    <select class="form-select" formControlName="image">
-                        <option *ngFor="let suffex of imageSuffex" [ngValue]="getMetaTypeFormValue() + '_' + suffex">
-                            {{ getMetaTypeFormValue() | titlecase }} {{ suffex | titlecase }}
-                        </option>
-                    </select>
-                </form>
-            </div>
-        </div>
-    </div>
     
-    <div class="col-md-8">
+    <div class="col-12">
 
         <div class="card bg-primary shadow mb-2">
 
@@ -31,17 +9,47 @@
             </div>
 
             <div class="card-body">
-                <i class="text-info">{{ getMetaTypeDescription(this.character.metaType).latinName }}:</i>
-                {{ getMetaTypeDescription(this.character.metaType).text }}
-                <hr>
-                <span><i class="text-info">Racial: </i>{{ metaTypeRacial }}</span>
-                <form [formGroup]="metaTypeForm">
-                    <select class="form-select mt-2" formControlName="metaType">
-                        <option *ngFor="let metaType of getMetaTypeOptions()" [ngValue]="metaType.name">
-                            {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
-                        </option>
-                    </select>
-                </form>
+
+                <div class="row">
+
+                    <div class="col-4">
+                        <div class="d-flex justify-content-center mb-2">
+                            <img class="card-img mb-2" [src]="getImageUrl()">
+                        </div>
+                        <form [formGroup]="imageForm">
+                            <select class="form-select" formControlName="image">
+                                <option *ngFor="let suffex of imageSuffex" [ngValue]="getMetaTypeFormValue() + '_' + suffex">
+                                    {{ getMetaTypeFormValue() | titlecase }} {{ suffex | titlecase }}
+                                </option>
+                            </select>
+                        </form>
+                    </div>
+
+                    <div class="col-8 d-flex justify-content-between flex-column">
+                        <div class="">
+                            <p>
+                                <i class="text-info">{{ getMetaTypeDescription(this.character.metaType).latinName }}:</i>
+                                {{ getMetaTypeDescription(this.character.metaType).text }}
+                            </p>
+
+                            <p>
+                                <i class="text-info">Racial: </i>{{ metaTypeRacial }}
+                            </p>
+                        </div>
+
+                        
+                        
+                        <form [formGroup]="metaTypeForm">
+                            <select class="form-select mt-2" formControlName="metaType">
+                                <option *ngFor="let metaType of getMetaTypeOptions()" [ngValue]="metaType.name">
+                                    {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
+                                </option>
+                            </select>
+                        </form>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
