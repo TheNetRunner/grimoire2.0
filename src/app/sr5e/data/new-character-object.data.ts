@@ -1,88 +1,92 @@
-import { RoleName, ShadowRun5ECharacter } from '../models/character.model';
-import { MagicUserType } from '../models/magic.model';
-import { MetaTypeName } from '../models/meta-types.model';
-import { LevelOfPlayName, Priority } from '../models/priority-table.model';
+import { ShadowRun5ECharacterData, MetaType, MagicUserType, RoleName, LevelOfPlayName, Attribute, Priority } from '../models/new-character.interface';
 
-export const newCharacterObject: ShadowRun5ECharacter = {
+export const newCharacterObject: ShadowRun5ECharacterData = {
     id: "",
-    name: "New Character",
-    role: RoleName.FACE,
-    magicUserType: MagicUserType.None,
-    ethnicity: "",
-    age: "",
-    gender: "",
-    eyes: "",
-    hair: "",
-    height: "",
-    weight: "",
-    misc: "",
-    streetCred: "",
-    notoriety: "",
-    image: "human_one",
-    publicAwareness: "",
-	levelOfPlay: LevelOfPlayName.Normal,
-	totalKarma: 25,
-    startingKarma: 25,
+    basic: {
+        name: "New Character",
+        role: RoleName.Face,
+        ethnicity: "",
+        age: "",
+        gender: "",
+        eyes: "",
+        hair: "",
+        height: "",
+        weight: "",
+        misc: "",
+        streetCred: "",
+        notoriety: "",
+        publicAwareness: "",
+        bio: "",
+        image: "human_one",
+    },
+	karmaPoints: 25,
     nuyen: 0,
-	bio: "",
-	metaType: MetaTypeName.human,
+	metaType: MetaType.Human,
 	priorities: {
 		metaType: Priority.A,
 		attributes: Priority.B,
-		magicResonance: Priority.C,
+		magic: Priority.C,
 		skills: Priority.D,
 		resources: Priority.E,
 	},
 	attributes: {
-		body: {
+        [Attribute.Body]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        agility: {
+        [Attribute.Agility]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        reaction: {
+        [Attribute.Reaction]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        strength: {
+        [Attribute.Strength]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        willPower: {
+        [Attribute.Willpower]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        logic: {
+        [Attribute.Logic]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        intuition: {
+        [Attribute.Intuition]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        charisma: {
+        [Attribute.Charisma]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-	},
-    specialAttributes: {
-        edge: {
+        [Attribute.Edge]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        magic: {
+        [Attribute.Magic]: {
             buildPoints: 0,
-            increases: 0
+            increases: 0,
+            exceptional: false,
         },
-        resonance: {
+        [Attribute.Resonance]: {
             buildPoints: 0,
-            increases: 0
-        }
+            increases: 0,
+            exceptional: false,
+        },
     },
-	qualities: {
-		positive: [],
-		negative: [],
-	}
+    settings: {
+        levelOfPlay: LevelOfPlayName.Normal,
+    }
 }

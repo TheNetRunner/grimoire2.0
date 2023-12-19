@@ -3,34 +3,35 @@ import { Observable, liveQuery } from "dexie";
 import { v4 as uuidv4 } from "uuid";
 
 import { DatabaseService } from '../../shared/services/database.service';
-import { ShadowRun5ECharacter } from '../models/character.model';
+import { ShadowRun5ECharacterData } from '../models/new-character.interface'
+import { newCharacterObject } from '../data/new-character-object.data';
 
 const SHADOW_RUN_CHARACTERS_TABLE_NAME = "shadowRun5ECharacters";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataStoreService {
+export class NewDataStoreService {
     databaseService = inject(DatabaseService);
 
     // Create
-    // async createCharacter(): Promise<void> {
-    //     const newId = await this.generateId();
-    //     const newCharacter = {...newCharacterObject, id: newId}
+    async createCharacter(): Promise<void> {
+        const newId = await this.generateId();
+        const newCharacter = {...newCharacterObject, id: newId}
 
-    //     this.addCharacterToDatabase(newCharacter);
-    // }
+        this.addCharacterToDatabase(newCharacter);
+    }
 
-    async addCharacterToDatabase(character: ShadowRun5ECharacter): Promise<void> {
+    async addCharacterToDatabase(character: ShadowRun5ECharacterData): Promise<void> {
         this.databaseService.addItem(SHADOW_RUN_CHARACTERS_TABLE_NAME, character, character.id);
     }
 
     // Read
-    getCharacters(): Observable<ShadowRun5ECharacter[]> {
+    getCharacters(): Observable<ShadowRun5ECharacterData[]> {
         return liveQuery(() => this.databaseService.getItems(SHADOW_RUN_CHARACTERS_TABLE_NAME));
     }
 
-    getCharacter(id: string): Observable<ShadowRun5ECharacter> {
+    getCharacter(id: string): Observable<ShadowRun5ECharacterData> {
         return liveQuery(() => this.databaseService.getItemById(SHADOW_RUN_CHARACTERS_TABLE_NAME, id))
     }
 

@@ -8,12 +8,22 @@
                     <span class="text-end text-info">Remaining Starting Karma: {{ remainingStartingKarama }}</span>
                 </div>
             </li>
+            <div *ngFor="let quality of characterPositiveQualities">
+                <app-quality-selected-list-item
+                    *ngIf="quality.name !== 'exceptional attribute'"
+                    [qualityReference]="quality"
+                    (removeQualityEvent)="removePositiveQuality($event)"
+                    (qualityReferenceRatingChange)="updatePositiveQualityReferenceRatingValue($event)"
+                ></app-quality-selected-list-item>
 
-            <app-quality-selected-list-item
-                *ngFor="let quality of characterPositiveQualities"
-                [qualityReference]="quality"
-                (removeQualityEvent)="removePositiveQuality($event)"
-            ></app-quality-selected-list-item>
+                <app-quality-exceptional-attr-selected-list-item
+                    *ngIf="quality.name === 'exceptional attribute'"
+                    [qualityReference]="quality"
+                    [character]="character"
+                    (removeQualityEvent)="removePositiveQuality($event)"
+                    (qualityReferenceAttributeChange)="setExceptionalAttribute($event)"
+                ></app-quality-exceptional-attr-selected-list-item>
+            </div>
         </ul>
 
     </div>

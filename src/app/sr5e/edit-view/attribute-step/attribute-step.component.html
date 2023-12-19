@@ -25,10 +25,15 @@
                         <tbody formGroupName="attributes">
                             <tr *ngFor="let attributeName of attributeNames" formGroupName="{{ attributeName }}">
                                 <td>
-                                    <span ngbTooltip="Exceptional Attribute" placement="end">
+                                    <span>
                                         {{ attributeName | titlecase }}
-                                        <i class="bi bi-lightning-charge-fill text-warning" *ngIf="isAttributeExceptional(attributeName)"></i>
                                     </span>
+                                    <i  
+                                        ngbTooltip="Exceptional Attribute, +1 to attribute max"
+                                        position="bottom"
+                                        class="bi bi-caret-up-fill text-success"
+                                        *ngIf="isAttributeExceptional(attributeName)"
+                                    ></i>
                                 </td>
                                 <td>{{ getAttributeMinValue(attributeName) }}</td>
                                 <td>
@@ -51,8 +56,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td colspan="2"></td>
                                 <td [ngClass]="{ 'text-danger': getAllAttributeBuildPoints > priorityAttributePoints }">
                                     {{ getAllAttributeBuildPoints }} / {{ priorityAttributePoints }}
                                     <i 
@@ -72,7 +76,7 @@
                                 <td>6</td>
                             </tr>
                             <tr>
-                                <td>initiative (Rea + Ini)</td>
+                                <td>initiative (Rea + Int)</td>
                                 <td colspan="4"></td>
                                 <td>{{ initiative }}</td>
                             </tr>
@@ -127,7 +131,15 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let specialAttributeName of specialAttributeNames" formGroupName="{{ specialAttributeName }}">
-                                <td>{{ specialAttributeName | titlecase }}</td>
+                                <td>
+                                    <span>{{ specialAttributeName | titlecase }}</span>
+                                    <i
+                                        ngbTooltip="Lucky, +1 edge"
+                                        position="bottom"
+                                        class="bi bi-caret-up-fill text-success"
+                                        *ngIf="doesCharacterHaveLuckyQuality && specialAttributeName === 'edge'"
+                                    ></i>
+                                </td>
                                 <td>{{ getSpecialAttributeMinValue(specialAttributeName) }}</td>
                                 <td>
                                     <select class="form-select form-select-sm text-center" formControlName="buildPoints">

@@ -29,29 +29,14 @@
             <span>Source: {{ quality?.source }}</span>
         </div>
 
-        <div class="col-6" *ngIf="ratingForm">
+        <div class="col-6">
 
-            <form class="row g-3" [formGroup]="ratingForm">
-                <label class="form-label form-label-sm col-sm-4">Rating</label>
-                <div class="col-sm-8">
-                    <select class="form-select form-select-sm px-2 text-center" formControlName="rating">
-                        <option *ngFor="let i of getQualityMaxRating(qualityReference.name) | rangeArray : 1" [ngValue]="i">
-                            {{ i }}
-                        </option>
-                    </select>
-                </div>
-            </form>
-
-        </div>
-
-        <div class="col-6" *ngIf="optionsForm">
-
-            <form class="row g-3" [formGroup]="optionsForm">
+            <form class="row g-3" [formGroup]="attributeForm">
                 <label class="form-label form-label-sm col-sm-4">Option</label>
                 <div class="col-sm-8">
-                    <select class="form-select form-select-sm px-2 text-center" formControlName="option">
-                        <option *ngFor="let option of options" [ngValue]="option.name">
-                            {{ option.name | titlecase }}
+                    <select class="form-select form-select-sm px-2 text-center" formControlName="attribute">
+                        <option *ngFor="let attributeOption of attributeOptions" [ngValue]="attributeOption">
+                            {{ attributeOption | titlecase }}
                         </option>
                     </select>
                 </div>
@@ -64,10 +49,6 @@
     <div class="row" [(ngbCollapse)]="isCollapsed" [animation]="true">
         <div>
             <span class="text-info">Description: </span>{{ quality?.description }}
-        </div>
-
-        <div class="mt-3" *ngIf="optionsForm">
-            <span class="text-info">{{ optionFormValue | titlecase }}: </span>{{ optionDescription }}
         </div>
     </div>
 

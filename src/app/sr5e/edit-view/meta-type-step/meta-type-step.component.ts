@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataStoreService } from '../../services/data-store.service';
 import { CharacterService } from '../../services/character.service';
 
-import { MetaTypeStartingValues, MetaTypeDescription } from '../../models/meta-types.model';
-import { ShadowRun5ECharacter } from '../../models/character.model';
-import { MetaTypeName } from '../../models/meta-types.model';
+import { MetaTypeStartingValues, MetaTypeDescription } from '../../models/meta-type.model';
+import { ShadowRun5ECharacter } from '../../models/new-character.model';
+import { MetaTypeName } from '../../models/meta-type.model';
 
 import { IMAGE_SUFFEX } from '../../common/constants';
 import { metaTypeDescriptions } from '../../data/meta-type-descriptions.data';

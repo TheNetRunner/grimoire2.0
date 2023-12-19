@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
 import { CharacterService } from '../../services/character.service';
-import { ShadowRun5ECharacter } from '../../models/character.model';
+import { ShadowRun5ECharacter } from '../../models/new-character.model';
 import { MagicUserType, Spell } from '../../models/magic.model';
 import { allSpells } from '../../data/spells.data';
 import { MagicianService } from '../../services/magician.service';

@@ -1,4 +1,4 @@
-import { MetaTypeStartingValues } from "./meta-types.model";
+import { MetaType } from "./meta-type.model";
 import { MagicUserType } from "./magic.model";
 import { Adept, AspectedMagician, Magician, MysticAdept, Technomancer } from "./magic.model";
 
@@ -39,32 +39,37 @@ export interface MagicalStartingValues {
     };
 }
 
-export interface ResourceStartingValues {
-    [LevelOfPlayName.Street]: number;
-    [LevelOfPlayName.Normal]: number;
-    [LevelOfPlayName.Prime]: number;
+export interface MetaTypeStartingValues {
+	name: MetaType;
+	specialAttrPoints: number;
 }
 
 export interface PriorityTableRow {
-    name: Priority;
 	metaTypes: MetaTypeStartingValues[];
 	attributePoints: number;
-    magicResonanceText: MagicResonanceText[];
+    magicText: { title: string; description: string; }[];
 	skills: {
 		skillPoints: number;
 		skillGroupPoints: number;
 	};
-    magicResonance: {
+    magic: {
         [MagicUserType.Adept]?: MagicalStartingValues;
         [MagicUserType.Magician]?: MagicalStartingValues;
         [MagicUserType.AspectedMagician]?: MagicalStartingValues;
         [MagicUserType.MysticAdept]?: MagicalStartingValues
         [MagicUserType.Technomancer]?: MagicalStartingValues;
     },
-	resourceStartingValues: ResourceStartingValues;
+	resources: {
+        [LevelOfPlayName.Street]: number;
+        [LevelOfPlayName.Normal]: number;
+        [LevelOfPlayName.Prime]: number;
+    }
 }
 
-export interface MagicResonanceText {
-    title: string;
-    description: string;
+export interface PriorityTable {
+    [Priority.A]: PriorityTableRow;
+    [Priority.B]: PriorityTableRow;
+    [Priority.C]: PriorityTableRow;
+    [Priority.D]: PriorityTableRow;
+    [Priority.E]: PriorityTableRow;
 }

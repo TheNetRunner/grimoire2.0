@@ -1,30 +1,29 @@
-import { PriorityTableRow, Priority, LevelOfPlayName } from "../models/priority-table.model";
-import { MetaTypeName } from "../models/meta-types.model";
+import { PriorityTableRow, LevelOfPlayName, PriorityTable } from "../models/priority.model";
+import { Priority } from "../models/priority.model";
+import { MetaType } from "../models/meta-type.model";
 import { MagicUserType, Magician } from "../models/magic.model";
-import { Adept, AspectedMagician, MysticAdept, Technomancer } from "../models/magic.model";
 
-export const priorityTable: PriorityTableRow[] = [
-	{
-		name: Priority.A,
+export const priorityTable: PriorityTable = {
+    [Priority.A]: {
         metaTypes: [
 			{
-				name: MetaTypeName.human,
+				name: MetaType.Human,
 				specialAttrPoints: 9,
 			},
 			{
-				name: MetaTypeName.elf,
+				name: MetaType.Elf,
 				specialAttrPoints: 8,
 			},
 			{
-				name: MetaTypeName.dwarf,
+				name: MetaType.Dwarf,
 				specialAttrPoints: 7,
 			},
 			{
-				name: MetaTypeName.ork,
+				name: MetaType.Ork,
 				specialAttrPoints: 7,
 			},
 			{
-				name: MetaTypeName.troll,
+				name: MetaType.Troll,
 				specialAttrPoints: 5,
 			},
 		],
@@ -54,27 +53,26 @@ export const priorityTable: PriorityTableRow[] = [
 			[LevelOfPlayName.Prime]: 500000,
 		},
 	},
-	{
-        name: Priority.B,
+	[Priority.B]: {
 		metaTypes: [
 			{
-				name: MetaTypeName.human,
+				name: MetaType.Human,
 				specialAttrPoints: 7,
 			},
 			{
-				name: MetaTypeName.elf,
+				name: MetaType.Elf,
 				specialAttrPoints: 6,
 			},
 			{
-				name: MetaTypeName.dwarf,
+				name: MetaType.Dwarf,
 				specialAttrPoints: 4,
 			},
 			{
-				name: MetaTypeName.ork,
+				name: MetaType.Ork,
 				specialAttrPoints: 4,
 			},
 			{
-				name: MetaTypeName.troll,
+				name: MetaType.Troll,
 				specialAttrPoints: 0,
 			},
 		],
@@ -114,23 +112,22 @@ export const priorityTable: PriorityTableRow[] = [
 			[LevelOfPlayName.Prime]: 325000,
 		},
 	},
-	{
-        name: Priority.C,
+    [Priority.C]: {
 		metaTypes: [
 			{
-				name: MetaTypeName.human,
+				name: MetaType.Human,
 				specialAttrPoints: 5,
 			},
 			{
-				name: MetaTypeName.elf,
+				name: MetaType.Elf,
 				specialAttrPoints: 3,
 			},
 			{
-				name: MetaTypeName.dwarf,
+				name: MetaType.Dwarf,
 				specialAttrPoints: 1,
 			},
 			{
-				name: MetaTypeName.ork,
+				name: MetaType.Ork,
 				specialAttrPoints: 0,
 			},
 		],
@@ -170,15 +167,14 @@ export const priorityTable: PriorityTableRow[] = [
 			[LevelOfPlayName.Prime]: 210000,
 		},
 	},
-	{
-        name: Priority.D,
+	[Priority.D]: {
 		metaTypes: [
 			{
-				name: MetaTypeName.human,
+				name: MetaType.Human,
 				specialAttrPoints: 3,
 			},
 			{
-				name: MetaTypeName.elf,
+				name: MetaType.Elf,
 				specialAttrPoints: 0,
 			},
 		],
@@ -207,11 +203,10 @@ export const priorityTable: PriorityTableRow[] = [
 			[LevelOfPlayName.Prime]: 150000,
 		},
 	},
-    {
-        name: Priority.E,
+    [Priority.E]: {
 		metaTypes: [
 			{
-				name: MetaTypeName.human,
+				name: MetaType.Human,
 				specialAttrPoints: 1,
 			},
 		],
@@ -228,4 +223,4 @@ export const priorityTable: PriorityTableRow[] = [
 			[LevelOfPlayName.Prime]: 100000,
 		},
 	},
-];
+};

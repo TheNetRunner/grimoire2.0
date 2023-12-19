@@ -27,6 +27,8 @@ import { TechnomancerStepComponent } from './edit-view/technomancer-step/technom
 import { QualitiesStepComponent } from './edit-view/qualities-step/qualities-step.component';
 import { QualityUnselectedListItemComponent } from './components/quality-unselected-list-item/quality-unselected-list-item.component';
 import { QualitySelectedListItemComponent } from './components/quality-selected-list-item/quality-selected-list-item.component';
+import { MagicStepComponent } from './edit-view/magic-step/magic-step.component';
+import { QualityExceptionalAttrSelectedListItemComponent } from './components/quality-exceptional-attr-selected-list-item/quality-exceptional-attr-selected-list-item.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { QualitySelectedListItemComponent } from './components/quality-selected-
     QualitiesStepComponent,
     QualityUnselectedListItemComponent,
     QualitySelectedListItemComponent,
+    MagicStepComponent,
+    QualityExceptionalAttrSelectedListItemComponent,
   ],
   imports: [
     CommonModule,

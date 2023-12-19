@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { DataStoreService } from '../../services/data-store.service';
 import { CharacterService } from '../../services/character.service';
 import { Attribute, AttributeName, SpecialAttributeName } from '../../models/attribute.model';
-import { ShadowRun5ECharacter } from '../../models/character.model';
+import { ShadowRun5ECharacter } from '../../models/new-character.model';
 import { PHYSICAL_LIMIT_TEXT, SOCIAL_LIMIT_TEXT, MENTAL_LIMIT_TEXT } from '../../common/constants';
 
 const attributeFormValidators = [Validators.required, Validators.min(0), Validators.max(99), Validators.pattern('^[0-9]*$')];
@@ -62,34 +62,42 @@ export class AttributeStepComponent implements OnInit {
                 body: this.formBuilder.group({
                     buildPoints: [this.character.attributes.body.buildPoints, attributeFormValidators],
                     increases: [this.character.attributes.body.increases, attributeFormValidators],
+                    exceptional: [this.character.attributes.body.exceptional, [Validators.required]],
                 }),
                 agility: this.formBuilder.group({
                     buildPoints: [this.character.attributes.agility.buildPoints, attributeFormValidators],
                     increases: [this.character.attributes.agility.increases, attributeFormValidators],
+                    exceptional: [this.character.attributes.agility.exceptional, [Validators.required]],
                 }),
                 reaction: this.formBuilder.group({
                     buildPoints: [this.character.attributes.reaction.buildPoints, attributeFormValidators],
                     increases: [this.character.attributes.reaction.increases, attributeFormValidators],
+                    exceptional: [this.character.attributes.reaction.exceptional, [Validators.required]],
                 }),
                 strength: this.formBuilder.group({
                     buildPoints: [this.character.attributes.strength.buildPoints, attributeFormValidators],
                     increases: [this.character.attributes.strength.increases, attributeFormValidators],
+                    exceptional: [this.character.attributes.strength.exceptional, [Validators.required]],
                 }),
                 willPower: this.formBuilder.group({
                     buildPoints: [this.character.attributes.willPower.buildPoints, attributeFormValidators],
                     increases: [this.character.attributes.willPower.increases, attributeFormValidators],
+                    exceptional: [this.character.attributes.willPower.exceptional, [Validators.required]],
                 }),
                 logic: this.formBuilder.group({
                     buildPoints: [this.character.attributes.logic.buildPoints, attributeFormValidators],
                     increases: [this.character.attributes.logic.increases, attributeFormValidators],
+                    exceptional: [this.character.attributes.logic.exceptional, [Validators.required]],
                 }),
                 intuition: this.formBuilder.group({
                     buildPoints: [this.character.attributes.intuition.buildPoints, attributeFormValidators],
                     increases: [this.character.attributes.intuition.increases, attributeFormValidators],
+                    exceptional: [this.character.attributes.intuition.exceptional, [Validators.required]],
                 }),
                 charisma: this.formBuilder.group({
                     buildPoints: [this.character.attributes.charisma.buildPoints, attributeFormValidators],
                     increases: [this.character.attributes.charisma.increases, attributeFormValidators],
+                    exceptional: [this.character.attributes.charisma.exceptional, [Validators.required]],
                 }),
             }),
 		});
@@ -157,6 +165,10 @@ export class AttributeStepComponent implements OnInit {
         return this.characterService.isAttributeValueValid(this.character, attributeName);
     }
 
+    doesCharacterHaveExceptionalAttributeQuality(): boolean {
+        return this.characterService.doesCharacterHaveQuality(this.character, 'exceptional attribute');
+    }
+
     isAttributeExceptional(AttributeName: AttributeName): boolean {
         return this.characterService.isAttributeExceptional(this.character, AttributeName);
     }
@@ -201,6 +213,10 @@ export class AttributeStepComponent implements OnInit {
 
     get prioritySpecialAttributePoints(): number {
         return this.characterService.getPriotityMetaTypeSpecialAttributePoints(this.character);
+    }
+
+    get doesCharacterHaveLuckyQuality(): boolean {
+        return this.characterService.doesCharacterHaveQuality(this.character, 'lucky');
     }
 
     // Limits

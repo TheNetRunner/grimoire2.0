@@ -2,7 +2,9 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
 import { DataStoreService } from '../../services/data-store.service';
-import { ShadowRun5ECharacter } from '../../models/character.model';
+import { NewDataStoreService } from '../../services/new-data-store.service';
+import { ShadowRun5ECharacter } from '../../models/new-character.model';
+import { ShadowRun5ECharacterData } from '../../models/new-character.interface';
 import { EDITOR_STEPS } from '../../common/constants';
 
 @Component({
@@ -13,7 +15,7 @@ import { EDITOR_STEPS } from '../../common/constants';
 export class EditViewComponent {
     private activedRoute = inject(ActivatedRoute);
     private router = inject(Router);
-    private dataStoreService = inject (DataStoreService);
+    private newDataStoreService = inject(NewDataStoreService);
 
     characterId: string = "";
     editorSteps: string[] = EDITOR_STEPS;
@@ -40,10 +42,10 @@ export class EditViewComponent {
         this.activedRoute.params.subscribe((params: Params) => {
             this.characterId = params['id']
 
-            this.dataStoreService.getCharacter(this.characterId).subscribe((character: ShadowRun5ECharacter) => {
+            this.newDataStoreService.getCharacter(this.characterId).subscribe((characterData: ShadowRun5ECharacterData) => {
 
-                if(character) {
-                    this.character = character;
+                if(characterData) {
+                    this.character = new ShadowRun5ECharacter(characterData);
                 } else {
                     this.router.navigate(['sr5e', 'characters']);
                 }

@@ -1,4 +1,4 @@
-<app-navbar *ngIf="character" [characterName]="character.name" [editorSteps]="editorSteps"></app-navbar>
+<app-navbar *ngIf="character" [characterName]="character.basic.name" [editorSteps]="editorSteps"></app-navbar>
 
 <div class="container-xxl">
     {{ character | json }}
@@ -29,30 +29,10 @@
             [character]="character"
         ></app-attribute-step>
 
-        <app-magician-step
-            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'magician'"
+        <app-magic-step
+            *ngIf="currentEditorStep === 'magic'"
             [character]="character"
-        ></app-magician-step>
-
-        <app-adept-step
-            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'adept'"
-            [character]="character"
-        ></app-adept-step>
-
-        <app-technomancer-step
-            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'technomancer'"
-            [character]="character"
-        ></app-technomancer-step>
-
-        <app-mystic-adept-step
-            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'mystic adept'"
-            [character]="character"
-        ></app-mystic-adept-step>
-
-        <app-aspected-magician-step
-            *ngIf="currentEditorStep === 'magic' && character.magicUserType === 'aspected magician'"
-            [character]="character"
-        ></app-aspected-magician-step>
+        ></app-magic-step>
 
     </div>
 </div>

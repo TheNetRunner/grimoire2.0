@@ -1,13 +1,14 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CharacterService } from '../../services/character.service';
-import { DataStoreService } from '../../services/data-store.service';
-import { LevelOfPlayName, MagicResonanceText, Priority, PriorityTableRow } from '../../models/priority-table.model';
-import { ShadowRun5ECharacter } from '../../models/character.model';
+import { NewDataStoreService } from '../../services/new-data-store.service';
+import { LevelOfPlayName, Priority, PriorityTable, PriorityTableRow } from '../../models/priority.model';
+import { PriorityTableService } from '../../services/priority-table.service';
+import { ShadowRun5ECharacter } from '../../models/new-character.model';
 import { priorityTable } from '../../data/priority-table.data';
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
-import { MetaTypeName, MetaTypeStartingValues } from '../../models/meta-types.model';
+import { MetaType } from '../../models/meta-type.model';
 import { MagicUserType } from '../../models/magic.model';
 
 @Component({
@@ -15,121 +16,73 @@ import { MagicUserType } from '../../models/magic.model';
   templateUrl: './priorities-step.component.html',
   styleUrl: './priorities-step.component.css'
 })
-export class PrioritiesStepComponent {
+export class PrioritiesStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
-    private dataStoreService = inject(DataStoreService);
-    private characterService = inject(CharacterService);
+    private priorityTableService = inject(PriorityTableService);
+    private newDataStoreService = inject(NewDataStoreService);
 
 	@Input() character!: ShadowRun5ECharacter;
 	availablePriorityOptions = Object.values(Priority);
-    priorityTable: PriorityTableRow[] = priorityTable;
-    magicUserTypeOptions: MagicUserType[] = [];
-
+    priorityTable: PriorityTable = priorityTable;
     priorityForm!: FormGroup;
-    magicUserTypeForm!: FormGroup;
+    
 
 	ngOnInit(): void {
-        this.setMagicUserTypeOptions();
-		this.generateForms();
+		this.generatePriorityForm();
 	}
 
-    generateForms(): void {
-        this.generatePriorityForm();
-        this.generateMagicUserTypeForm();
-    }
-
 	private generatePriorityForm(): void {
-		this.priorityForm = this.formBuilder.group({
-            priorities: this.formBuilder.group(
-                {
-                    metaType: [this.character.priorities.metaType, [Validators.required]],
-                    attributes: [this.character.priorities.attributes, [Validators.required]],
-                    magicResonance: [this.character.priorities.magicResonance, [Validators.required]],
-                    skills: [this.character.priorities.skills, [Validators.required]],
-                    resources: [this.character.priorities.resources, [Validators.required]],
-                },
-                { validators: areFormValuesUnique() }
-            )
-        });
+		this.priorityForm = this.formBuilder.group(
+            {
+                metaType: [this.character.priorities.metaType, [Validators.required]],
+                attributes: [this.character.priorities.attributes, [Validators.required]],
+                magic: [this.character.priorities.magic, [Validators.required]],
+                skills: [this.character.priorities.skills, [Validators.required]],
+                resources: [this.character.priorities.resources, [Validators.required]],
+            },
+            { validators: areFormValuesUnique() }
+        );
 
 		this.priorityForm.valueChanges.subscribe((formData: any) => {
 
             if(this.character.priorities.metaType !== formData.priorities.metaType) {
-                this.handleMetaTypePriorityChange();
+                this.character.handleMetaTypePriorityChange(formData.priorities.metaType);
+                this.newDataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
             }
 
-            if(this.character.priorities.magicResonance !== formData.priorities.magicResonance) {
-                this.handleMagicResonancePriorityChange();
+            if(this.character.priorities.magic !== formData.priorities.magic) {
+               this.character.handleMagicPriorityChange(formData.priorities.magic);
+               this.newDataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
             }
 
-            this.dataStoreService.updateCharacter(this.character.id, formData);
+            const update = { priorities: {...this.character.priorities, ...formData.priorities}};
+            this.newDataStoreService.updateCharacter(this.character.id, update);
 		});
     }
 
-    private generateMagicUserTypeForm(): void {
-        this.magicUserTypeForm = this.formBuilder.group({
-            magicUserType: [this.character.magicUserType]
-        });
-
-        this.magicUserTypeForm.valueChanges.subscribe((formData: any) => {
-            //TODO: create characerService method to handle magic user type change.
-            this.dataStoreService.updateCharacter(this.character.id, formData);
-        });
+    get levelOfPlayResources(): number {
+        return this.priorityTableService.getResourceAmountByLevelOfPlay(
+            this.character.priorities.resources, this.character.settings.levelOfPlay);
     }
 
-    handleMetaTypePriorityChange(): void {
-        const update = {
-            metaType: MetaTypeName.human,
-            image: "human_one"
-        }
-
-        this.dataStoreService.updateCharacter(this.character.id, update);
+    getPriorityMetaTypesFromTable(priority: Priority): PriorityTableRow['metaTypes'] {
+        return this.priorityTableService.getMetaTypes(priority);
     }
 
-    handleMagicResonancePriorityChange(): void {
-        this.character.magicUserType = MagicUserType.None;
-        this.character.magic = undefined;
-
-        this.setMagicUserTypeOptions();
-        this.resetMagicUserTypeForm();
-
-        this.dataStoreService.updateCharacter(this.character.id, this.character);
+    getPriorityAttributePointsFromTable(priority: Priority): number {
+        return this.priorityTableService.getAttributePoints(priority);
     }
 
-    resetMagicUserTypeForm(): void {
-        this.magicUserTypeForm.get('magicUserType')?.setValue(MagicUserType.None);
+    getPriorityMagicTextFromTable(priority: Priority): PriorityTableRow['magicText'] {
+        return this.priorityTableService.getMagicText(priority);
     }
 
-    setMagicUserTypeOptions(): void {
-        this.magicUserTypeOptions = this.characterService.getMagicUserTypeOptions(this.character);
+    getPrioritySkillsPointsFromTable(priority: Priority): PriorityTableRow['skills'] {
+        return this.priorityTableService.getSkills(priority);
     }
 
-    getLevelOfPlayResources(priority: Priority, levelOfPlay: LevelOfPlayName): number {
-        let amount = 0;
-        const priorityResourceAmounts = this.characterService.getPriorityResourceAmounts(priority);
-
-        if(priorityResourceAmounts) {
-            amount = priorityResourceAmounts[levelOfPlay];
-        }
-
-        return amount;
-    }
-
-    getPriorityMetaTypes(priority: Priority): MetaTypeStartingValues[] {
-        return this.characterService.getPriorityMetaTypes(priority);
-    }
-
-    getPriorityAttributePoints(priority: Priority): number {
-        return this.characterService.getPriorityAttributePoints(priority);
-    }
-
-    getPrioritySkillsPoints(priority: Priority): { skillPoints: number, skillGroupPoints: number } {
-        return this.characterService.getPrioritySkillsPoints(priority);
-    }
-
-    getPriorityMagicResonanceText(priority: Priority): MagicResonanceText[] {
-        return this.characterService.getPriorityMagicResonanceText(priority);
-
+    getResourceAmountByLevelOfPlayFromTable(priority: Priority): number {
+        return this.priorityTableService.getResourceAmountByLevelOfPlay(priority, this.character.settings.levelOfPlay);
     }
 
     get prioritiesFormGroup(): FormGroup {
@@ -138,9 +91,5 @@ export class PrioritiesStepComponent {
 
     get isFormValid(): boolean {
         return this.priorityForm.valid;
-    }
-
-    get levelOfPlayKey(): string {
-        return this.character.levelOfPlay;
     }
 }

@@ -1,163 +1,128 @@
-<div class="row">
-    
-    <div class="col-md-9">
+<div class="row my-3">
 
-        <div class="card bg-primary shadow mb-2">
+    <div class="col-4 d-flex align-items-center">
+        <h5 class="align-middle">Priorities</h5>
+    </div>
 
-            <div class="card-header">
-                <h5 class="card-title text-white m-0">Priorities</h5>
+    <div class="col-8">
+        <form class="row g-3 text-center justify-content-center" [formGroup]="prioritiesFormGroup">
+
+            <div class="col-2 text-center">
+
+                <label class="form-label" for="metatype">Meta Type</label>
+                <select class="form-select form-select-sm mx-auto" formControlName="metaType">
+                    <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
+                        {{ priority | titlecase }}
+                    </option>
+                </select>
+
             </div>
 
-            <div class="card-body">
-                <form [formGroup]="prioritiesFormGroup">
-                    <div class="row text-center justify-content-between">
+            <div class="col-2 text-center">
+                <label class="form-label" for="attributes">Attributes</label>
+                <select class="form-select form-select-sm mx-auto" formControlName="attributes">
+                    <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
+                        {{ priority | titlecase }}
+                    </option>
+                </select>
+            </div>
 
-                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
-                            <label class="form-label" for="metatype">Meta Type</label>
-                            <select class="form-select text-center w-70" formControlName="metaType">
-                                <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
-                                    {{ priority | titlecase }}
-                                </option>
-                            </select>
-                        </div>
+            <div class="col-2 text-center">
+                <label class="form-label text-nowrap" for="magicResonance">Magic / Resonance</label>
+                <select class="form-select form-select-sm mx-auto" formControlName="magicResonance">
+                    <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
+                        {{ priority | titlecase }}
+                    </option>
+                </select>
+            </div>
+            
+            <div class="col-2 text-center">
+                <label class="form-label" for="skills">Skills</label>
+                <select class="form-select form-select-sm mx-auto" formControlName="skills">
+                    <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
+                        {{ priority | titlecase }}
+                    </option>
+                </select>
+            </div>
 
-                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
-                            <label class="form-label" for="attributes">Attributes</label>
-                            <select class="form-select text-center w-70" formControlName="attributes">
-                                <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
-                                    {{ priority | titlecase }}
-                                </option>
-                            </select>
-                        </div>
+            <div class="col-2 text-center">
+                <label class="form-label" for="resources">Resources</label>
+                <select class="form-select form-select-sm mx-auto" formControlName="resources">
+                    <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
+                        {{ priority | titlecase }}
+                    </option>
+                </select>
+            </div>
 
-                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
-                            <label class="form-label text-nowrap" for="magicResonance">Magic / Resonance</label>
-                            <select class="form-select text-center w-70" formControlName="magicResonance">
-                                <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
-                                    {{ priority | titlecase }}
-                                </option>
-                            </select>
-                        </div>
-                        
-                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
-                            <label class="form-label" for="skills">Skills</label>
-                            <select class="form-select text-center w-70" formControlName="skills">
-                                <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
-                                    {{ priority | titlecase }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
-                            <label class="form-label" for="resources">Resources</label>
-                            <select class="form-select text-center w-70" formControlName="resources">
-                                <option *ngFor="let priority of availablePriorityOptions" [ngValue]="priority">
-                                    {{ priority | titlecase }}
-                                </option>
-                            </select>
-                        </div>
-
-                    </div>
-                </form>
-                <div class="row text-center mt-2" *ngIf="!isFormValid">
-                    <div class="col">
-                        <p class="text-warning m-0">Under normal circumstances, you may only set a priority level once.</p>
-                    </div>
+            <div class="row text-center mt-2" *ngIf="!isFormValid">
+                <div class="col">
+                    <p class="text-warning m-0">Under normal circumstances, you may only set a priority level once.</p>
                 </div>
             </div>
 
-        </div>
-    </div>
-
-    <div class="col-md-3">
-
-        <div class="card shadow bg-primary">
-
-            <div class="card-header">
-                <h5 class="card-title text-white m-0">Magic User Type</h5>
-            </div>
-
-            <div class="card-body d-flex justify-content-end flex-column">
-                <form [formGroup]="magicUserTypeForm">
-
-                    <div class="input-group">
-                        <select class="form-select" formControlName="magicUserType" name="magicUserType">
-                            <option [ngValue]="''">-- None --</option>
-                            <option *ngFor="let magicUserType of magicUserTypeOptions" [ngValue]="magicUserType">
-                                {{ magicUserType | titlecase }}
-                            </option>
-                        </select>
-                    </div>
-
-                </form>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
+
 <div class="row">
 
     <div class="col-12">
-        <div class="card bg-primary shadow mb-2">
-            <div class="card-header">
-                <h5 class="card-title text-white m-0">Priority Table</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
+        <div class="card shadow">
+            <div class="table-responsive">
 
-                        <thead>
-                            <tr class="text-center bg-primary">
-                                <th colspan="6">
-                                    <h5 class="m-0">Priority Table</h5>
-                                </th>
-                            </tr>
-                            <tr class="text-center">
-                                <th class="col-1" scope="col">Priority</th>
-                                <th class="col-2" scope="col">Meta Type</th>
-                                <th class="col-1" scope="col">Attributes</th>
-                                <th class="col-3" scope="col">Magic or Resonance</th>
-                                <th class="col-1" scope="col">Skills</th>
-                                <th class="col-1" scope="col">Resources</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let priority of availablePriorityOptions">
-                                <td class="text-center">
-                                    {{ priority | titlecase }}
-                                </td>
+                <table class="table table-striped">
 
-                                <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.metaType === priority }">
-                                    <ul class="list-unstyled">
-                                        <li *ngFor="let metaType of getPriorityMetaTypes(priority)">
-                                            {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
-                                        </li>
-                                    </ul>
-                                </td>
+                    <thead>
+                        <tr class="text-center bg-primary">
+                            <th colspan="6">
+                                <h5 class="m-0">Priority Table</h5>
+                            </th>
+                        </tr>
+                        <tr class="text-center">
+                            <th class="col-1" scope="col">Priority</th>
+                            <th class="col-2" scope="col">Meta Type</th>
+                            <th class="col-1" scope="col">Attributes</th>
+                            <th class="col-3" scope="col">Magic or Resonance</th>
+                            <th class="col-1" scope="col">Skills</th>
+                            <th class="col-1" scope="col">Resources</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let priority of availablePriorityOptions">
+                            <td class="text-center">
+                                {{ priority | titlecase }}
+                            </td>
 
-                                <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.attributes === priority }">
-                                    {{ getPriorityAttributePoints(priority) }}
-                                </td>
+                            <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.metaType === priority }">
+                                <ul class="list-unstyled">
+                                    <li *ngFor="let metaType of getPriorityMetaTypesFromTable(priority)">
+                                        {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
+                                    </li>
+                                </ul>
+                            </td>
 
-                                <td [ngClass]="{ 'text-info': this.character.priorities.magicResonance === priority }">
-                                    <ul class="list-unstyled">
-                                        <li *ngFor="let text of getPriorityMagicResonanceText(priority)">
-                                            <strong class="text-secondary">{{ text.title }}: </strong>{{ text.description }}
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.skills === priority }">
-                                    {{ getPrioritySkillsPoints(priority).skillPoints }}/{{ getPrioritySkillsPoints(priority).skillGroupPoints }}
-                                </td>
-                                <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.resources === priority }">
-                                    {{ getLevelOfPlayResources(priority, character. levelOfPlay) }} &#165;
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.attributes === priority }">
+                                {{ getPriorityAttributePointsFromTable(priority) }}
+                            </td>
+
+                            <td [ngClass]="{ 'text-info': this.character.priorities.magic === priority }">
+                                <ul class="list-unstyled">
+                                    <li *ngFor="let text of getPriorityMagicTextFromTable(priority)">
+                                        <strong class="text-secondary">{{ text.title }}: </strong>{{ text.description }}
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.skills === priority }">
+                                {{ getPrioritySkillsPointsFromTable(priority).skillPoints }}/{{ getPrioritySkillsPointsFromTable(priority).skillGroupPoints }}
+                            </td>
+                            <td class="text-center" [ngClass]="{ 'text-info': this.character.priorities.resources === priority }">
+                                {{ getResourceAmountByLevelOfPlayFromTable(priority) }} &#165;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
         </div>
     </div>
-
 </div>

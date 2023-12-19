@@ -1,4 +1,4 @@
-import { MetaTypeName } from "../models/meta-types.model";
+import { MetaTypeName } from "../models/meta-type.model";
 
 interface MetaTypeDescriptions {
 	[MetaTypeName.human]: MetaTypeDescription;

@@ -1,6 +1,6 @@
-import { MetaTypeName } from './meta-types.model';
+import { MetaType } from './meta-type.model';
 
-export enum AttributeName {
+export enum Attribute {
     Body = "body",
     Agility = "agility",
     Reaction = "reaction",
@@ -9,6 +9,9 @@ export enum AttributeName {
     Logic = "logic",
     Intuition = "intuition",
     Charisma = "charisma",
+    Magic = "magic",
+    Resonance = "resonance",
+    Edge = "edge",
 }
 
 export enum SpecialAttributeName {
@@ -17,20 +20,23 @@ export enum SpecialAttributeName {
     Resonance = "resonance",
 }
 
-export interface Attribute {
+export interface AttributeData {
+    baseValue: number;
+    maxValue: number;
     buildPoints: number;
     increases: number;
+    exceptional: boolean;
 }
 
 export interface Attributes {
-    [AttributeName.Body]: Attribute;
-    [AttributeName.Agility]: Attribute;
-    [AttributeName.Reaction]: Attribute;
-    [AttributeName.Strength]: Attribute;
-    [AttributeName.WillPower]: Attribute;
-    [AttributeName.Logic]: Attribute;
-    [AttributeName.Intuition]: Attribute;
-    [AttributeName.Charisma]: Attribute;
+    [Attribute.Body]: Attribute;
+    [Attribute.Agility]: Attribute;
+    [Attribute.Reaction]: Attribute;
+    [Attribute.Strength]: Attribute;
+    [Attribute.WillPower]: Attribute;
+    [Attribute.Logic]: Attribute;
+    [Attribute.Intuition]: Attribute;
+    [Attribute.Charisma]: Attribute;
 }
 
 export interface AttributeMinMax {
@@ -39,7 +45,7 @@ export interface AttributeMinMax {
 }
 
 export interface AttributesTableRow {
-    metaTypeName: MetaTypeName;
+    metaTypeName: MetaType;
     racial: string;
     attributes: Attributes;
 }

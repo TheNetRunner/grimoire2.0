@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
 
-import { ShadowRun5ECharacter } from '../../models/character.model';
+import { ShadowRun5ECharacter } from '../../models/new-character.model';
 import { CharacterService } from '../../services/character.service';
-import { LevelOfPlayName } from '../../models/priority-table.model';
+import { LevelOfPlayName } from '../../models/priority.model';
 import { RoleName } from '../../models/character.model';
 
 
@@ -25,7 +25,6 @@ export class ConceptStepComponent implements OnInit {
     roleOptions: string[] = Object.values(RoleName);
     levelsOfPlay: LevelOfPlayName[] = Object.values(LevelOfPlayName);
     
-
     personalInfoForm!: FormGroup;
     gameSettingsForm!: FormGroup;
     bioForm!: FormGroup;
@@ -43,46 +42,49 @@ export class ConceptStepComponent implements OnInit {
 
     generatePersonalInfoForm(): void {
         this.personalInfoForm = this.formBuilder.group({
-            name: [this.character.name, [Validators.required, Validators.minLength(3)]],
-            role: [this.character.role, [Validators.required]],
-            ethnicity: [this.character.ethnicity],
-            age: [this.character.age],
-            gender: [this.character.gender],
-            height: [this.character.height],
-            weight: [this.character.weight],
-            streetCred: [this.character.streetCred],
-            notoriety: [this.character.notoriety],
-            publicAwareness: [this.character.publicAwareness],
-            misc: [this.character.misc],
+            name: [this.character.basic.name, [Validators.required, Validators.minLength(3)]],
+            role: [this.character.basic.role, [Validators.required]],
+            ethnicity: [this.character.basic.ethnicity],
+            age: [this.character.basic.age],
+            gender: [this.character.basic.gender],
+            eyes: [this.character.basic.eyes],
+            hair: [this.character.basic.hair],
+            height: [this.character.basic.height],
+            weight: [this.character.basic.weight],
+            streetCred: [this.character.basic.streetCred],
+            notoriety: [this.character.basic.notoriety],
+            publicAwareness: [this.character.basic.publicAwareness],
+            misc: [this.character.basic.misc],
         });
 
         this.personalInfoForm.valueChanges.subscribe((formData: any) => {
             if(this.personalInfoForm.valid) {
-                this.dataStoreService.updateCharacter(this.character.id, formData);
+                const update = {...this.character.basic, ...formData};
+                this.dataStoreService.updateCharacter(this.character.id, update);
             }
         });
     }
 
     generateGameSettingsForm(): void {
         this.gameSettingsForm = this.formBuilder.group({
-            levelOfPlay: [this.character.levelOfPlay]
+            levelOfPlay: [this.character.settings.levelOfPlay]
         });
 
         this.gameSettingsForm.valueChanges.subscribe((formData: any) => {
-            if(this.gameSettingsForm.valid) {
-                this.dataStoreService.updateCharacter(this.character.id, formData);
-            }
+            const update = {...this.character.settings, ...formData};
+            this.dataStoreService.updateCharacter(this.character.id, update);
         });
     }
 
     generateBioForm(): void {
         this.bioForm = this.formBuilder.group({
-            bio: [this.character.bio]
+            bio: [this.character.basic.bio]
         })
 
         this.bioForm.valueChanges.subscribe((formData: any) => {
             if(this.bioForm.valid) {
-                this.dataStoreService.updateCharacter(this.character.id, formData);
+                const update = {...this.character.basic, bio: formData.bio};
+                this.dataStoreService.updateCharacter(this.character.id, update);
             }
         });
 
