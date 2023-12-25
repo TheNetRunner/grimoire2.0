@@ -1,15 +1,14 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { CharacterService } from '../../services/character.service';
-import { NewDataStoreService } from '../../services/new-data-store.service';
-import { LevelOfPlayName, Priority, PriorityTable, PriorityTableRow } from '../../models/priority.model';
+import { DataStoreService } from '../../services/data-store.service';
+import { LevelOfPlayName, Priority, PriorityTable, PriorityTableRow } from '../../models/priority.interface';
 import { PriorityTableService } from '../../services/priority-table.service';
-import { ShadowRun5ECharacter } from '../../models/new-character.model';
+import { ShadowRun5ECharacter } from '../../models/character.model';
 import { priorityTable } from '../../data/priority-table.data';
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
 import { MetaType } from '../../models/meta-type.model';
-import { MagicUserType } from '../../models/magic.model';
+import { MagicUserType } from '../../models/magic.interface';
 
 @Component({
   selector: 'app-priorities-step',
@@ -19,7 +18,7 @@ import { MagicUserType } from '../../models/magic.model';
 export class PrioritiesStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
     private priorityTableService = inject(PriorityTableService);
-    private newDataStoreService = inject(NewDataStoreService);
+    private dataStoreService = inject(DataStoreService);
 
 	@Input() character!: ShadowRun5ECharacter;
 	availablePriorityOptions = Object.values(Priority);
@@ -44,19 +43,18 @@ export class PrioritiesStepComponent implements OnInit {
         );
 
 		this.priorityForm.valueChanges.subscribe((formData: any) => {
-
-            if(this.character.priorities.metaType !== formData.priorities.metaType) {
-                this.character.handleMetaTypePriorityChange(formData.priorities.metaType);
-                this.newDataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+            if(this.character.priorities.metaType !== formData.metaType) {
+                this.character.handleMetaTypePriorityChange(formData.metaType);
+                this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
             }
 
-            if(this.character.priorities.magic !== formData.priorities.magic) {
-               this.character.handleMagicPriorityChange(formData.priorities.magic);
-               this.newDataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+            if(this.character.priorities.magic !== formData.magic) {
+               this.character.handleMagicPriorityChange(formData.magic);
+               this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
             }
 
-            const update = { priorities: {...this.character.priorities, ...formData.priorities}};
-            this.newDataStoreService.updateCharacter(this.character.id, update);
+            this.character.priorities = formData;
+            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
 		});
     }
 

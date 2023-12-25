@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { Quality } from '../../models/quality.model';
+import { Quality } from '../../models/quality.interface';
 
 @Component({
   selector: 'app-quality-unselected-list-item',

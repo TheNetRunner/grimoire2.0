@@ -3,8 +3,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DeleteCharacterComponent } from '../../modals/delete-character/delete-character.component';
-import { ShadowRun5ECharacterData } from '../../models/new-character.interface';
-import { NewDataStoreService } from '../../services/new-data-store.service';
+import { ShadowRun5ECharacterData } from '../../models/character.interface';
+import { DataStoreService } from '../../services/data-store.service';
 
 
 
@@ -16,7 +16,7 @@ import { NewDataStoreService } from '../../services/new-data-store.service';
 })
 export class ListViewComponent {
     modalService = inject(NgbModal);
-    newDataStoreService = inject(NewDataStoreService);
+    dataStoreService = inject(DataStoreService);
 
     characters: ShadowRun5ECharacterData[] = [];
 
@@ -25,13 +25,13 @@ export class ListViewComponent {
     }
 
     getCharacters(): void {
-        this.newDataStoreService.getCharacters().subscribe((characters: ShadowRun5ECharacterData[]) => {
+        this.dataStoreService.getCharacters().subscribe((characters: ShadowRun5ECharacterData[]) => {
             this.characters = characters;
         });
     }
 
     createCharacter(): void { 
-        this.newDataStoreService.createCharacter();
+        this.dataStoreService.createCharacter();
     }
 
     copyCharacter(characterIndex: number): void {
@@ -39,7 +39,7 @@ export class ListViewComponent {
             const originalCharacter = this.characters[characterIndex];
             const characterCopy = {...originalCharacter, id: uuidv4(), name: `${originalCharacter.basic.name} copy`}
 
-            this.newDataStoreService.addCharacterToDatabase(characterCopy);
+            this.dataStoreService.addCharacterToDatabase(characterCopy);
         }
     }
     get totalCharacters(): number {
@@ -52,7 +52,7 @@ export class ListViewComponent {
         modelRef.componentInstance.character = character;
 
         modelRef.componentInstance.deleteCharacterEvent.subscribe((characterId: string) => {
-            this.newDataStoreService.deleteCharacter(characterId);
+            this.dataStoreService.deleteCharacter(characterId);
         });
     }
 }

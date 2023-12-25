@@ -18,8 +18,8 @@
                         </div>
                         <form [formGroup]="imageForm">
                             <select class="form-select" formControlName="image">
-                                <option *ngFor="let suffex of imageSuffex" [ngValue]="getMetaTypeFormValue() + '_' + suffex">
-                                    {{ getMetaTypeFormValue() | titlecase }} {{ suffex | titlecase }}
+                                <option *ngFor="let suffex of imageSuffex" [ngValue]="metaTypeFormValue + '_' + suffex">
+                                    {{ metaTypeFormValue | titlecase }} {{ suffex | titlecase }}
                                 </option>
                             </select>
                         </form>
@@ -33,7 +33,7 @@
                             </p>
 
                             <p>
-                                <i class="text-info">Racial: </i>{{ metaTypeRacial }}
+                                <i class="text-info">Racial: </i>{{ getMetaTypeRacial() }}
                             </p>
                         </div>
 
@@ -41,7 +41,7 @@
                         
                         <form [formGroup]="metaTypeForm">
                             <select class="form-select mt-2" formControlName="metaType">
-                                <option *ngFor="let metaType of getMetaTypeOptions()" [ngValue]="metaType.name">
+                                <option *ngFor="let metaType of getMetaTypesFromTable()" [ngValue]="metaType.name">
                                     {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
                                 </option>
                             </select>

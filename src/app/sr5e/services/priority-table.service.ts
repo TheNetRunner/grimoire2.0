@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { LevelOfPlay } from '../models/new-character.interface';
-import { Priority, PriorityTableRow } from '../models/priority.model';
+import { LevelOfPlay } from '../models/settings.interface';
+import { Priority, PriorityTableRow } from '../models/priority.interface';
 import { priorityTable } from '../data/priority-table.data';
 
 @Injectable({

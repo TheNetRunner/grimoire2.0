@@ -3,10 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
 
-import { ShadowRun5ECharacter } from '../../models/new-character.model';
-import { CharacterService } from '../../services/character.service';
-import { LevelOfPlayName } from '../../models/priority.model';
-import { RoleName } from '../../models/character.model';
+import { ShadowRun5ECharacter } from '../../models/character.model';
+import { LevelOfPlayName } from '../../models/priority.interface';
+import { RoleName } from '../../models/character.interface';
 
 
 
@@ -17,7 +16,6 @@ import { RoleName } from '../../models/character.model';
 })
 export class ConceptStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
-    private characterService = inject(CharacterService);
     private dataStoreService = inject(DataStoreService);
 
     @Input() character!: ShadowRun5ECharacter
@@ -55,12 +53,13 @@ export class ConceptStepComponent implements OnInit {
             notoriety: [this.character.basic.notoriety],
             publicAwareness: [this.character.basic.publicAwareness],
             misc: [this.character.basic.misc],
+            bio: [this.character.basic.bio]
         });
 
         this.personalInfoForm.valueChanges.subscribe((formData: any) => {
             if(this.personalInfoForm.valid) {
-                const update = {...this.character.basic, ...formData};
-                this.dataStoreService.updateCharacter(this.character.id, update);
+                this.character.basic = formData;
+                this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
             }
         });
     }
@@ -71,8 +70,8 @@ export class ConceptStepComponent implements OnInit {
         });
 
         this.gameSettingsForm.valueChanges.subscribe((formData: any) => {
-            const update = {...this.character.settings, ...formData};
-            this.dataStoreService.updateCharacter(this.character.id, update);
+            this.character.levelOfPlay = formData.levelOfPlay;
+            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
         });
     }
 
@@ -83,8 +82,8 @@ export class ConceptStepComponent implements OnInit {
 
         this.bioForm.valueChanges.subscribe((formData: any) => {
             if(this.bioForm.valid) {
-                const update = {...this.character.basic, bio: formData.bio};
-                this.dataStoreService.updateCharacter(this.character.id, update);
+                this.character.bio = formData.bio;
+                this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
             }
         });
 

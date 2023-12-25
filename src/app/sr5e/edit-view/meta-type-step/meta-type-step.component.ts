@@ -2,15 +2,17 @@ import { Component, Input, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
-import { CharacterService } from '../../services/character.service';
 
-import { MetaTypeStartingValues, MetaTypeDescription } from '../../models/meta-type.model';
-import { ShadowRun5ECharacter } from '../../models/new-character.model';
-import { MetaTypeName } from '../../models/meta-type.model';
+import { MetaTypeDescription } from '../../models/meta-type.model';
+import { ShadowRun5ECharacter } from '../../models/character.model';
+import { MetaType } from '../../models/meta-type.model';
 
 import { IMAGE_SUFFEX } from '../../common/constants';
 import { metaTypeDescriptions } from '../../data/meta-type-descriptions.data';
-import { attributesTable } from '../../data/meta-type-attribute-table.data';
+import { MetaTypeService } from '../../services/meta-type.service';
+
+import { PriorityTableService } from '../../services/priority-table.service';
+import { PriorityTableRow } from '../../models/priority.interface';
 
 
 @Component({
@@ -20,14 +22,13 @@ import { attributesTable } from '../../data/meta-type-attribute-table.data';
 })
 export class MetaTypeStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
+    private priorityTableService = inject(PriorityTableService);
+    private metaTypeService = inject(MetaTypeService);
     private dataStoreService = inject(DataStoreService);
-    private characterService = inject(CharacterService);
 
 	@Input() character!: ShadowRun5ECharacter;
 
-    imageSuffex = IMAGE_SUFFEX;
-    metaTypeDescriptions = metaTypeDescriptions;
-    attributesTable = attributesTable;
+    imageSuffex: string[] = IMAGE_SUFFEX;
 	metaTypeForm!: FormGroup;
     imageForm!: FormGroup;
 
@@ -42,12 +43,17 @@ export class MetaTypeStepComponent implements OnInit {
 
     generateImageForm(): void {
         this.imageForm = this.formBuilder.group({
-            image: [this.character.image, Validators.required],
+            image: [this.character.imageName, Validators.required],
         });
 
         this.imageForm.valueChanges.subscribe((formData: any) => {
-            this.dataStoreService.updateCharacter(this.character.id, formData);
+            this.character.imageName = formData.image;
+            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
         });
+    }
+    
+    get imageFormValue(): string {
+        return this.imageForm.get('image')?.value;
     }
 
     generateMetaTypeForm(): void {
@@ -60,40 +66,28 @@ export class MetaTypeStepComponent implements OnInit {
         });
     }
 
-    handleMetaTypeChange(formData: any): void {
-        let updates = formData;
-        const newImageValue = `${formData.metaType}_one`;
-
-        updates.image = this.setImageFormValue(newImageValue);
-
-        this.dataStoreService.updateCharacter(this.character.id, formData);
-    }
-
-    getMetaTypeOptions(): MetaTypeStartingValues[] {
-        return this.characterService.getPriorityMetaTypes(this.character.priorities.metaType)
-    }
-
-    getMetaTypeFormValue(): string {
+    get metaTypeFormValue(): string {
         return this.metaTypeForm.get('metaType')?.value;
     }
 
-    getImageFormValue(): string {
-        return this.imageForm.get('image')?.value;
-    }
-
-    setImageFormValue(value: string) {
-        this.imageForm.get('image')?.setValue(value);
+    handleMetaTypeChange(formData: any): void {
+        this.character.handleMetaTypeChange(formData.metaType);
+        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }
 
     getImageUrl(): string {
-        return `../../../assets/imgs/shadow-run/${this.character.image}.png`;
+        return `../../../assets/imgs/shadow-run/${this.character.imageName}.png`;
     }
 
-    getMetaTypeDescription(metaTypeName: MetaTypeName): MetaTypeDescription {
+    getMetaTypesFromTable(): PriorityTableRow['metaTypes'] {
+        return this.priorityTableService.getMetaTypes(this.character.priorities.metaType);
+    }
+
+    getMetaTypeDescription(metaTypeName: MetaType): MetaTypeDescription {
         return metaTypeDescriptions[metaTypeName];
     }
 
-    get metaTypeRacial(): string {
-        return this.characterService.getMetaTypeRecialAbility(this.character);
+    getMetaTypeRacial(): string {
+        return this.metaTypeService.getMetaTypeRacialAbilities(this.character.metaType);
     }
 }

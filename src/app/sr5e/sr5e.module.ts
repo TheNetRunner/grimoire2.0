@@ -19,11 +19,6 @@ import { AttributeStepComponent } from './edit-view/attribute-step/attribute-ste
 import { NavbarComponent } from './edit-view/navbar/navbar.component';
 import { SpellListComponent } from './components/spell-list/spell-list.component';
 import { SpellListItemComponent } from './components/spell-list-item/spell-list-item.component';
-import { MagicianStepComponent } from './edit-view/magician-step/magician-step.component';
-import { MysticAdeptStepComponent } from './edit-view/mystic-adept-step/mystic-adept-step.component';
-import { AdeptStepComponent } from './edit-view/adept-step/adept-step.component';
-import { AspectedMagicianStepComponent } from './edit-view/aspected-magician-step/aspected-magician-step.component';
-import { TechnomancerStepComponent } from './edit-view/technomancer-step/technomancer-step.component';
 import { QualitiesStepComponent } from './edit-view/qualities-step/qualities-step.component';
 import { QualityUnselectedListItemComponent } from './components/quality-unselected-list-item/quality-unselected-list-item.component';
 import { QualitySelectedListItemComponent } from './components/quality-selected-list-item/quality-selected-list-item.component';
@@ -43,11 +38,6 @@ import { QualityExceptionalAttrSelectedListItemComponent } from './components/qu
     NavbarComponent,
     SpellListComponent,
     SpellListItemComponent,
-    MagicianStepComponent,
-    MysticAdeptStepComponent,
-    AdeptStepComponent,
-    AspectedMagicianStepComponent,
-    TechnomancerStepComponent,
     QualitiesStepComponent,
     QualityUnselectedListItemComponent,
     QualitySelectedListItemComponent,

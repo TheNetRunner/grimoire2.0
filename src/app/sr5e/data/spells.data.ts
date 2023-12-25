@@ -1,4 +1,4 @@
-import { Spell } from "../models/magic.model";
+import { Spell } from "../models/magic.interface";
 
 const combatSpells: Spell[] = [
     {

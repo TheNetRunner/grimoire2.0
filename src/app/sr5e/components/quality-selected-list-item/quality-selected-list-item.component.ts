@@ -1,8 +1,8 @@
 import { Component, Input, Output, inject, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { QualityReference, Quality, QualityOption } from '../../models/quality.model';
-import { CharacterService } from '../../services/character.service';
+import { QualityReference, Quality, QualityOption } from '../../models/quality.interface';
+import { QualityService } from '../../services/quality.service';
 
 @Component({
   selector: 'app-quality-selected-list-item',
@@ -10,11 +10,11 @@ import { CharacterService } from '../../services/character.service';
   styleUrl: './quality-selected-list-item.component.css'
 })
 export class QualitySelectedListItemComponent implements OnInit {
-    private characterService = inject(CharacterService);
+    private qualityService = inject(QualityService);
     private formBuilder = inject(FormBuilder);
 
     @Input() qualityReference!: QualityReference;
-    @Output() qualityReferenceRatingChange = new EventEmitter<QualityReference>();
+    @Output() qualityReferenceRatingChange = new EventEmitter<{ id: string, ratingValue: number }>();
     @Output() qualityReferenceOptionChange = new EventEmitter<QualityReference>();
     @Output() removeQualityEvent = new EventEmitter<string>();
 
@@ -26,7 +26,7 @@ export class QualitySelectedListItemComponent implements OnInit {
     
 
     ngOnInit(): void {
-        this.quality = this.characterService.getQualityByName(this.qualityReference.name);
+        this.quality = this.qualityService.getQualityByName(this.qualityReference.name);
         this.generateForms();
         this.setQualityOptions();
     }
@@ -40,12 +40,14 @@ export class QualitySelectedListItemComponent implements OnInit {
         if(this.quality && this.quality?.maxRating > 1) {
 
             this.ratingForm = this.formBuilder.group({
-                rating: [this.qualityReference.ratingValue]
+                ratingValue: [this.qualityReference.ratingValue]
             });
 
             this.ratingForm.valueChanges.subscribe((formData: any) => {
-                this.qualityReference.ratingValue = formData.rating;
-                this.qualityReferenceRatingChange.emit(this.qualityReference);
+                this.qualityReferenceRatingChange.emit({ 
+                    id: this.qualityReference.id, 
+                    ratingValue: formData.ratingValue 
+                });
             });
         }
     }
@@ -75,18 +77,13 @@ export class QualitySelectedListItemComponent implements OnInit {
     }
 
     getQualityMaxRating(qualityName: string): number {
-       let maxRating = this.characterService.getQualityMaxRating(qualityName);
+       let maxRating = this.qualityService.getQualityMaxRating(qualityName);
 
         if(maxRating) {
             return maxRating;
         }
 
        return 0;
-    }
-
-    getQualityKarmaCost(): number {
-        const currentRating = this.qualityReference.ratingValue || 1;
-        return this.characterService.getQualityKarmaCost(currentRating, this.qualityReference.name);
     }
 
     get optionFormValue(): string {

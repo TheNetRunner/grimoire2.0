@@ -1,13 +1,18 @@
 import { Component, Input, inject, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { Attribute } from '../../models/attribute.interface';
 import { DataStoreService } from '../../services/data-store.service';
-import { CharacterService } from '../../services/character.service';
-import { Attribute, AttributeName, SpecialAttributeName } from '../../models/attribute.model';
-import { ShadowRun5ECharacter } from '../../models/new-character.model';
 import { PHYSICAL_LIMIT_TEXT, SOCIAL_LIMIT_TEXT, MENTAL_LIMIT_TEXT } from '../../common/constants';
+import { PriorityTableService } from '../../services/priority-table.service';
+import { ShadowRun5ECharacter } from '../../models/character.model';
 
-const attributeFormValidators = [Validators.required, Validators.min(0), Validators.max(99), Validators.pattern('^[0-9]*$')];
+const attributeFormValidators = [
+    Validators.required, 
+    Validators.min(0), 
+    Validators.max(99), 
+    Validators.pattern('^[0-9]*$')
+];
 
 @Component({
   selector: 'app-attribute-step',
@@ -17,12 +22,11 @@ const attributeFormValidators = [Validators.required, Validators.min(0), Validat
 export class AttributeStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
     private dataStoreService = inject(DataStoreService);
-    private characterService = inject(CharacterService);
+    private priorityTableService = inject(PriorityTableService);
 
 	@Input() character!: ShadowRun5ECharacter;
 
-    attributeNames: AttributeName[] = Object.values(AttributeName);
-    specialAttributeNames: SpecialAttributeName[] = [];
+    attributes: Attribute[] = Object.values(Attribute);
 	attributeForm!: FormGroup;
     specialAttributeForm!: FormGroup;
 
@@ -31,25 +35,8 @@ export class AttributeStepComponent implements OnInit {
     socialLimitText = SOCIAL_LIMIT_TEXT;
 
     ngOnInit(): void {
-        this.setSpecialAttributeNames();
 		this.generateForms();
 	}
-
-    setSpecialAttributeNames(): void {
-        let specialAttributeNames: SpecialAttributeName[] = [SpecialAttributeName.Edge];
-        const isCharacterMagicUser = this.characterService.isCharacterMagicUser(this.character);
-        const isCharacterTechnomancer = this.characterService.isCharacterTechnomancer(this.character);
-
-        if(isCharacterMagicUser) {
-            specialAttributeNames.push(SpecialAttributeName.Magic);
-        }
-
-        if(isCharacterTechnomancer) {
-            specialAttributeNames.push(SpecialAttributeName.Resonance);
-        }
-
-        this.specialAttributeNames = specialAttributeNames;
-    }
 
     generateForms(): void {
         this.generateAttributesForm();
@@ -110,126 +97,105 @@ export class AttributeStepComponent implements OnInit {
 	}
 
     generateSpecialAttributeForm(): void {
-        this.specialAttributeForm = this.formBuilder.group({
-        });
-
-        for(const specialAttributeName of this.specialAttributeNames) {
-            this.specialAttributeForm.addControl(specialAttributeName, this.formBuilder.group({
-                buildPoints: [this.character.specialAttributes[specialAttributeName].buildPoints, attributeFormValidators],
-                increases: [this.character.specialAttributes[specialAttributeName].increases, attributeFormValidators],
-            }));
-        }
-
-        this.specialAttributeForm.valueChanges.subscribe((formData: any) => {
-            const update = {
-                specialAttributes: formData
-            }
-
-            if (this.specialAttributeForm.valid) {
-                this.dataStoreService.updateCharacter(this.character.id, update);
-            }
-        });
+        this.specialAttributeForm = this.formBuilder.group({});
     }
 
-    getAttributeFormGroupByName(attributeName: AttributeName): FormGroup | undefined {
+    getAttributeFormGroupByName(attribute: Attribute): FormGroup | undefined {
         const attributesFormGroup = this.attributeForm.get('attributes') as FormGroup;
-        const attributeFormGroup = attributesFormGroup?.get(attributeName) as FormGroup;
+        const attributeFormGroup = attributesFormGroup?.get(attribute) as FormGroup;
         return attributeFormGroup;
     }
 
-    isFormControlValid(attributeName: AttributeName, controlName: string): boolean | undefined {
-        const attributeFormGroup = this.getAttributeFormGroupByName(attributeName);
+    isFormControlValid(attribute: Attribute, controlName: string): boolean | undefined {
+        const attributeFormGroup = this.getAttributeFormGroupByName(attribute);
         return attributeFormGroup?.get(controlName)?.valid;
     }
 
-    hasFormControlBeenTouched(attributeName: AttributeName, controlName: string): boolean | undefined {
-        const attributeFormGroup = this.getAttributeFormGroupByName(attributeName);
+    hasFormControlBeenTouched(attribute: Attribute, controlName: string): boolean | undefined {
+        const attributeFormGroup = this.getAttributeFormGroupByName(attribute);
         return attributeFormGroup?.get(controlName)?.touched;
     }
 
     // Attribute
 
-    getAttributeTotalValue(attributeName: AttributeName): number { 
-        return this.characterService.attributeTotalValue(this.character, attributeName);
+    getAttributeTotalValue(attribute: Attribute): number { 
+        return this.character.getAttributeTotalValue(attribute);
     }
 
-    getAttributeMinValue(attributeName: AttributeName): number {
-        return this.characterService.getAttributeMinimumValue(this.character, attributeName);
+    getAttributeMinValue(attribute: Attribute): number | undefined {
+        return this.character.getAttributeByName(attribute).racialBaseValue;
     }
 
-    getAttributeMaxValue(attributeName: AttributeName): number {
-        return this.characterService.getAttributeMaximumValue(this.character, attributeName);
+    getAttributeMaxValue(attribute: Attribute): number | undefined {
+        return this.character.getAttributeByName(attribute).racialMaxValue;
     }
 
-    isAttributeTotalValueGreaterThanMax(attributeName: AttributeName): boolean {
-        return this.characterService.isAttributeValueValid(this.character, attributeName);
+    isAttributeTotalValueGreaterThanMax(attribute: Attribute): boolean {
+        return this.character.isAttributeAboveMaximum(attribute);
     }
 
-    doesCharacterHaveExceptionalAttributeQuality(): boolean {
-        return this.characterService.doesCharacterHaveQuality(this.character, 'exceptional attribute');
-    }
-
-    isAttributeExceptional(AttributeName: AttributeName): boolean {
-        return this.characterService.isAttributeExceptional(this.character, AttributeName);
+    isAttributeExceptional(attribute: Attribute): boolean {
+        return this.character.getAttributeByName(attribute).exceptional;
     }
 
     get getAllAttributeBuildPoints(): number {
-        return this.characterService.getAllAttributeBuildPoints(this.character);
+        return this.character.getAttributeBuildPointsTotal();
     }
 
-    get allAttributeTotalIncreasesCost(): number {
-        return this.characterService.allAttributeTotalIncreasesCost(this.character);
+    get getAttributeIncreaseCostTotal(): number {
+        return this.character.getAttributeIncreaseCostTotal();
     }
 
     get initiative(): number {
-        return this.characterService.initiative(this.character);
+        return this.character.initiative;
     }
 
     get priorityAttributePoints(): number {
-        return this.characterService.getCharacterPriorityAttributePoints(this.character);
+        const priority = this.character.priorities.attributes;
+        return this.priorityTableService.getAttributePoints(priority);
     }
 
     // Special Attribute
 
-    getSpecialAttributeTotalValue(specialAttributeName: SpecialAttributeName): number { 
-        return this.characterService.specialAttributeTotalValue(this.character, specialAttributeName);
-    }
+    // getSpecialAttributeTotalValue(specialAttributeName: SpecialAttributeName): number { 
+    //     return this.characterService.specialAttributeTotalValue(this.character, specialAttributeName);
+    // }
 
-    getSpecialAttributeMinValue(specialAttributeName: SpecialAttributeName): number {
-        return this.characterService.getSpecialAttributeMinimumValue(this.character, specialAttributeName);
-    }
+    // getSpecialAttributeMinValue(specialAttributeName: SpecialAttributeName): number {
+    //     return this.characterService.getSpecialAttributeMinimumValue(this.character, specialAttributeName);
+    // }
 
-    getSpecialAttributeMaxValue(specialAttributeName: SpecialAttributeName): number {
-        return this.characterService.getSpecialAttributeMaximumValue(this.character, specialAttributeName);
-    }
+    // getSpecialAttributeMaxValue(specialAttributeName: SpecialAttributeName): number {
+    //     return this.characterService.getSpecialAttributeMaximumValue(this.character, specialAttributeName);
+    // }
 
-    isSpecialAttributeTotalValueGreaterThanMax(specialAttributeName: SpecialAttributeName): boolean {
-        return this.characterService.isSpecialAttributeValueValid(this.character, specialAttributeName);
-    }
+    // isSpecialAttributeTotalValueGreaterThanMax(specialAttributeName: SpecialAttributeName): boolean {
+    //     return this.characterService.isSpecialAttributeValueValid(this.character, specialAttributeName);
+    // }
 
-    get allSpecialAttributeBuildPoints(): number {
-        return this.characterService.getAllSpecialAttributeBuildPoints(this.character);
-    }
+    // get allSpecialAttributeBuildPoints(): number {
+    //     return this.characterService.getAllSpecialAttributeBuildPoints(this.character);
+    // }
 
-    get prioritySpecialAttributePoints(): number {
-        return this.characterService.getPriotityMetaTypeSpecialAttributePoints(this.character);
-    }
+    // get prioritySpecialAttributePoints(): number {
+    //     return this.characterService.getPriotityMetaTypeSpecialAttributePoints(this.character);
+    // }
 
-    get doesCharacterHaveLuckyQuality(): boolean {
-        return this.characterService.doesCharacterHaveQuality(this.character, 'lucky');
-    }
+    // get doesCharacterHaveLuckyQuality(): boolean {
+    //     return this.characterService.doesCharacterHaveQuality(this.character, 'lucky');
+    // }
 
     // Limits
 
     get physicalLimit(): number {
-        return this.characterService.physicalLimit(this.character);
+        return this.character.physicalLimit;
     }
 
     get mentalLimit(): number {
-        return this.characterService.mentalLimit(this.character);
+        return this.character.mentalLimit;
     }
 
     get socialLimit(): number {
-        return this.characterService.socialLimit(this.character);
+        return this.character.socialLimit;
     }
 }

@@ -1,6 +1,6 @@
 import { MetaType } from "./meta-type.model";
-import { MagicUserType } from "./magic.model";
-import { Adept, AspectedMagician, Magician, MysticAdept, Technomancer } from "./magic.model";
+import { MagicUserType } from "./magic.interface";
+import { Adept, AspectedMagician, Magician, MysticAdept, Technomancer } from "./magic.interface";
 
 export enum Priority {
     A = 'a',

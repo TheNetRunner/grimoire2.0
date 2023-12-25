@@ -1,6 +1,11 @@
-import { ShadowRun5ECharacterData, MetaType, MagicUserType, RoleName, LevelOfPlayName, Attribute, Priority } from '../models/new-character.interface';
+import { ShadowRun5ECharacterData, RoleName } from '../models/character.interface';
+import { Attribute, MagicAttribute } from '../models/attribute.interface';
+import { Priority } from '../models/priority.interface';
+import { MetaType } from '../models/meta-type.model';
+import { MagicUserType } from '../models/magic.interface';
+import { LevelOfPlay } from '../models/settings.interface';
 
-export const newCharacterObject: ShadowRun5ECharacterData = {
+export const characterObject: ShadowRun5ECharacterData = {
     id: "",
     basic: {
         name: "New Character",
@@ -17,10 +22,11 @@ export const newCharacterObject: ShadowRun5ECharacterData = {
         notoriety: "",
         publicAwareness: "",
         bio: "",
-        image: "human_one",
     },
+    imageName: "human_one",
 	karmaPoints: 25,
     nuyen: 0,
+    essence: 6,
 	metaType: MetaType.Human,
 	priorities: {
 		metaType: Priority.A,
@@ -31,62 +37,86 @@ export const newCharacterObject: ShadowRun5ECharacterData = {
 	},
 	attributes: {
         [Attribute.Body]: {
+            racialBaseValue: 1,
+            racialMaxValue: 6,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
         [Attribute.Agility]: {
+            racialBaseValue: 1,
+            racialMaxValue: 6,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
         [Attribute.Reaction]: {
+            racialBaseValue: 1,
+            racialMaxValue: 6,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
         [Attribute.Strength]: {
+            racialBaseValue: 1,
+            racialMaxValue: 6,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
-        [Attribute.Willpower]: {
+        [Attribute.WillPower]: {
+            racialBaseValue: 1,
+            racialMaxValue: 6,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
         [Attribute.Logic]: {
+            racialBaseValue: 1,
+            racialMaxValue: 6,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
         [Attribute.Intuition]: {
+            racialBaseValue: 1,
+            racialMaxValue: 6,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
         [Attribute.Charisma]: {
+            racialBaseValue: 1,
+            racialMaxValue: 6,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
         [Attribute.Edge]: {
-            buildPoints: 0,
-            increases: 0,
-            exceptional: false,
-        },
-        [Attribute.Magic]: {
-            buildPoints: 0,
-            increases: 0,
-            exceptional: false,
-        },
-        [Attribute.Resonance]: {
+            racialBaseValue: 2,
+            racialMaxValue: 7,
             buildPoints: 0,
             increases: 0,
             exceptional: false,
         },
     },
+    qualities: { negative: [], positive: [] },
+    magic: {
+        magicUserType: MagicUserType.None,
+        attributes: {
+            [MagicAttribute.Magic]: {
+                buildPoints: 0,
+                increases: 0,
+                exceptional: false,
+            },
+            [MagicAttribute.Resonance]: {
+                buildPoints: 0,
+                increases: 0,
+                exceptional: false,
+            },
+        }
+    },
     settings: {
-        levelOfPlay: LevelOfPlayName.Normal,
+        levelOfPlay: LevelOfPlay.Normal,
     }
 }

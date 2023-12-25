@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { Spell } from '../../models/magic.model';
+import { Spell } from '../../models/magic.interface';
 
 @Component({
   selector: 'app-spell-list-item',

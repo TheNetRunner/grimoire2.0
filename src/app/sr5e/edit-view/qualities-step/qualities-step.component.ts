@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 
-import { ShadowRun5ECharacter } from '../../models/new-character.model';
-import { Quality, QualityReference } from '../../models/quality.model';
+import { ShadowRun5ECharacter } from '../../models/character.model';
+import { Quality, QualityReference } from '../../models/quality.interface';
 import { CharacterService } from '../../services/character.service';
 import { DataStoreService } from '../../services/data-store.service';
 import { positiveQualities } from '../../data/qualities.data';
-import { AttributeName, SpecialAttributeName } from '../../models/attribute.model';
+import { Attribute } from '../../models/attribute.interface';
+import { QualityService } from '../../services/quality.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { AttributeName, SpecialAttributeName } from '../../models/attribute.mode
   styleUrl: './qualities-step.component.css'
 })
 export class QualitiesStepComponent implements OnInit {
-    private characterService = inject(CharacterService);
+    private qualityService = inject(QualityService);
     private dataStoreService = inject(DataStoreService);
 
     @Input() character!: ShadowRun5ECharacter;
@@ -23,101 +24,78 @@ export class QualitiesStepComponent implements OnInit {
     availableNegativeQualities: Quality[] = [];
 
     ngOnInit(): void {
-        this.setPositiveQualitieOptions();
+        this.setAvailablePositiveQualities();
         this.setNegativeQualitieOptions();
     }
 
     // Positive Qualities
 
-    setPositiveQualitieOptions(): void {
-        this.availablePositiveQualities = this.characterService.getUnselectedPositiveQualities(this.character);
+    setAvailablePositiveQualities(): void {
+        this.availablePositiveQualities = this.qualityService.getUnselectedPositiveQualities(
+            this.character.positiveQualities);
     }
 
     get characterPositiveQualities(): QualityReference[] {
-        return this.character.qualities.positive;
+        return this.character.positiveQualities;
     }
 
     addPositiveQuality(qualityName: string): void {
-        this.characterService.addPositiveQuality(this.character, qualityName);
-        this.setPositiveQualitieOptions();
+        const qualityMaxRating = this.qualityService.getQualityMaxRating(qualityName);
+        const qualityKarmaCost = this.qualityService.getQualityKarmaCost(qualityName);
+
+        this.character.addPositiveQualityReference(qualityName, qualityMaxRating, qualityKarmaCost);
+        
+        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+
+        this.setAvailablePositiveQualities();
     }
 
     removePositiveQuality(qualityName: string): void {
-        const characterQualities = this.character.qualities.positive;
-        const index = characterQualities.findIndex(q => q.name === qualityName);
-        characterQualities.splice(index, 1);
-
-        if(qualityName === 'exceptional attribute') {
-            this.characterService.removeExceptionalAttribute(this.character);
-        }
-
-        this.dataStoreService.updateCharacter(this.character.id, this.character);
-        this.setPositiveQualitieOptions();
+        this.character.removePositiveQualityReference(qualityName);
+        this.setAvailablePositiveQualities();
+        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }
 
-    updatePositiveQualityReferenceRatingValue(qualityReferenceUpdate: QualityReference): void {
-        let positiveQualityReferences = this.character.qualities.positive;
-
-        for(const pqr of positiveQualityReferences) {
-            if(pqr.name === qualityReferenceUpdate.name) {
-                pqr.ratingValue = qualityReferenceUpdate.ratingValue;
-                break;
-            }
-        }
-
-        this.character.qualities.positive = positiveQualityReferences;
-        this.dataStoreService.updateCharacter(this.character.id, this.character);
+    updatePositiveQualityReferenceRatingValue(qualityId: string, newRatingValue: number): void {
+        this.character.updatePositiveQualityReferenceRatingValue(qualityId, newRatingValue);
+        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }
 
-    updatePositiveQualityReferenceAttributeValue(qualityReference: QualityReference): void {
-        let positiveQualityReferences = this.character.qualities.positive;
-
-        for(const pqr of positiveQualityReferences) {
-            if(pqr.name === qualityReference.name) {
-                pqr.attribute = qualityReference.attribute;
-                break;
-            }
-        }
-
-        this.character.qualities.positive = positiveQualityReferences;
-        this.dataStoreService.updateCharacter(this.character.id, this.character);
-    }
-
-    setExceptionalAttribute(attributeName: AttributeName | SpecialAttributeName): void {
-        if (attributeName === SpecialAttributeName.Magic || attributeName === SpecialAttributeName.Resonance) {
-            this.characterService.setSpecialExceptionalAttribute(this.character, attributeName);
-        } else if (attributeName !== SpecialAttributeName.Edge) {
-            this.characterService.setExceptionalAttribute(this.character, attributeName as AttributeName);
-        }
+    setExceptionalAttribute(attribute: Attribute): void {
+        this.character.setAttributeAsExceptional(attribute);
+        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }
 
     // Negative Qualities
 
     setNegativeQualitieOptions(): void {
-        this.availableNegativeQualities = this.characterService.getUnselectedNegativeQualities(this.character);
+        this.availableNegativeQualities = this.qualityService.getUnselectedNegativeQualities(
+            this.character.negativeQualities);
     }
 
     get characterNegativeQualities(): QualityReference[] {
-        return this.character.qualities.negative;
+        return this.character.negativeQualities;
     }
 
     addNegativeQuality(qualityName: string): void {
-        this.characterService.addNegativeQuality(this.character, qualityName);
+        const qualityMaxRating = this.qualityService.getQualityMaxRating(qualityName);
+        const qualityKarmaCost = this.qualityService.getQualityKarmaCost(qualityName);
+
+        this.character.addNegativeQualityReference(qualityName, qualityMaxRating, qualityKarmaCost);
+
+        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+
         this.setNegativeQualitieOptions();
     }
 
     removeNegativeQuality(qualityName: string): void {
-        const characterQualities = this.character.qualities.negative;
-        const index = characterQualities.findIndex(q => q.name === qualityName);
-        characterQualities.splice(index, 1);
-        this.dataStoreService.updateCharacter(this.character.id, this.character);
-
-        this.setPositiveQualitieOptions();
+        this.character.removeNegativeQualityReference(qualityName);
+        this.setNegativeQualitieOptions();
+        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }
 
     // Other
-
     get remainingStartingKarama(): number {
-        return this.characterService.getRemainingStartingKarma(this.character);
+        return this.character.remainingStartingKarama;
     }
 }

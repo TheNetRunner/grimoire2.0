@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MagicianService } from './magician.service';
+import { MetaTypeService } from './meta-type.service';
 
-describe('MagicianService', () => {
-  let service: MagicianService;
+describe('MetaTypeService', () => {
+  let service: MetaTypeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MagicianService);
+    service = TestBed.inject(MetaTypeService);
   });
 
   it('should be created', () => {

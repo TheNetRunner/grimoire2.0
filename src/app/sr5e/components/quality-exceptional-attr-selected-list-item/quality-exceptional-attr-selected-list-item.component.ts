@@ -1,12 +1,12 @@
-import { Component, Input, Output, inject, EventEmitter, OnInit, Attribute } from '@angular/core';
+import { Component, Input, Output, inject, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { QualityReference, Quality } from '../../models/quality.model';
+import { QualityReference, Quality } from '../../models/quality.interface';
 import { ShadowRun5ECharacter } from '../../models/character.model';
-import { AttributeName, SpecialAttributeName } from '../../models/attribute.model';
-import { CharacterService } from '../../services/character.service';
+import { Attribute, MagicAttribute } from '../../models/attribute.interface';
+import { QualityService } from '../../services/quality.service';
 
-type ExceptionalAttributeChoices = AttributeName | SpecialAttributeName;
+type ExceptionalAttributeChoices = Attribute | MagicAttribute
 
 @Component({
   selector: 'app-quality-exceptional-attr-selected-list-item',
@@ -14,12 +14,12 @@ type ExceptionalAttributeChoices = AttributeName | SpecialAttributeName;
   styleUrl: './quality-exceptional-attr-selected-list-item.component.css'
 })
 export class QualityExceptionalAttrSelectedListItemComponent implements OnInit {
-    private characterService = inject(CharacterService);
     private formBuilder = inject(FormBuilder);
+    private qualityService = inject(QualityService);
 
     @Input() qualityReference!: QualityReference;
     @Input() character!: ShadowRun5ECharacter;
-    @Output() qualityReferenceAttributeChange = new EventEmitter<AttributeName>();
+    @Output() qualityReferenceAttributeChange = new EventEmitter<Attribute>();
     @Output() removeQualityEvent = new EventEmitter<string>();
 
     isCollapsed = true;
@@ -28,13 +28,17 @@ export class QualityExceptionalAttrSelectedListItemComponent implements OnInit {
     attributeForm!: FormGroup;
     
     ngOnInit(): void {
-        this.quality = this.characterService.getQualityByName(this.qualityReference.name);
+        this.setQuality();
         this.setAttributeOptions();
         this.generateAttributeForm();
     }
 
+    setQuality(): void {
+        this.quality = this.qualityService.getQualityByName(this.qualityReference.name);
+    }
+
     generateAttributeForm(): void {
-        const exceptionalAttributeName = this.characterService.getExceptionalAttributeName(this.character) || AttributeName.Body;
+        const exceptionalAttributeName = this.character.getExceptionalAttribute() || Attribute.Body;
 
         this.attributeForm = this.formBuilder.group({
             attribute: [exceptionalAttributeName, [Validators.required]]
@@ -56,16 +60,15 @@ export class QualityExceptionalAttrSelectedListItemComponent implements OnInit {
     }
 
     getQualityKarmaCost(): number {
-        const currentRating = this.qualityReference.ratingValue || 1;
-        return this.characterService.getQualityKarmaCost(currentRating, this.qualityReference.name);
+        return this.character.getQualityReferenceKarmaCost(this.qualityReference.name);
     }
 
     setAttributeOptions(): void {
-        let options = [...Object.values(AttributeName), SpecialAttributeName.Magic, SpecialAttributeName.Resonance];
+        let options = [...Object.values(Attribute), MagicAttribute.Magic, MagicAttribute.Resonance];
         this.attributeOptions = options;
     }
 
-    get attributeSelectionValue(): AttributeName {
+    get attributeSelectionValue(): Attribute {
         return this.attributeForm.get("attribute")?.value;
     }
 }

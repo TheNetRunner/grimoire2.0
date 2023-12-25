@@ -1,261 +1,81 @@
-import { MetaTypeName } from "../models/meta-type.model";
-import { MetaTypeAttributesTableRow } from "../models/meta-type-attribute-table.model";
-import { AttributeName } from "../models/attribute.model";
+import { MetaType } from "../models/meta-type.model";
+import { MetaTypeAttributeTable } from "../models/meta-type.model";
+import { Attribute } from "../models/attribute.interface";
 
-export const attributesTable: MetaTypeAttributesTableRow[] = [
-    {
-        metaTypeName: MetaTypeName.human,
-        racial: "none",
-        attributes: [
-            {
-                name: AttributeName.Body,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Agility,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Reaction,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Strength,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.WillPower,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Logic,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Intuition,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Charisma,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Edge,
-                minimum: 1,
-                maximum: 7
-            },
-        ]
+export const metaTypeAttributesTable: MetaTypeAttributeTable = {
+    [MetaType.Human]: {
+        racial: "None.",
+        attributes: {
+            [Attribute.Body]: { base: 1, max: 6 },
+            [Attribute.Agility]: { base: 1, max: 6 },
+            [Attribute.Reaction]: { base: 1, max: 6 },
+            [Attribute.Strength]: { base: 1, max: 6 },
+            [Attribute.WillPower]: { base: 1, max: 6 },
+            [Attribute.Logic]: { base: 1, max: 6 },
+            [Attribute.Intuition]: { base: 1, max: 6 },
+            [Attribute.Charisma]: { base: 1, max: 6 },
+            [Attribute.Edge]: { base: 1, max: 6 },
+        },
+        essence: 6,
     },
-    {
-        metaTypeName: MetaTypeName.elf,
+    [MetaType.Elf]: {
         racial: "Low-light vision.",
-        attributes: [
-            {
-                name: AttributeName.Body,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Agility,
-                minimum: 2,
-                maximum: 7
-            },
-            {
-                name: AttributeName.Reaction,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Strength,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.WillPower,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Logic,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Intuition,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Charisma,
-                minimum: 3,
-                maximum: 8
-            },
-            {
-                name: AttributeName.Edge,
-                minimum: 1,
-                maximum: 6
-            },
-        ]
+        attributes: {
+            [Attribute.Body]: { base: 1, max: 6 },
+            [Attribute.Agility]: { base: 2, max: 7 },
+            [Attribute.Reaction]: { base: 1, max: 6 },
+            [Attribute.Strength]: { base: 1, max: 6 },
+            [Attribute.WillPower]: { base: 1, max: 6 },
+            [Attribute.Logic]: { base: 1, max: 6 },
+            [Attribute.Intuition]: { base: 1, max: 6 },
+            [Attribute.Charisma]: { base: 3, max: 8 },
+            [Attribute.Edge]: { base: 1, max: 6 },
+        },
+         essence: 6,
     },
-    {
-        metaTypeName: MetaTypeName.dwarf,
+    [MetaType.Dwarf]: {
         racial: "+2 dice for pathogen and toxin resistance, +20% increased lifestyle cost.",
-        attributes: [
-            {
-                name: AttributeName.Body,
-                minimum: 3,
-                maximum: 8
-            },
-            {
-                name: AttributeName.Agility,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Reaction,
-                minimum: 1,
-                maximum: 5
-            },
-            {
-                name: AttributeName.Strength,
-                minimum: 3,
-                maximum: 8
-            },
-            {
-                name: AttributeName.WillPower,
-                minimum: 2,
-                maximum: 7
-            },
-            {
-                name: AttributeName.Logic,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Intuition,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Charisma,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Edge,
-                minimum: 1,
-                maximum: 6
-            },
-        ]
+        attributes: {
+            [Attribute.Body]: { base: 3, max: 8 },
+            [Attribute.Agility]: { base: 1, max: 6 },
+            [Attribute.Reaction]: { base: 1, max: 5 },
+            [Attribute.Strength]: { base: 3, max: 8 },
+            [Attribute.WillPower]: { base: 2, max: 7 },
+            [Attribute.Logic]: { base: 1, max: 6 },
+            [Attribute.Intuition]: { base: 1, max: 6 },
+            [Attribute.Charisma]: { base: 1, max: 6 },
+            [Attribute.Edge]: { base: 1, max: 6 },
+        },
+        essence: 6,
     },
-    {
-        metaTypeName: MetaTypeName.ork,
+    [MetaType.Ork]: {
         racial: "Low-light vision.",
-        attributes: [
-            {
-                name: AttributeName.Body,
-                minimum: 3,
-                maximum: 8
-            },
-            {
-                name: AttributeName.Agility,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Reaction,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Strength,
-                minimum: 3,
-                maximum: 8
-            },
-            {
-                name: AttributeName.WillPower,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Logic,
-                minimum: 1,
-                maximum: 5
-            },
-            {
-                name: AttributeName.Intuition,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Charisma,
-                minimum: 1,
-                maximum: 5
-            },
-            {
-                name: AttributeName.Edge,
-                minimum: 1,
-                maximum: 6
-            },
-        ]
+        attributes: {
+            [Attribute.Body]: { base: 3, max: 8 },
+            [Attribute.Agility]: { base: 1, max: 6 },
+            [Attribute.Reaction]: { base: 1, max: 6 },
+            [Attribute.Strength]: { base: 3, max: 8 },
+            [Attribute.WillPower]: { base: 1, max: 6 },
+            [Attribute.Logic]: { base: 1, max: 5 },
+            [Attribute.Intuition]: { base: 1, max: 6 },
+            [Attribute.Charisma]: { base: 1, max: 5 },
+            [Attribute.Edge]: { base: 1, max: 6 },
+        },
+        essence: 6,
     },
-    {
-        metaTypeName: MetaTypeName.troll,
+    [MetaType.Troll]: {
         racial: "Thermographic vision, +1 Reach, +1 dermal armor, +100% increased lifestyle costs.",
-        attributes: [
-            {
-                name: AttributeName.Body,
-                minimum: 5,
-                maximum: 10
-            },
-            {
-                name: AttributeName.Agility,
-                minimum: 1,
-                maximum: 5
-            },
-            {
-                name: AttributeName.Reaction,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Strength,
-                minimum: 5,
-                maximum: 10
-            },
-            {
-                name: AttributeName.WillPower,
-                minimum: 1,
-                maximum: 6
-            },
-            {
-                name: AttributeName.Logic,
-                minimum: 1,
-                maximum: 5
-            },
-            {
-                name: AttributeName.Intuition,
-                minimum: 1,
-                maximum: 5
-            },
-            {
-                name: AttributeName.Charisma,
-                minimum: 1,
-                maximum: 4
-            },
-            {
-                name: AttributeName.Edge,
-                minimum: 1,
-                maximum: 6
-            },
-        ]
+        attributes: {
+            [Attribute.Body]: { base: 5, max: 10 },
+            [Attribute.Agility]: { base: 1, max: 5 },
+            [Attribute.Reaction]: { base: 1, max: 6 },
+            [Attribute.Strength]: { base: 5, max: 10 },
+            [Attribute.WillPower]: { base: 1, max: 6 },
+            [Attribute.Logic]: { base: 1, max: 5 },
+            [Attribute.Intuition]: { base: 1, max: 5 },
+            [Attribute.Charisma]: { base: 1, max: 4 },
+            [Attribute.Edge]: { base: 1, max: 6 },
+        },
+        essence: 6,
     },
-];
+}

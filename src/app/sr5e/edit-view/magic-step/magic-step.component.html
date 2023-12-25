@@ -10,29 +10,5 @@
 <div class="row">
 
     <div class="col-12">
-        <app-magician-step
-            *ngIf="character.magicUserType === 'magician'"
-            [character]="character"
-        ></app-magician-step>
-
-        <app-adept-step
-            *ngIf="character.magicUserType === 'adept'"
-            [character]="character"
-        ></app-adept-step>
-
-        <app-technomancer-step
-            *ngIf="character.magicUserType=== 'technomancer'"
-            [character]="character"
-        ></app-technomancer-step>
-
-        <app-mystic-adept-step
-            *ngIf="character.magicUserType === 'mystic adept'"
-            [character]="character"
-        ></app-mystic-adept-step>
-
-        <app-aspected-magician-step
-            *ngIf="character.magicUserType === 'aspected magician'"
-            [character]="character"
-        ></app-aspected-magician-step>
     </div>
 </div>

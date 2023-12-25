@@ -1,7 +1,7 @@
-import { PriorityTableRow, LevelOfPlayName, PriorityTable } from "../models/priority.model";
-import { Priority } from "../models/priority.model";
+import { LevelOfPlayName, PriorityTable } from "../models/priority.interface";
+import { Priority } from "../models/priority.interface";
 import { MetaType } from "../models/meta-type.model";
-import { MagicUserType, Magician } from "../models/magic.model";
+import { MagicUserType } from "../models/magic.interface";
 
 export const priorityTable: PriorityTable = {
     [Priority.A]: {
@@ -28,7 +28,7 @@ export const priorityTable: PriorityTable = {
 			},
 		],
 		attributePoints: 24,
-		magicResonanceText: [
+		magicText: [
             {
                 title: "Magician or Mystic Adept",
                 description: "Magic 6, two Rating 5 Magical skills, 10 spells"
@@ -38,7 +38,7 @@ export const priorityTable: PriorityTable = {
                 description: "Resonance 6, two Rating 5 Resonance skills, 5 complex forms"
             },
         ],
-        magicResonance: {
+        magic: {
             [MagicUserType.Magician]: { magic: 6, magicSkills: { rating: 5, qty: 2 }, spells: 10 },
             [MagicUserType.MysticAdept]: { magic: 6, magicSkills: { rating: 5, qty: 2 }, spells: 10 },
             [MagicUserType.Technomancer]: { resonance: 6, resonanceSkills: { rating: 5, qty: 2 }, complexForms: 5 },
@@ -47,7 +47,7 @@ export const priorityTable: PriorityTable = {
 			skillPoints: 46,
 			skillGroupPoints: 10,
 		},
-		resourceStartingValues: {
+		resources: {
 			[LevelOfPlayName.Street]: 75000,
 			[LevelOfPlayName.Normal]: 450000,
 			[LevelOfPlayName.Prime]: 500000,
@@ -77,7 +77,7 @@ export const priorityTable: PriorityTable = {
 			},
 		],
 		attributePoints: 20,
-		magicResonanceText: [
+		magicText: [
             {
                 title: "Magician or Mystic Adept",
                 description: "Magic 4, two Rating 4 Magical skills, 7 spells"
@@ -95,7 +95,7 @@ export const priorityTable: PriorityTable = {
                 description: "Magic 5, two Rating 4 Magical skill groups"
             }
         ],
-        magicResonance: {
+        magic: {
             [MagicUserType.Magician]: { magic: 4, magicSkills: { rating: 4, qty: 2 }, spells: 7 },
             [MagicUserType.MysticAdept]: { magic: 4, magicSkills: { rating: 4, qty: 2 }, spells: 7 },
             [MagicUserType.Technomancer]: { resonance: 4, resonanceSkills: { rating: 4, qty: 2 }, complexForms: 2 },
@@ -106,7 +106,7 @@ export const priorityTable: PriorityTable = {
 			skillPoints: 36,
 			skillGroupPoints: 5,
 		},
-		resourceStartingValues: {
+		resources: {
 			[LevelOfPlayName.Street]: 50000,
 			[LevelOfPlayName.Normal]: 275000,
 			[LevelOfPlayName.Prime]: 325000,
@@ -132,7 +132,7 @@ export const priorityTable: PriorityTable = {
 			},
 		],
 		attributePoints: 16,
-		magicResonanceText: [
+		magicText: [
             {
                 title: "Magician or Mystic Adept",
                 description: "Magic 3, 5 spells"
@@ -150,7 +150,7 @@ export const priorityTable: PriorityTable = {
                 description: "Magic 3, one Rating 2 Magical skill group"
             }
         ],
-        magicResonance: {
+        magic: {
             [MagicUserType.Magician]: { magic: 3, magicSkills: { rating: 5, qty: 0 }, spells: 5 },
             [MagicUserType.MysticAdept]: { magic: 3, magicSkills: { rating: 5, qty: 0 }, spells: 5 },
             [MagicUserType.Technomancer]: { resonance: 3, resonanceSkills: { rating: 5, qty: 0 }, complexForms: 1 },
@@ -161,7 +161,7 @@ export const priorityTable: PriorityTable = {
 			skillPoints: 28,
 			skillGroupPoints: 2,
 		},
-		resourceStartingValues: {
+		resources: {
 			[LevelOfPlayName.Street]: 25000,
 			[LevelOfPlayName.Normal]: 140000,
 			[LevelOfPlayName.Prime]: 210000,
@@ -179,7 +179,7 @@ export const priorityTable: PriorityTable = {
 			},
 		],
 		attributePoints: 14,
-		magicResonanceText: [
+		magicText: [
             {
                 title: "Adept",
                 description: "Magic 2"
@@ -189,7 +189,7 @@ export const priorityTable: PriorityTable = {
                 description: "Magic 2"
             }
         ],
-        magicResonance: {
+        magic: {
             [MagicUserType.Adept]: { magic: 2, adeptActiveSkills: { rating: 0, qty: 0 } },
             [MagicUserType.AspectedMagician]: { magic: 2, magicSkillGroups: { rating: 2, qty: 0 }  },
         },
@@ -197,7 +197,7 @@ export const priorityTable: PriorityTable = {
 			skillPoints: 22,
 			skillGroupPoints: 0,
 		},
-		resourceStartingValues: {
+		resources: {
 			[LevelOfPlayName.Street]: 15000,
 			[LevelOfPlayName.Normal]: 50000,
 			[LevelOfPlayName.Prime]: 150000,
@@ -211,13 +211,13 @@ export const priorityTable: PriorityTable = {
 			},
 		],
 		attributePoints: 12,
-		magicResonanceText: [],
-        magicResonance: {},
+		magicText: [],
+        magic: {},
 		skills: {
 			skillPoints: 18,
 			skillGroupPoints: 0,
 		},
-		resourceStartingValues: {
+		resources: {
 			[LevelOfPlayName.Street]: 6000,
 			[LevelOfPlayName.Normal]: 6000,
 			[LevelOfPlayName.Prime]: 100000,

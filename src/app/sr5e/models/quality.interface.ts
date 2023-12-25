@@ -1,4 +1,4 @@
-import { AttributeName } from './attribute.model';
+import { Attribute } from './attribute.interface';
 
 export interface Quality {
     name: string;
@@ -16,8 +16,11 @@ export interface QualityOption {
 }
 
 export interface QualityReference {
+    id: string;
     name: string;
-    attribute?: AttributeName;
-    ratingValue?: number;
-    optionSelection?: string;
+    karmaCost: number;
+    ratingValue: number;
+    maxRating: number;
+    optionSelection: string;
+    karmaTotal: () => number;
 }

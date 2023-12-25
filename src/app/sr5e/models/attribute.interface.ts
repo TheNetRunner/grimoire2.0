@@ -9,23 +9,12 @@ export enum Attribute {
     Logic = "logic",
     Intuition = "intuition",
     Charisma = "charisma",
-    Magic = "magic",
-    Resonance = "resonance",
     Edge = "edge",
 }
 
-export enum SpecialAttributeName {
-    Edge = "edge",
+export enum MagicAttribute {
     Magic = "magic",
     Resonance = "resonance",
-}
-
-export interface AttributeData {
-    baseValue: number;
-    maxValue: number;
-    buildPoints: number;
-    increases: number;
-    exceptional: boolean;
 }
 
 export interface Attributes {
@@ -37,6 +26,7 @@ export interface Attributes {
     [Attribute.Logic]: Attribute;
     [Attribute.Intuition]: Attribute;
     [Attribute.Charisma]: Attribute;
+    [Attribute.Edge]: Attribute;
 }
 
 export interface AttributeMinMax {
@@ -50,8 +40,7 @@ export interface AttributesTableRow {
     attributes: Attributes;
 }
 
-export interface SpecialAttributes {
-    [SpecialAttributeName.Edge]: Attribute;
-    [SpecialAttributeName.Magic]: Attribute;
-    [SpecialAttributeName.Resonance]: Attribute;
+export interface MagicAttributes {
+    [MagicAttribute.Magic]: Attribute;
+    [MagicAttribute.Resonance]: Attribute;
 }

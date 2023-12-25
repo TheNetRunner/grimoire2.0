@@ -1,4 +1,4 @@
-import { Attribute } from './attribute.model';
+import { Attribute } from './attribute.interface';
 
 export enum MetaType {
     Human = "human",
@@ -21,8 +21,7 @@ export interface MetaTypeDescriptions {
     [MetaType.Troll]: MetaTypeDescription;
 }
 
-export interface MetaTypeAttributesTableRow {
-	metaTypeName: MetaType;
+export interface MetaTypeAttributeTableRow {
 	racial: string;
     attributes: {
         [Attribute.Body]: { base: number; max: number; }
@@ -34,7 +33,27 @@ export interface MetaTypeAttributesTableRow {
         [Attribute.Intuition]: { base: number; max: number; }
         [Attribute.Charisma]: { base: number; max: number; }
         [Attribute.Edge]: { base: number; max: number; }
-        [Attribute.Magic]: { base: number; max: number; }
-        [Attribute.Resonance]: { base: number; max: number; }
     }
+    essence: number;
+}
+
+export interface MetaTypeAttributeTable {
+    [MetaType.Human]: MetaTypeAttributeTableRow;
+    [MetaType.Elf]: MetaTypeAttributeTableRow;
+    [MetaType.Ork]: MetaTypeAttributeTableRow;
+    [MetaType.Dwarf]: MetaTypeAttributeTableRow;
+    [MetaType.Troll]: MetaTypeAttributeTableRow;
+}
+
+export interface MetaTypeDescription {
+	latinName: string;
+	text: string;
+}
+
+export interface MetaTypeDescriptions {
+	[MetaType.Human]: MetaTypeDescription;
+    [MetaType.Elf]: MetaTypeDescription;
+    [MetaType.Dwarf]: MetaTypeDescription;
+    [MetaType.Ork]: MetaTypeDescription;
+    [MetaType.Troll]: MetaTypeDescription;
 }

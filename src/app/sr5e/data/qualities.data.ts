@@ -1,4 +1,4 @@
-import { Quality } from "../models/quality.model"
+import { Quality } from "../models/quality.interface"
 
 export const positiveQualities: Quality[] = [
     {
