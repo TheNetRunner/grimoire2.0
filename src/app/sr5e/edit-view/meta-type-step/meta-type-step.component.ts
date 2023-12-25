@@ -56,6 +56,10 @@ export class MetaTypeStepComponent implements OnInit {
         return this.imageForm.get('image')?.value;
     }
 
+    set imageFormValue(value: string) {
+        this.imageForm.get('image')?.setValue(value);
+    }
+
     generateMetaTypeForm(): void {
         this.metaTypeForm = this.formBuilder.group({
             metaType: [this.character.metaType, Validators.required],
@@ -73,6 +77,8 @@ export class MetaTypeStepComponent implements OnInit {
     handleMetaTypeChange(formData: any): void {
         this.character.handleMetaTypeChange(formData.metaType);
         this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+
+        this.imageFormValue = this.character.imageName;
     }
 
     getImageUrl(): string {

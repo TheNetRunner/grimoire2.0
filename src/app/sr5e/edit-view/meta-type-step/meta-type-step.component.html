@@ -1,58 +1,69 @@
-<div class="row">
-    
-    <div class="col-12">
+<div class="row my-3">
 
-        <div class="card bg-primary shadow mb-2">
+    <div class="col-3 d-flex align-items-end">
+        <div>
+            <h5 class="mb-0 ms-4">Meta Type</h5>
+        </div>
+    </div>
 
-            <div class="card-header">
-                <h5 class="card-title text-white m-0">Meta Type</h5>
+    <div class="col-9">
+        <div class="row justify-content-end">
+
+            <div class="col-4 text-center">
+                <label class="form-label" for="image">Image</label>
+                <form [formGroup]="imageForm">
+                    <select class="form-select text-center" formControlName="image">
+                        <option *ngFor="let suffex of imageSuffex" [ngValue]="metaTypeFormValue + '_' + suffex">
+                            {{ metaTypeFormValue | titlecase }} {{ suffex | titlecase }}
+                        </option>
+                    </select>
+                </form>
             </div>
 
-            <div class="card-body">
-
-                <div class="row">
-
-                    <div class="col-4">
-                        <div class="d-flex justify-content-center mb-2">
-                            <img class="card-img mb-2" [src]="getImageUrl()">
-                        </div>
-                        <form [formGroup]="imageForm">
-                            <select class="form-select" formControlName="image">
-                                <option *ngFor="let suffex of imageSuffex" [ngValue]="metaTypeFormValue + '_' + suffex">
-                                    {{ metaTypeFormValue | titlecase }} {{ suffex | titlecase }}
-                                </option>
-                            </select>
-                        </form>
-                    </div>
-
-                    <div class="col-8 d-flex justify-content-between flex-column">
-                        <div class="">
-                            <p>
-                                <i class="text-info">{{ getMetaTypeDescription(this.character.metaType).latinName }}:</i>
-                                {{ getMetaTypeDescription(this.character.metaType).text }}
-                            </p>
-
-                            <p>
-                                <i class="text-info">Racial: </i>{{ getMetaTypeRacial() }}
-                            </p>
-                        </div>
-
-                        
-                        
-                        <form [formGroup]="metaTypeForm">
-                            <select class="form-select mt-2" formControlName="metaType">
-                                <option *ngFor="let metaType of getMetaTypesFromTable()" [ngValue]="metaType.name">
-                                    {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
-                                </option>
-                            </select>
-                        </form>
-                    </div>
-
-                </div>
-
+            <div class="col-4 text-center">
+                <label class="form-label" for="metaType">Meta Type</label>
+                <form [formGroup]="metaTypeForm">
+                    <select class="form-select text-center" formControlName="metaType">
+                        <option *ngFor="let metaType of getMetaTypesFromTable()" [ngValue]="metaType.name">
+                            {{ metaType.name | titlecase }} ({{ metaType.specialAttrPoints }})
+                        </option>
+                    </select>
+                </form>
             </div>
 
         </div>
     </div>
 
+</div>
+
+<div class="row">
+    
+    <div class="col-12">
+
+        <div class="row">
+
+            <div class="col-4">
+                <div class="d-flex justify-content-center mb-2">
+                    <div class="bg-info">
+                        <img class="card-img m-1" [src]="getImageUrl()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-8 d-flex justify-content-between flex-column">
+                <div>
+                    <p>
+                        <i class="text-info">{{ getMetaTypeDescription(this.character.metaType).latinName }}:</i>
+                        {{ getMetaTypeDescription(this.character.metaType).text }}
+                    </p>
+
+                    <p>
+                        <i class="text-info">Racial: </i>{{ getMetaTypeRacial() }}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </div>

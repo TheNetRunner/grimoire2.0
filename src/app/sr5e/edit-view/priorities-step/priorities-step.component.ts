@@ -2,13 +2,11 @@ import { Component, Input, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
-import { LevelOfPlayName, Priority, PriorityTable, PriorityTableRow } from '../../models/priority.interface';
+import { Priority, PriorityTable, PriorityTableRow } from '../../models/priority.interface';
 import { PriorityTableService } from '../../services/priority-table.service';
 import { ShadowRun5ECharacter } from '../../models/character.model';
 import { priorityTable } from '../../data/priority-table.data';
 import { areFormValuesUnique } from '../../../shared/form-validators/unique-values-validator/unique-values-validator.module';
-import { MetaType } from '../../models/meta-type.model';
-import { MagicUserType } from '../../models/magic.interface';
 
 @Component({
   selector: 'app-priorities-step',
