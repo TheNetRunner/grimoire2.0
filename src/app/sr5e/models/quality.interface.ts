@@ -22,5 +22,5 @@ export interface QualityReference {
     ratingValue: number;
     maxRating: number;
     optionSelection: string;
-    karmaTotal: () => number;
+    attribute?: Attribute;
 }

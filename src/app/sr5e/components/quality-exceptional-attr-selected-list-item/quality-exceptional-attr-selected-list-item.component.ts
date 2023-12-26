@@ -19,8 +19,8 @@ export class QualityExceptionalAttrSelectedListItemComponent implements OnInit {
 
     @Input() qualityReference!: QualityReference;
     @Input() character!: ShadowRun5ECharacter;
-    @Output() qualityReferenceAttributeChange = new EventEmitter<Attribute>();
-    @Output() removeQualityEvent = new EventEmitter<string>();
+    @Output() qualityReferenceAttributeChange = new EventEmitter<QualityReference>();
+    @Output() removeQualityEvent = new EventEmitter<QualityReference>();
 
     isCollapsed = true;
     quality!: Quality | undefined;
@@ -38,29 +38,26 @@ export class QualityExceptionalAttrSelectedListItemComponent implements OnInit {
     }
 
     generateAttributeForm(): void {
-        const exceptionalAttributeName = this.character.getExceptionalAttribute() || Attribute.Body;
-
         this.attributeForm = this.formBuilder.group({
-            attribute: [exceptionalAttributeName, [Validators.required]]
+            attribute: [this.qualityReference.attribute, [Validators.required]]
         });
 
         this.attributeForm.valueChanges.subscribe((formData: any) => {
-            this.qualityReferenceAttributeChange.emit(formData.attribute);
+            this.qualityReference.attribute = formData.attribute;
+            this.emitQualityReferenceChange();
         });
     }
 
-    emitQualityReferenceAttributeChange(): void {
-        const attributeName = this.attributeForm.get("attribute")?.value;
-        this.qualityReferenceAttributeChange.emit(attributeName);
+    emitQualityReferenceChange(): void {
+        this.qualityReferenceAttributeChange.emit(this.qualityReference);
     }
 
-
     emitRemoveQualityEvent(): void {
-        this.removeQualityEvent.emit(this.qualityReference.name);
+        this.removeQualityEvent.emit(this.qualityReference);
     }
 
     getQualityKarmaCost(): number {
-        return this.character.getQualityReferenceKarmaCost(this.qualityReference.name);
+        return this.qualityReference.ratingValue * this.qualityReference.karmaCost;
     }
 
     setAttributeOptions(): void {

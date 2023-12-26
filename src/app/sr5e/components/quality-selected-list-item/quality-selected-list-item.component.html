@@ -5,7 +5,7 @@
         <div class="col-5">
             <h6 class="pe-4">{{ qualityReference.name  | titlecase }}</h6>
             <h6 class="fst-italic text-body-tertiary">
-                {{ qualityReference.karmaTotal }} karama
+                {{ qualityReference.karmaCost * qualityReference.ratingValue }} karama
             </h6>
         </div>
 
@@ -34,8 +34,8 @@
             <form class="row g-3" [formGroup]="ratingForm">
                 <label class="form-label form-label-sm col-sm-4">Rating</label>
                 <div class="col-sm-8">
-                    <select class="form-select form-select-sm px-2 text-center" formControlName="rating">
-                        <option *ngFor="let i of getQualityMaxRating(qualityReference.name) | rangeArray : 1" [ngValue]="i">
+                    <select class="form-select form-select-sm px-2 text-center" formControlName="ratingValue">
+                        <option *ngFor="let i of quality?.maxRating | rangeArray : 1" [ngValue]="i">
                             {{ i }}
                         </option>
                     </select>

@@ -1,7 +1,7 @@
 <app-navbar *ngIf="character" [characterName]="character.basic.name" [editorSteps]="editorSteps"></app-navbar>
 
 <div class="container-xxl">
-    {{ character | json }}
+    {{ character | json  }}
     <div *ngIf="character">
 
         <app-concept-step

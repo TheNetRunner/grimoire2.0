@@ -14,9 +14,9 @@ export class QualitySelectedListItemComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
 
     @Input() qualityReference!: QualityReference;
-    @Output() qualityReferenceRatingChange = new EventEmitter<{ id: string, ratingValue: number }>();
+    @Output() qualityReferenceRatingChange = new EventEmitter<QualityReference>();
     @Output() qualityReferenceOptionChange = new EventEmitter<QualityReference>();
-    @Output() removeQualityEvent = new EventEmitter<string>();
+    @Output() removeQualityEvent = new EventEmitter<QualityReference>();
 
     isCollapsed = true;
     quality!: Quality | undefined;
@@ -37,17 +37,15 @@ export class QualitySelectedListItemComponent implements OnInit {
     }
 
     generateRatingForm(): void {
-        if(this.quality && this.quality?.maxRating > 1) {
+        if(this.qualityReference.maxRating > 1) {
 
             this.ratingForm = this.formBuilder.group({
                 ratingValue: [this.qualityReference.ratingValue]
             });
 
             this.ratingForm.valueChanges.subscribe((formData: any) => {
-                this.qualityReferenceRatingChange.emit({ 
-                    id: this.qualityReference.id, 
-                    ratingValue: formData.ratingValue 
-                });
+                this.qualityReference.ratingValue = formData.ratingValue;
+                this.qualityReferenceRatingChange.emit(this.qualityReference);
             });
         }
     }
@@ -73,7 +71,7 @@ export class QualitySelectedListItemComponent implements OnInit {
     }
 
     emitRemoveQualityEvent(): void {
-        this.removeQualityEvent.emit(this.qualityReference.name);
+        this.removeQualityEvent.emit(this.qualityReference);
     }
 
     getQualityMaxRating(qualityName: string): number {

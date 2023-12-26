@@ -233,34 +233,49 @@ export class ShadowRun5ECharacter {
 
     // Quality
 
+    get qualities(): typeof this.characterData.qualities {
+        return this.characterData.qualities;
+    }
+
     get positiveQualities(): typeof this.characterData.qualities.positive {
         return this.characterData.qualities.positive;
     }
 
-    addPositiveQualityReference(qualityName: string, maxRating: number, karmaCost: number): void {
-        const qualityReference = this.createNewQualityReference(qualityName, maxRating, karmaCost);
+    addPositiveQualityReference(qualityReference: QualityReference): void {
+        qualityReference.id = this.generateQualityReferenceId();
 
         if(qualityReference.name === "exceptional attribute") {
+            qualityReference.attribute = Attribute.Body;
             this.setAttributeAsExceptional(Attribute.Body);
+        }
+
+        // Home ground has options.
+        if(qualityReference.name === "home ground") {
+            qualityReference.optionSelection = "astral acclimation";
         }
 
         this.characterData.qualities.positive.push(qualityReference);
     }
 
-    removePositiveQualityReference(qualityName: string): void {
-        if(qualityName === "exceptional attribute") {
+    removePositiveQualityReference(quality: QualityReference): void {
+        if(quality.name === "exceptional attribute") {
             this.resetAttributeExceptionalStatus();
         }
 
-        const index = this.characterData.qualities.positive.findIndex(q => q.name === qualityName);
+        const index = this.characterData.qualities.positive.findIndex(q => q.id === quality.id);
         this.characterData.qualities.positive.splice(index, 1);
     }
 
-    updatePositiveQualityReferenceRatingValue(qualityId: string, newRatingValue: number): void {
-        const qualityReference = this.positiveQualities.find(q => q.id === qualityId);
+    updatePositiveQualityReference(qualityReference: QualityReference): void {
+        const index = this.positiveQualities.findIndex(q => q.id === qualityReference.id);
 
-        if(qualityReference) {
-            qualityReference.ratingValue = newRatingValue;
+        if(qualityReference.name === "exceptional attribute" && qualityReference.attribute) {
+            this.resetAttributeExceptionalStatus();
+            this.setAttributeAsExceptional(qualityReference.attribute);
+        }
+
+        if(index > -1) {
+            this.characterData.qualities.positive[index] = qualityReference;
         }
     }
 
@@ -268,66 +283,53 @@ export class ShadowRun5ECharacter {
         return this.characterData.qualities.negative;
     }
 
-    addNegativeQualityReference(qualityName: string, maxRating: number, karmaCost: number): void {
-        const qualityReference = this.createNewQualityReference(qualityName, maxRating, karmaCost);
+    addNegativeQualityReference(qualityReference: QualityReference): void {
+        qualityReference.id = this.generateQualityReferenceId();
         this.negativeQualities.push(qualityReference);
     }
 
-    removeNegativeQualityReference(qualityName: string): void {
-        const index = this.negativeQualities.findIndex(q => q.name === qualityName);
+    removeNegativeQualityReference(qualityId: string): void {
+        const index = this.negativeQualities.findIndex(q => q.id === qualityId);
         this.characterData.qualities.negative.splice(index, 1);
     }
 
-    updateNegativeQualityReferenceRatingValue(qualityId: string, newRatingValue: number): void {
-        const qualityReference = this.negativeQualities.find(q => q.id === qualityId);
+    updateNegativeQualityReference(qualityReference: QualityReference): void {
+        const index = this.positiveQualities.findIndex(q => q.id === qualityReference.id);
 
-        if(qualityReference) {
-            qualityReference.ratingValue = newRatingValue;
+        if(index > -1) {
+            this.characterData.qualities.negative[index] = qualityReference;
         }
     }
 
-    createNewQualityReference(qualityName: string, maxRating: number, karmaCost: number): QualityReference {
-        return {
-            id: this.generateQualityId(),
-            name: qualityName,
-            ratingValue: 1,
-            maxRating,
-            karmaCost,
-            karmaTotal() { return this.karmaCost * this.ratingValue },
-            optionSelection: ""
-        };
-    }
-
-    getQualityReferenceKarmaCost(qualityReferenceName: string): number {
+    getQualityReferenceKarmaCost(qualityReferenceId: string): number {
         let cost = 0;
-        const qualityReference = this.getQualityReferenceByName(qualityReferenceName);
+        const qualityReference = this.getQualityReferenceById(qualityReferenceId);
 
         if(qualityReference) {
-            cost = qualityReference.karmaTotal();
+            cost = qualityReference.karmaCost * qualityReference.ratingValue
         }
 
         return cost;
     }
 
-    getQualityReferenceByName(qualityName: string): QualityReference | undefined {
+    getQualityReferenceById(qualityReferenceId: string): QualityReference | undefined {
         const allQualities = [...this.positiveQualities, ...this.negativeQualities];
 
-        return allQualities.find(q => q.name === qualityName);
+        return allQualities.find(q => q.name === qualityReferenceId);
     }
 
-    private generateQualityId(): string {
+    private generateQualityReferenceId(): string {
         let id: string;
 
-        do {
-            id = uuidv4().substring(0, 8);
-        } while(!this.isIdUnique(id));
+        do { id = uuidv4().slice(-8) } while (!this.isQualityReferenceIdUnique(id));
 
         return id;
     }
 
-    private isIdUnique(id: string): boolean {
-        return !this.positiveQualities.find(q => q.id === id) &&
-            !this.negativeQualities.find(q => q.id === id);
+    private isQualityReferenceIdUnique(id: string): boolean {
+        const allQualities = [...this.positiveQualities, ...this.negativeQualities];
+
+        return !allQualities.find(q => q.id === id);
     }
 
     // Magic
@@ -354,11 +356,11 @@ export class ShadowRun5ECharacter {
         let spend = 0;
 
         for(const quality of this.characterData.qualities.positive) {
-            spend -= quality.karmaTotal();
+            spend -= this.getQualityReferenceKarmaCost(quality.name);
         }
 
         for(const quality of this.characterData.qualities.negative) {
-            spend += quality.karmaTotal();
+            spend += this.getQualityReferenceKarmaCost(quality.name);
         }
 
         return spend;
@@ -376,7 +378,7 @@ export class ShadowRun5ECharacter {
     }
 
     get remainingStartingKarama(): number {
-        return this.startingKarma - this.QualityKarmaSpend;
+        return this.startingKarma + this.QualityKarmaSpend;
     }
 
     // Nuyen

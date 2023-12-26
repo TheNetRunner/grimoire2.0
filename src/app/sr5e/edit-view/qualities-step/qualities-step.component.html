@@ -4,18 +4,16 @@
         <ul class="list-group list-group-flush mt-2">
             <li class="list-group-item bg-primary sticky-top">
                 <div class="d-flex justify-content-between">
-                    <h5 class="text-white">Character Positive Qualities</h5>
-                    <span class="text-end text-info">Remaining Starting Karma: {{ remainingStartingKarama }}</span>
+                    <h5 class="text-white m-0">Character Positive Qualities</h5>
+                    <span class="text-end text-info">Remaining Starting Karma: {{ character.remainingStartingKarama }}</span>
                 </div>
             </li>
-            <div *ngFor="let quality of characterPositiveQualities; let i  = index">
+            <div *ngFor="let quality of characterPositiveQualities">
                 <app-quality-selected-list-item
                     *ngIf="quality.name !== 'exceptional attribute'"
                     [qualityReference]="quality"
                     (removeQualityEvent)="removePositiveQuality($event)"
-                    (qualityReferenceRatingChange)="updatePositiveQualityReferenceRatingValue(
-                        $event.id, $event.ratingValue
-                    )"
+                    (qualityReferenceRatingChange)="updatePositiveQualityReference($event)"
                 ></app-quality-selected-list-item>
 
                 <app-quality-exceptional-attr-selected-list-item
@@ -23,7 +21,7 @@
                     [qualityReference]="quality"
                     [character]="character"
                     (removeQualityEvent)="removePositiveQuality($event)"
-                    (qualityReferenceAttributeChange)="setExceptionalAttribute($event)"
+                    (qualityReferenceAttributeChange)="updatePositiveQualityReference($event)"
                 ></app-quality-exceptional-attr-selected-list-item>
             </div>
         </ul>
@@ -35,7 +33,7 @@
         <ul class="list-group list-group-flush mt-2">
             <li class="list-group-item bg-primary sticky-top">
                 <div class="d-flex justify-content-between">
-                    <h5 class="text-white">Positive Qualities</h5>
+                    <h5 class="text-white m-0">Positive Qualities</h5>
                 </div>
             </li>
             <app-quality-unselected-list-item
@@ -54,8 +52,8 @@
         <ul class="list-group list-group-flush mt-2">
             <li class="list-group-item bg-secondary sticky-top">
                 <div class="d-flex justify-content-between">
-                    <h5 class="text-white">Character Negative Qualities</h5>
-                    <span class="text-end text-info">Remaining Starting Karma: {{ remainingStartingKarama }}</span>
+                    <h5 class="text-white m-0">Character Negative Qualities</h5>
+                    <span class="text-end text-info">Remaining Starting Karma: {{ character.remainingStartingKarama }}</span>
                 </div>
             </li>
             
@@ -68,7 +66,7 @@
         <ul class="list-group list-group-flush mt-2">
             <li class="list-group-item bg-secondary sticky-top">
                 <div class="d-flex justify-content-between">
-                    <h5 class="text-white">Negative Qualities</h5>
+                    <h5 class="text-white m-0">Negative Qualities</h5>
                 </div>
             </li>
             <app-quality-unselected-list-item

@@ -2,25 +2,56 @@ import { Injectable } from '@angular/core';
 
 import { Quality, QualityReference } from '../models/quality.interface';
 import { positiveQualities, negativeQualities } from '../data/qualities.data';
-import { Attribute } from '../models/attribute.interface';
-import { ShadowRun5ECharacter } from '../models/character.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QualityService {
+    createQualityReference(qualityName: string): QualityReference | undefined {
+        const quality = this.getQualityByName(qualityName);
+
+        if(quality) {
+            return {
+                id: "",
+                name: quality.name,
+                karmaCost: quality.karmaCost,
+                ratingValue: 1,
+                maxRating: quality.maxRating,
+                optionSelection: "",
+                attribute: undefined
+            };
+        }
+
+        return undefined;
+    }
+
     getUnselectedPositiveQualities(qualityReferences: QualityReference[]): Quality[] {
-        return positiveQualities.filter(quality => {
-            return qualityReferences.find(
-                qualityReference => qualityReference.name === quality.name);
-        });
+        let diff: Quality[] = [];
+
+        for(const quality of positiveQualities) {
+            const found = qualityReferences.find(qualityReference => qualityReference.name === quality.name);
+
+            // Home ground can be added multiple times
+            if(!found || found.name === "home ground") {
+                diff.push(quality);
+            }
+        }
+
+        return diff;
     }
 
     getUnselectedNegativeQualities(qualityReferences: QualityReference[]): Quality[] {
-        return negativeQualities.filter(quality => {
-            return qualityReferences.find(
-                qualityReference => qualityReference.name === quality.name);
-        });
+        let diff: Quality[] = [];
+
+        for(const quality of negativeQualities) {
+            const found = qualityReferences.find(qualityReference => qualityReference.name === quality.name);
+
+            if(!found) {
+                diff.push(quality);
+            }
+        }
+
+        return diff;
     }
     
     getQualityMaxRating(qualityName: string): number {

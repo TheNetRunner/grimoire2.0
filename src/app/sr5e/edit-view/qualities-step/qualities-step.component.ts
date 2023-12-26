@@ -1,13 +1,10 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 
-import { ShadowRun5ECharacter } from '../../models/character.model';
-import { Quality, QualityReference } from '../../models/quality.interface';
-import { CharacterService } from '../../services/character.service';
-import { DataStoreService } from '../../services/data-store.service';
-import { positiveQualities } from '../../data/qualities.data';
 import { Attribute } from '../../models/attribute.interface';
+import { DataStoreService } from '../../services/data-store.service';
+import { Quality, QualityReference } from '../../models/quality.interface';
 import { QualityService } from '../../services/quality.service';
-
+import { ShadowRun5ECharacter } from '../../models/character.model';
 
 @Component({
   selector: 'app-qualities-step',
@@ -25,7 +22,7 @@ export class QualitiesStepComponent implements OnInit {
 
     ngOnInit(): void {
         this.setAvailablePositiveQualities();
-        this.setNegativeQualitieOptions();
+        this.setAvailableNegativeQualities();
     }
 
     // Positive Qualities
@@ -40,24 +37,18 @@ export class QualitiesStepComponent implements OnInit {
     }
 
     addPositiveQuality(qualityName: string): void {
-        const qualityMaxRating = this.qualityService.getQualityMaxRating(qualityName);
-        const qualityKarmaCost = this.qualityService.getQualityKarmaCost(qualityName);
+        const qualityReference = this.qualityService.createQualityReference(qualityName);
 
-        this.character.addPositiveQualityReference(qualityName, qualityMaxRating, qualityKarmaCost);
-        
-        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
-
-        this.setAvailablePositiveQualities();
+        if(qualityReference) {
+            this.character.addPositiveQualityReference(qualityReference);
+            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+            this.setAvailablePositiveQualities();
+        }
     }
 
-    removePositiveQuality(qualityName: string): void {
-        this.character.removePositiveQualityReference(qualityName);
+    removePositiveQuality(qualityReference: QualityReference): void {
+        this.character.removePositiveQualityReference(qualityReference);
         this.setAvailablePositiveQualities();
-        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
-    }
-
-    updatePositiveQualityReferenceRatingValue(qualityId: string, newRatingValue: number): void {
-        this.character.updatePositiveQualityReferenceRatingValue(qualityId, newRatingValue);
         this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }
 
@@ -66,9 +57,14 @@ export class QualitiesStepComponent implements OnInit {
         this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }
 
+    updatePositiveQualityReference(qualityReference: QualityReference): void {
+        this.character.updatePositiveQualityReference(qualityReference);
+        this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+    }
+
     // Negative Qualities
 
-    setNegativeQualitieOptions(): void {
+    setAvailableNegativeQualities(): void {
         this.availableNegativeQualities = this.qualityService.getUnselectedNegativeQualities(
             this.character.negativeQualities);
     }
@@ -78,24 +74,24 @@ export class QualitiesStepComponent implements OnInit {
     }
 
     addNegativeQuality(qualityName: string): void {
-        const qualityMaxRating = this.qualityService.getQualityMaxRating(qualityName);
-        const qualityKarmaCost = this.qualityService.getQualityKarmaCost(qualityName);
+        const qualityReference = this.qualityService.createQualityReference(qualityName);
 
-        this.character.addNegativeQualityReference(qualityName, qualityMaxRating, qualityKarmaCost);
+        if(qualityReference) {
+            this.character.addNegativeQualityReference(qualityReference);
+            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+            this.setAvailableNegativeQualities();
+        }
+    }
 
+    removeNegativeQuality(qualityId: string): void {
+        this.character.removeNegativeQualityReference(qualityId);
+        this.setAvailableNegativeQualities();
         this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
-
-        this.setNegativeQualitieOptions();
     }
 
-    removeNegativeQuality(qualityName: string): void {
-        this.character.removeNegativeQualityReference(qualityName);
-        this.setNegativeQualitieOptions();
+    updateNegativeQualityReference(qualityReference: QualityReference): void {
+        this.character.updateNegativeQualityReference(qualityReference);
         this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }
 
-    // Other
-    get remainingStartingKarama(): number {
-        return this.character.remainingStartingKarama;
-    }
 }
