@@ -72,6 +72,7 @@ export interface ShadowRun5ECharacterData {
         [Attribute.Edge]: AttributeData;
     }
     metaType: MetaType;
+    startingKarma: number;
     karmaPoints: number;
     nuyen: number;
     essence: number;

@@ -19,6 +19,8 @@ export class QualitiesStepComponent implements OnInit {
 
     availablePositiveQualities: Quality[] = [];
     availableNegativeQualities: Quality[] = [];
+    positiveQualitiesCollapsed = true;
+    negativeQualitiesCollapsed = true;
 
     ngOnInit(): void {
         this.setAvailablePositiveQualities();
@@ -83,8 +85,8 @@ export class QualitiesStepComponent implements OnInit {
         }
     }
 
-    removeNegativeQuality(qualityId: string): void {
-        this.character.removeNegativeQualityReference(qualityId);
+    removeNegativeQuality(qualityReference: QualityReference): void {
+        this.character.removeNegativeQualityReference(qualityReference);
         this.setAvailableNegativeQualities();
         this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
     }

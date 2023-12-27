@@ -1,4 +1,4 @@
-import { Attribute } from './attribute.interface';
+import { Attribute, MagicAttribute } from './attribute.interface';
 
 export interface Quality {
     name: string;
@@ -22,5 +22,5 @@ export interface QualityReference {
     ratingValue: number;
     maxRating: number;
     optionSelection: string;
-    attribute?: Attribute;
+    attribute?: Attribute | MagicAttribute;
 }

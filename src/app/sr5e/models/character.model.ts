@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { ShadowRun5ECharacterData, BasicInformation } from './character.interface';
-import { Attribute } from './attribute.interface';
+import { Attribute, MagicAttribute } from './attribute.interface';
 import { AttributeData } from './character.interface';
 import { Priority } from './priority.interface';
 import { PrioritiesData } from './character.interface';
@@ -81,10 +81,6 @@ export class ShadowRun5ECharacter {
 
     get attributes(): typeof this.characterData.attributes {
         return this.characterData.attributes;
-    }
-
-    get essence(): number {
-        return this.characterData.essence;
     }
 
     getExceptionalAttribute(): AttributeData | undefined {
@@ -167,8 +163,21 @@ export class ShadowRun5ECharacter {
         return totalIncreaseSpent;
     }
 
-    setAttributeAsExceptional(attribute: Attribute): void {
+    setAttributeAsExceptional(attribute: Attribute | MagicAttribute): void {
         this.resetAttributeExceptionalStatus();
+
+        console.log(attribute);
+
+        if (attribute === MagicAttribute.Magic) {
+            this.characterData.magic.attributes.magic.exceptional = true;
+            return;
+        }
+
+        if (attribute === MagicAttribute.Resonance) {
+            this.characterData.magic.attributes.resonance.exceptional = true;
+            return;
+        }
+
         this.characterData.attributes[attribute].exceptional = true;
     }
 
@@ -176,6 +185,11 @@ export class ShadowRun5ECharacter {
         for(const attribute in this.characterData.attributes) {
             const key = attribute as keyof typeof this.characterData.attributes;
             this.characterData.attributes[key].exceptional = false;
+        }
+
+        for(const magicAttribute in this.characterData.magic.attributes) {
+            const key = magicAttribute as keyof typeof this.characterData.magic.attributes;
+            this.characterData.magic.attributes[key].exceptional = false;
         }
     }
 
@@ -231,6 +245,10 @@ export class ShadowRun5ECharacter {
         return initiative;
     }
 
+    get essence(): number {
+        return this.characterData.essence;
+    }
+
     // Quality
 
     get qualities(): typeof this.characterData.qualities {
@@ -245,13 +263,11 @@ export class ShadowRun5ECharacter {
         qualityReference.id = this.generateQualityReferenceId();
 
         if(qualityReference.name === "exceptional attribute") {
-            qualityReference.attribute = Attribute.Body;
             this.setAttributeAsExceptional(Attribute.Body);
         }
 
-        // Home ground has options.
-        if(qualityReference.name === "home ground") {
-            qualityReference.optionSelection = "astral acclimation";
+        if(qualityReference.name === "lucky") {
+            this.setAttributeAsExceptional(Attribute.Edge);
         }
 
         this.characterData.qualities.positive.push(qualityReference);
@@ -260,6 +276,10 @@ export class ShadowRun5ECharacter {
     removePositiveQualityReference(quality: QualityReference): void {
         if(quality.name === "exceptional attribute") {
             this.resetAttributeExceptionalStatus();
+        }
+
+        if(quality.name === "lucky") {
+            this.characterData.attributes[Attribute.Edge].exceptional = false;
         }
 
         const index = this.characterData.qualities.positive.findIndex(q => q.id === quality.id);
@@ -272,6 +292,32 @@ export class ShadowRun5ECharacter {
         if(qualityReference.name === "exceptional attribute" && qualityReference.attribute) {
             this.resetAttributeExceptionalStatus();
             this.setAttributeAsExceptional(qualityReference.attribute);
+        }
+
+        if(qualityReference.name === "lucky") {
+            this.setAttributeAsExceptional(Attribute.Edge);
+        }
+
+        if(qualityReference.name === "natural immunity") {
+            
+            if(qualityReference.optionSelection === "minimal") {
+                qualityReference.karmaCost = 4;
+            }
+
+            if(qualityReference.optionSelection === "maximum") {
+                qualityReference.karmaCost = 10;
+            }
+        }
+
+        if(qualityReference.name === "resistant to pathogens / toxins") {
+            
+            if(qualityReference.optionSelection === "minimal") {
+                qualityReference.karmaCost = 4;
+            }
+
+            if(qualityReference.optionSelection === "maximum") {
+                qualityReference.karmaCost = 8;
+            }
         }
 
         if(index > -1) {
@@ -288,13 +334,74 @@ export class ShadowRun5ECharacter {
         this.negativeQualities.push(qualityReference);
     }
 
-    removeNegativeQualityReference(qualityId: string): void {
-        const index = this.negativeQualities.findIndex(q => q.id === qualityId);
+    removeNegativeQualityReference(qualityReference: QualityReference): void {
+        const index = this.negativeQualities.findIndex(q => q.id === qualityReference.id);
         this.characterData.qualities.negative.splice(index, 1);
     }
 
     updateNegativeQualityReference(qualityReference: QualityReference): void {
         const index = this.positiveQualities.findIndex(q => q.id === qualityReference.id);
+
+        if(qualityReference.name === "addiction") {
+            switch(qualityReference.optionSelection) {
+                case "mild":
+                    qualityReference.karmaCost = 4;
+                    break;
+                case "moderate":
+                    qualityReference.karmaCost = 9;
+                    break;
+                case "severe":
+                    qualityReference.karmaCost = 20;
+                    break;
+                case "burnout":
+                    qualityReference.karmaCost = 25;
+                    break;
+            }
+        }
+
+        if(qualityReference.name.includes("allergy")) {
+            let baseCost = 2;
+
+            if(qualityReference.name.includes("(uncommon)")) {
+                baseCost = 7;
+            }
+
+            switch(qualityReference.optionSelection) {
+                case "mild":
+                    qualityReference.karmaCost = baseCost + 3;
+                    break;
+                case "moderate":
+                    qualityReference.karmaCost = baseCost + 8;
+                    break;
+                case "severe":
+                    qualityReference.karmaCost = baseCost + 13;
+                    break;
+                case "extreme":
+                    qualityReference.karmaCost = baseCost + 18;
+                    break;
+            }
+        }
+
+        if (qualityReference.name.includes("prejudiced")) {
+            
+            let baseCost = 5;
+
+            if(qualityReference.name.includes("(specific target group)")) {
+                baseCost = 3;
+            }
+
+            switch(qualityReference.optionSelection) {
+                case "biased":
+                    qualityReference.karmaCost = baseCost;
+                    break;
+                case "outspoken":
+                    qualityReference.karmaCost = baseCost + 2;
+                    break;
+                case "radical":
+                    qualityReference.karmaCost = baseCost + 5;
+                    break;
+            }
+        }
 
         if(index > -1) {
             this.characterData.qualities.negative[index] = qualityReference;
@@ -306,7 +413,7 @@ export class ShadowRun5ECharacter {
         const qualityReference = this.getQualityReferenceById(qualityReferenceId);
 
         if(qualityReference) {
-            cost = qualityReference.karmaCost * qualityReference.ratingValue
+            cost = qualityReference.karmaCost * qualityReference.ratingValue;
         }
 
         return cost;
@@ -344,6 +451,14 @@ export class ShadowRun5ECharacter {
 
     // Karma
 
+    get startingKarma(): number {
+        return this.characterData.startingKarma;
+    }
+
+    set startingKarma(startingKarma: number) {
+        this.characterData.startingKarma = startingKarma;
+    }
+
     get karmaPoints(): number {
         return this.characterData.karmaPoints;
     }
@@ -355,30 +470,19 @@ export class ShadowRun5ECharacter {
     get QualityKarmaSpend(): number {
         let spend = 0;
 
-        for(const quality of this.characterData.qualities.positive) {
-            spend -= this.getQualityReferenceKarmaCost(quality.name);
+        for(const qualityReference of this.characterData.qualities.positive) {
+            spend += (qualityReference.karmaCost * qualityReference.ratingValue);
         }
 
-        for(const quality of this.characterData.qualities.negative) {
-            spend += this.getQualityReferenceKarmaCost(quality.name);
+        for(const qualityReference of this.characterData.qualities.negative) {
+            spend -= (qualityReference.karmaCost * qualityReference.ratingValue);
         }
 
         return spend;
     }
 
-    get startingKarma(): number { 
-        switch(this.characterData.settings.levelOfPlay) {
-            case LevelOfPlay.Prime:
-                return 35;
-            case LevelOfPlay.Street:
-                return 13;
-            default:
-                return 25;
-        }
-    }
-
     get remainingStartingKarama(): number {
-        return this.startingKarma + this.QualityKarmaSpend;
+        return this.characterData.startingKarma - this.QualityKarmaSpend;
     }
 
     // Nuyen

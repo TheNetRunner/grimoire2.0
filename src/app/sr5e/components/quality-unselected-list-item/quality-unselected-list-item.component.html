@@ -2,17 +2,12 @@
 
     <div class="row">
 
-        <div class="col-5">
+        <div class="col-6">
             <h6 class="pe-4">{{ quality.name  | titlecase }}</h6>
+            Cost: <span class="text-info">{{ quality.karmaCost }} karama</span>
         </div>
 
-        <div class="col-3 text-center">
-            <h6 class="fst-italic text-body-tertiary">
-                {{ quality.karmaCost }} karama
-            </h6>
-        </div>
-
-        <div class="col-4">
+        <div class="col-6">
             <div class="d-flex justify-content-end">
                 <button class="btn btn-outline-primary p-1" (click)="emitAddQualityEvent()">
                     Add

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { Attribute } from '../models/attribute.interface';
 import { Quality, QualityReference } from '../models/quality.interface';
 import { positiveQualities, negativeQualities } from '../data/qualities.data';
 
@@ -11,7 +12,7 @@ export class QualityService {
         const quality = this.getQualityByName(qualityName);
 
         if(quality) {
-            return {
+            const newQualityReference: QualityReference = {
                 id: "",
                 name: quality.name,
                 karmaCost: quality.karmaCost,
@@ -20,6 +21,40 @@ export class QualityService {
                 optionSelection: "",
                 attribute: undefined
             };
+
+            if(newQualityReference.name === "exceptional attribute") {
+                newQualityReference.attribute = Attribute.Body;
+            }
+
+            // Home ground has options.
+            if(newQualityReference.name === "home ground") {
+                newQualityReference.optionSelection = "astral acclimation";
+            }
+
+            if(newQualityReference.name === "natural immunity" || newQualityReference.name.includes("resistant to pathogens")) {
+                newQualityReference.optionSelection = "minimal";
+            }
+
+            if(newQualityReference.name === "addiction") {
+                newQualityReference.optionSelection = "mild";
+                newQualityReference.karmaCost = 4;
+            }
+
+            if(newQualityReference.name === "allergy (common)") {
+                newQualityReference.optionSelection = "mild";
+                newQualityReference.karmaCost = 2 + 3;
+            }
+
+            if(newQualityReference.name === "allergy (uncommon)") {
+                newQualityReference.optionSelection = "mild";
+                newQualityReference.karmaCost = 7 + 3;
+            }
+
+            if(newQualityReference.name.includes("prejudiced")) {
+                newQualityReference.optionSelection = "biased";
+            }
+
+            return newQualityReference;
         }
 
         return undefined;

@@ -2,12 +2,10 @@ import { Component, Input, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DataStoreService } from '../../services/data-store.service';
-
+import { GameSettingsService } from "../../services/game-settings.service";
 import { ShadowRun5ECharacter } from '../../models/character.model';
 import { LevelOfPlayName } from '../../models/priority.interface';
 import { RoleName } from '../../models/character.interface';
-
-
 
 @Component({
   selector: 'app-concept-step',
@@ -17,6 +15,7 @@ import { RoleName } from '../../models/character.interface';
 export class ConceptStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
     private dataStoreService = inject(DataStoreService);
+    private gameSettingsService = inject(GameSettingsService);
 
     @Input() character!: ShadowRun5ECharacter
 
@@ -70,7 +69,11 @@ export class ConceptStepComponent implements OnInit {
         });
 
         this.gameSettingsForm.valueChanges.subscribe((formData: any) => {
-            this.character.levelOfPlay = formData.levelOfPlay;
+            const formLevelOfPlay = formData.levelOfPlay;
+
+            this.character.levelOfPlay = formLevelOfPlay;
+            this.character.startingKarma = this.gameSettingsService.getStartingKarma(formLevelOfPlay);
+
             this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
         });
     }
@@ -96,5 +99,4 @@ export class ConceptStepComponent implements OnInit {
     get hasNameFieldBeenTouched(): boolean | undefined {
         return this.personalInfoForm.get("name")?.touched;
     }
-
 }

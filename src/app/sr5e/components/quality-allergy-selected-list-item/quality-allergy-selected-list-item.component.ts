@@ -5,11 +5,11 @@ import { QualityReference, Quality, QualityOption } from '../../models/quality.i
 import { QualityService } from '../../services/quality.service';
 
 @Component({
-  selector: 'app-quality-selected-list-item',
-  templateUrl: './quality-selected-list-item.component.html',
-  styleUrl: './quality-selected-list-item.component.css'
+  selector: 'app-quality-allergy-selected-list-item',
+  templateUrl: './quality-allergy-selected-list-item.component.html',
+  styleUrl: './quality-allergy-selected-list-item.component.css'
 })
-export class QualitySelectedListItemComponent implements OnInit {
+export class QualityAllergySelectedListItemComponent {
     private qualityService = inject(QualityService);
     private formBuilder = inject(FormBuilder);
 
@@ -90,9 +90,5 @@ export class QualitySelectedListItemComponent implements OnInit {
     get optionDescription(): string {
         const option = this.options.find(option => option.name === this.optionFormValue);
         return option?.description || "";
-    }
-
-    get karmaCost(): number {
-        return this.qualityReference.karmaCost * this.qualityReference.ratingValue
     }
 }

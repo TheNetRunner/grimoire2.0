@@ -1,10 +1,11 @@
 import { Component, Input, Output, inject, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { QualityReference, Quality } from '../../models/quality.interface';
-import { ShadowRun5ECharacter } from '../../models/character.model';
+import { EXCEPTIOANL_ATTRIBUTE_OPTIONS } from '../../common/constants';
 import { Attribute, MagicAttribute } from '../../models/attribute.interface';
+import { Quality, QualityReference } from '../../models/quality.interface';
 import { QualityService } from '../../services/quality.service';
+import { ShadowRun5ECharacter } from '../../models/character.model';
 
 type ExceptionalAttributeChoices = Attribute | MagicAttribute
 
@@ -19,7 +20,7 @@ export class QualityExceptionalAttrSelectedListItemComponent implements OnInit {
 
     @Input() qualityReference!: QualityReference;
     @Input() character!: ShadowRun5ECharacter;
-    @Output() qualityReferenceAttributeChange = new EventEmitter<QualityReference>();
+    @Output() qualityReferenceChange = new EventEmitter<QualityReference>();
     @Output() removeQualityEvent = new EventEmitter<QualityReference>();
 
     isCollapsed = true;
@@ -44,12 +45,8 @@ export class QualityExceptionalAttrSelectedListItemComponent implements OnInit {
 
         this.attributeForm.valueChanges.subscribe((formData: any) => {
             this.qualityReference.attribute = formData.attribute;
-            this.emitQualityReferenceChange();
+            this.qualityReferenceChange.emit(this.qualityReference);
         });
-    }
-
-    emitQualityReferenceChange(): void {
-        this.qualityReferenceAttributeChange.emit(this.qualityReference);
     }
 
     emitRemoveQualityEvent(): void {
@@ -61,8 +58,7 @@ export class QualityExceptionalAttrSelectedListItemComponent implements OnInit {
     }
 
     setAttributeOptions(): void {
-        let options = [...Object.values(Attribute), MagicAttribute.Magic, MagicAttribute.Resonance];
-        this.attributeOptions = options;
+        this.attributeOptions = EXCEPTIOANL_ATTRIBUTE_OPTIONS;
     }
 
     get attributeSelectionValue(): Attribute {

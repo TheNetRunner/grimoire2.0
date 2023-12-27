@@ -24,6 +24,7 @@ import { QualityUnselectedListItemComponent } from './components/quality-unselec
 import { QualitySelectedListItemComponent } from './components/quality-selected-list-item/quality-selected-list-item.component';
 import { MagicStepComponent } from './edit-view/magic-step/magic-step.component';
 import { QualityExceptionalAttrSelectedListItemComponent } from './components/quality-exceptional-attr-selected-list-item/quality-exceptional-attr-selected-list-item.component';
+import { QualityAllergySelectedListItemComponent } from './components/quality-allergy-selected-list-item/quality-allergy-selected-list-item.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { QualityExceptionalAttrSelectedListItemComponent } from './components/qu
     QualitySelectedListItemComponent,
     MagicStepComponent,
     QualityExceptionalAttrSelectedListItemComponent,
+    QualityAllergySelectedListItemComponent,
   ],
   imports: [
     CommonModule,
