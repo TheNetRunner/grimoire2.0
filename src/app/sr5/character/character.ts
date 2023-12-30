@@ -1,4 +1,4 @@
-import { BasicData, ShadowRun5ECharacterData } from './interfaces/character.interface';
+import { BasicData, ShadowRun5ECharacterData, PriorityData } from './interfaces/character.interface';
 import { MetaType } from './interfaces/meta-type.interface';
 import { SettingsData } from './interfaces/character.interface';
 
@@ -24,6 +24,26 @@ export class ShadowRun5ECharacter {
     set basic(basicData: BasicData) {
         this.characterData.basic = basicData;
     }
+
+    // Priorities
+
+    get priorities() {
+        return this.characterData.priorities;
+    }
+
+    set priorities(priorities: PriorityData) {
+        if(priorities.metaType !== this.characterData.priorities.metaType) {
+            this.handleMetaTypePriorityChange();
+        }
+
+        this.characterData.priorities = priorities;
+    }
+
+    handleMetaTypePriorityChange(): void {
+        this.metaType = MetaType.Human;
+    }
+
+    // Meta Type
 
     get metaType() {
         return this.characterData.metaType;

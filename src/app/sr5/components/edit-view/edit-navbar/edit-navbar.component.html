@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark shadow mb-3">
     <div class="container-xxl flex-wrap flex-lg-nowrap gx-3">
-        <div class="w-300px text-truncate">
+        <div class="text-truncate">
             <a class="navbar-brand" [routerLink]="['/']">{{ characterName }}</a>
         </div>
         <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed">
@@ -8,7 +8,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent" [(ngbCollapse)]="isCollapsed" [animation]="true">
-            <div>
+            <div class="mx-auto">
                 <ul class="navbar-nav">
                     <li *ngFor="let step of editorSteps" class="nav-item">
                         <a class="nav-link" 

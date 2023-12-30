@@ -13,6 +13,7 @@ import { DeleteComponent } from './components/modals/delete/delete.component';
 import { EditNavbarComponent } from './components/edit-view/edit-navbar/edit-navbar.component';
 import { ConceptStepComponent } from './components/edit-view/concept-step/concept-step.component';
 import { PortraitSelectComponent } from './components/modals/portrait-select/portrait-select.component';
+import { PriorityStepComponent } from './components/edit-view/priority-step/priority-step.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { PortraitSelectComponent } from './components/modals/portrait-select/por
     DeleteComponent,
     EditNavbarComponent,
     ConceptStepComponent,
-    PortraitSelectComponent
+    PortraitSelectComponent,
+    PriorityStepComponent
   ],
   imports: [
     CommonModule,

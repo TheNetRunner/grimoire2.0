@@ -29,18 +29,17 @@
     
 </div>
 
-
 <div class="row justify-content-center align-items-center">
     <div class="col">
 
-        <ul class="list-group mb-2">
+        <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between active">
                 <h5 class="my-auto">Characteristics</h5>
                 <button class="btn btn-secondary spin-button" (click)="characteristicsCollapse = !characteristicsCollapse">
                     <i class="bi bi-chevron-bar-expand"></i>
                 </button>
             </li>
-            <li class="list-group-item" [(ngbCollapse)]="characteristicsCollapse" [animation]="true">
+            <li class="list-group-item no-border-radius" [(ngbCollapse)]="characteristicsCollapse" [animation]="true">
                 <form [formGroup]="characteristicsForm">
                     <div class="mb-3">
                         <label for="ethnicity" class="form-label">Ethnicity</label>
@@ -74,14 +73,14 @@
             </li>
         </ul>
 
-            <ul class="list-group mb-2">
-            <li class="list-group-item d-flex justify-content-between active">
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between active no-border-radius">
                 <h5 class="my-auto">Social Status</h5>
                 <button class="btn btn-secondary spin-button" (click)="socialStatusCollapse = !socialStatusCollapse">
                     <i class="bi bi-chevron-bar-expand"></i>
                 </button>
             </li>
-            <li class="list-group-item" [(ngbCollapse)]="socialStatusCollapse" [animation]="true">
+            <li class="list-group-item no-border-radius" [(ngbCollapse)]="socialStatusCollapse" [animation]="true">
                 <form [formGroup]="socialStatusForm">
                     <div class="mb-3">
                         <label for="streetCred" class="form-label">Street Cred</label>
@@ -99,14 +98,14 @@
             </li>
         </ul>
 
-        <ul class="list-group mb-2">
-            <li class="list-group-item d-flex justify-content-between active">
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between active no-border-radius">
                 <h5 class="my-auto">Biography</h5>
                 <button class="btn btn-secondary spin-button" (click)="biographyCollapse = !biographyCollapse">
                     <i class="bi bi-chevron-bar-expand"></i>
                 </button>
             </li>
-            <li class="list-group-item" [(ngbCollapse)]="biographyCollapse" [animation]="true">
+            <li class="list-group-item no-border-radius" [(ngbCollapse)]="biographyCollapse" [animation]="true">
                 <form [formGroup]="biographyForm">
                     <div class="mb-3">
                         <label for="bio" class="form-label">Biography</label>
@@ -116,20 +115,21 @@
             </li>
         </ul>
 
-        <ul class="list-group mb-2">
-            <li class="list-group-item d-flex justify-content-between active">
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between active no-border-radius">
                 <h5 class="my-auto">Notes</h5>
                 <button class="btn btn-secondary spin-button" (click)="notesCollapse = !notesCollapse">
                     <i class="bi bi-chevron-bar-expand"></i>
                 </button>
             </li>
-            <li class="list-group-item" [(ngbCollapse)]="notesCollapse" [animation]="true">
+            <li class="list-group-item no-border-radius" [(ngbCollapse)]="notesCollapse" [animation]="true">
 
             </li>
         </ul>
 
-        <ul class="list-group mb-2">
-            <li class="list-group-item d-flex justify-content-between active">
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between active" 
+                [ngClass]="{ 'no-border-radius': gameSettingsCollapse === false, 'customer-list-group-item': gameSettingsCollapse === true }">
                 <h5 class="my-auto">Game Settings</h5>
                 <button class="btn btn-secondary spin-button" (click)="gameSettingsCollapse = !gameSettingsCollapse">
                     <i class="bi bi-chevron-bar-expand"></i>
@@ -139,8 +139,8 @@
                 <form [formGroup]="gameSettingsForm">
                     <div class="mb-3">
                         <label for="levelOfPlay" class="form-label">Level of Play</label>
-                        <select class="form-select">
-                            <option *ngFor="let levelOfPlay of levelsOfPlay">{{ levelOfPlay | titlecase }}</option>
+                        <select class="form-select" formControlName="levelOfPlay">
+                            <option *ngFor="let levelOfPlay of levelsOfPlay" [ngValue]="levelOfPlay">{{ levelOfPlay | titlecase }}</option>
                         </select>
                     </div>
                 </form>
