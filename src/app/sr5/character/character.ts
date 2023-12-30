@@ -1,5 +1,6 @@
 import { BasicData, ShadowRun5ECharacterData } from './interfaces/character.interface';
 import { MetaType } from './interfaces/meta-type.interface';
+import { SettingsData } from './interfaces/character.interface';
 
 import AttributeHandler from './attributes/attribute-handler';
 
@@ -38,6 +39,15 @@ export class ShadowRun5ECharacter {
 
     set imageName(imageName: string) {
         this.characterData.imageName = imageName;
+    }
+
+    // Settings
+    get settings() {
+        return this.characterData.settings;
+    }
+
+    set settings(settings: SettingsData) {
+        this.characterData.settings = settings;
     }
 
     // Save

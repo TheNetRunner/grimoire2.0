@@ -1,6 +1,6 @@
-<div class="row justify-content-md-center">
+<div class="row justify-content-md-center align-items-center mb-3">
 
-    <div class="col">
+    <div class="col-lg-3 col-3 d-flex justify-content-end">
 
         <div class="portrait-img-select" (click)="openPortraitSelectModal()">
             <img src="{{ characterImageUrl }}" class="img-thumbnail" alt="char image">
@@ -8,8 +8,145 @@
 
     </div>
 
-    <div class="col">
-
+    <div class="col-lg-5 col-md-6 col-9">
+        <form [formGroup]="requiredForm">
+            <div class="row text-end align-items-center">
+                <label for="name" class="col-2 col-form-label px-0">Alias</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" id="name" formControlName="name">
+                </div>
+            </div>
+            <div class="row text-end align-items-center">
+                <label for="role" class="col-2 col-form-label px-0">Role</label>
+                <div class="col-10">
+                    <select class="form-select" aria-label="role" formControlName="role">
+                        <option *ngFor="let role of roles" [value]="role">{{ role | titlecase }}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
     </div>
     
+</div>
+
+
+<div class="row justify-content-center align-items-center">
+    <div class="col">
+
+        <ul class="list-group mb-2">
+            <li class="list-group-item d-flex justify-content-between active">
+                <h5 class="my-auto">Characteristics</h5>
+                <button class="btn btn-secondary spin-button" (click)="characteristicsCollapse = !characteristicsCollapse">
+                    <i class="bi bi-chevron-bar-expand"></i>
+                </button>
+            </li>
+            <li class="list-group-item" [(ngbCollapse)]="characteristicsCollapse" [animation]="true">
+                <form [formGroup]="characteristicsForm">
+                    <div class="mb-3">
+                        <label for="ethnicity" class="form-label">Ethnicity</label>
+                        <input type="text" class="form-control" id="ethnicity">
+                    </div>
+                    <div class="mb-3">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="text" class="form-control" id="age">
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <input type="text" class="form-control" id="gender">
+                    </div>
+                    <div class="mb-3">
+                        <label for="eyes" class="form-label">Eyes</label>
+                        <input type="text" class="form-control" id="eyes">
+                    </div>
+                    <div class="mb-3">
+                        <label for="hair" class="form-label">Hair</label>
+                        <input type="text" class="form-control" id="hair">
+                    </div>
+                    <div class="mb-3">
+                        <label for="height" class="form-label">Height</label>
+                        <input type="text" class="form-control" id="height">
+                    </div>
+                    <div class="mb-3">
+                        <label for="weight" class="form-label">Weight</label>
+                        <input type="text" class="form-control" id="weight">
+                    </div>
+                </form>
+            </li>
+        </ul>
+
+            <ul class="list-group mb-2">
+            <li class="list-group-item d-flex justify-content-between active">
+                <h5 class="my-auto">Social Status</h5>
+                <button class="btn btn-secondary spin-button" (click)="socialStatusCollapse = !socialStatusCollapse">
+                    <i class="bi bi-chevron-bar-expand"></i>
+                </button>
+            </li>
+            <li class="list-group-item" [(ngbCollapse)]="socialStatusCollapse" [animation]="true">
+                <form [formGroup]="socialStatusForm">
+                    <div class="mb-3">
+                        <label for="streetCred" class="form-label">Street Cred</label>
+                        <input type="text" class="form-control" id="streetCred">
+                    </div>
+                    <div class="mb-3">
+                        <label for="notoriety" class="form-label">Notoriety</label>
+                        <input type="text" class="form-control" id="notoriety">
+                    </div>
+                    <div class="mb-3">
+                        <label for="publicAwareness" class="form-label">Public Awareness</label>
+                        <input type="text" class="form-control" id="publicAwareness">
+                    </div>
+                </form>
+            </li>
+        </ul>
+
+        <ul class="list-group mb-2">
+            <li class="list-group-item d-flex justify-content-between active">
+                <h5 class="my-auto">Biography</h5>
+                <button class="btn btn-secondary spin-button" (click)="biographyCollapse = !biographyCollapse">
+                    <i class="bi bi-chevron-bar-expand"></i>
+                </button>
+            </li>
+            <li class="list-group-item" [(ngbCollapse)]="biographyCollapse" [animation]="true">
+                <form [formGroup]="biographyForm">
+                    <div class="mb-3">
+                        <label for="bio" class="form-label">Biography</label>
+                        <textarea class="form-control" id="bio" formControlName="bio"></textarea>
+                    </div>
+                </form>
+            </li>
+        </ul>
+
+        <ul class="list-group mb-2">
+            <li class="list-group-item d-flex justify-content-between active">
+                <h5 class="my-auto">Notes</h5>
+                <button class="btn btn-secondary spin-button" (click)="notesCollapse = !notesCollapse">
+                    <i class="bi bi-chevron-bar-expand"></i>
+                </button>
+            </li>
+            <li class="list-group-item" [(ngbCollapse)]="notesCollapse" [animation]="true">
+
+            </li>
+        </ul>
+
+        <ul class="list-group mb-2">
+            <li class="list-group-item d-flex justify-content-between active">
+                <h5 class="my-auto">Game Settings</h5>
+                <button class="btn btn-secondary spin-button" (click)="gameSettingsCollapse = !gameSettingsCollapse">
+                    <i class="bi bi-chevron-bar-expand"></i>
+                </button>
+            </li>
+            <li class="list-group-item" [(ngbCollapse)]="gameSettingsCollapse" [animation]="true">
+                <form [formGroup]="gameSettingsForm">
+                    <div class="mb-3">
+                        <label for="levelOfPlay" class="form-label">Level of Play</label>
+                        <select class="form-select">
+                            <option *ngFor="let levelOfPlay of levelsOfPlay">{{ levelOfPlay | titlecase }}</option>
+                        </select>
+                    </div>
+                </form>
+            </li>
+        </ul>
+
+    </div>
+
 </div>

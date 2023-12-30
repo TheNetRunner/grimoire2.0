@@ -43,6 +43,7 @@ export class EditViewComponent implements OnInit {
 
                 if(characterData) {
                     this.character = new ShadowRun5ECharacter(characterData);
+                    console.log(characterData);
                 } else {
                     this.router.navigate(['sr5', 'characters']);
                 }

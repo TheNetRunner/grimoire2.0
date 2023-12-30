@@ -6,3 +6,41 @@
     border: 2px solid var(--bs-primary);
     cursor: pointer;
 }
+
+.form-control, .form-select {
+    background: none;
+    border-radius: 0%;
+    border: none;
+    border-bottom: 2px solid var(--bs-primary);
+    color: white;
+}
+
+.spin-button {
+    transition: transform 0.3s ease;
+}
+
+.spin-button:hover {
+    animation: spin 0.3s linear 1;
+}
+
+.spin-button:not(:hover) {
+    animation: spin-back 0.3s linear 1;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes spin-back {
+    0% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}

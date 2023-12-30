@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { SharedModule } from '../shared/shared.module';
 
@@ -30,8 +28,6 @@ import { PortraitSelectComponent } from './components/modals/portrait-select/por
   ],
   imports: [
     CommonModule,
-    NgbModule,
-    NgbTooltipModule,
     Sr5RoutingModule,
     ReactiveFormsModule,
     SharedModule,
