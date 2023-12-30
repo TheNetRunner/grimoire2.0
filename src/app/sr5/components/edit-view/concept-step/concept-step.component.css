@@ -1,0 +1,8 @@
+.portrait-img-select {
+    width: 10rem;
+}
+
+.portrait-img-select :hover {
+    border: 2px solid var(--bs-primary);
+    cursor: pointer;
+}

@@ -1,0 +1,7 @@
+<app-edit-navbar *ngIf="character" [characterName]="character.basic.name"></app-edit-navbar>
+
+<div class="container-xxl" *ngIf="character">
+
+    <app-concept-step *ngIf="currentEditorStep === 'concept'" [character]="character"></app-concept-step>
+
+</div>

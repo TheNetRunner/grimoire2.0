@@ -1,0 +1,19 @@
+.card {
+    width: 24rem;
+}
+
+.card-bg-img {
+    border-radius: var(--bs-border-radius);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.title-bg {
+    background-color: rgba(42, 42, 42, 0.5);
+    border-radius: var(--bs-border-radius);
+}
+
+.img-thumbnail {
+    width: 6rem;
+}

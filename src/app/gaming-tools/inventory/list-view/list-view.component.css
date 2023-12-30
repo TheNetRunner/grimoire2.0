@@ -1,7 +1,7 @@
 .list-group-item {
-    border-bottom: 2px solid rgba(234, 57, 184, 0.5);
+    border-bottom: 2px solid var(--bs-primary);
 }
 
 .list-group-item:hover {
-    background-color: rgb(111, 66, 193);
+    background-color: var(--bs-primary);
 }

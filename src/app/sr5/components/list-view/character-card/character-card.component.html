@@ -1,0 +1,46 @@
+ <div class="card border-secondary shadow m-2">
+
+    <div class="card-body card-bg-img" style="background-image: url('{{ roleImageUrl }}')">
+        
+        <div class="row title-bg mb-3">
+            <div class="col-3">
+                <img src="{{ characterImageUrl }}" class="img-thumbnail" alt="char image">
+            </div>
+
+            <div class="col-9 text-truncate">
+                <h5 class="card-title">{{ character.basic.name }}</h5>
+                <h6 class="card-subtitle">{{ character.metaType | titlecase }}</h6>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-3">
+                <button class="btn btn-primary" [routerLink]="['.', character.id, 'play']">
+                    Play
+                </button>
+            </div>
+
+            <div class="col-3">
+                <button class="btn btn-primary" [routerLink]="['.', character.id, 'edit']" [queryParams]="{ step: 'concept' }">
+                    Edit
+                </button>
+            </div>
+
+            <div class="col-3">
+                <button class="btn btn-primary" (click)="emitCopyCharacterEvent()">
+                    Copy
+                </button>
+            </div>
+
+            <div class="col-3">
+                <button class="btn btn-danger" (click)="emitDeleteCharacterEvent()">
+                    Delete
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,24 @@
+img {
+    width: 200px;
+}
+
+.portrait-img-select :hover {
+    border: 2px solid var(--bs-primary);
+    cursor: pointer;
+}
+
+.selected-border {
+    border: 2px solid var(--bs-success);
+}
+
+@media (max-width: 768px) {
+    img {
+        width: 25vw;
+    }
+}
+
+@media (max-height: 576px) {
+    img {
+        width: 25vh;
+    }
+}
