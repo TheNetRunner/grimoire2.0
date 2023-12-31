@@ -32,10 +32,21 @@
     
 </div>
 
+<div class="row mb-3">
+
+    <div class="col-12">
+        <span>
+            <strong class="text-info">Special Attribute Points: </strong>
+            {{ this.character.getSpecialAttributePoints() }}
+        </span>
+    </div>
+    
+</div>
+
 <div class="row">
     
     <div class="col-12">
-        <app-meta-type-starting-attrs-table [metaType]="this.currentMetaType"></app-meta-type-starting-attrs-table>
+        <app-meta-type-starting-attrs-table [metaType]="this.character.metaType"></app-meta-type-starting-attrs-table>
     </div>
 
 </div>

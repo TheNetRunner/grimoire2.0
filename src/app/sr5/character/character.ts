@@ -2,6 +2,8 @@ import { BasicData, ShadowRun5ECharacterData, PriorityData } from './interfaces/
 import { MetaType } from './interfaces/meta-type.interface';
 import { SettingsData } from './interfaces/character.interface';
 
+import { priorityTable } from './tables/priority-table.data';
+
 import AttributeHandler from './attributes/attribute-handler';
 
 export class ShadowRun5ECharacter {
@@ -59,6 +61,12 @@ export class ShadowRun5ECharacter {
 
     set imageName(imageName: string) {
         this.characterData.imageName = imageName;
+    }
+
+    getSpecialAttributePoints(): number | undefined {
+        const priorityTableRow = priorityTable[this.priorities.metaType];
+        const metaTypeOption = priorityTableRow.metaTypes.find(metaType => metaType.name === this.metaType);
+        return metaTypeOption?.specialAttrPoints;
     }
 
     // Settings

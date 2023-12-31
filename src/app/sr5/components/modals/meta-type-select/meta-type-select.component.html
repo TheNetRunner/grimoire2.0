@@ -6,12 +6,14 @@
     <div ngbAccordion>
         <div ngbAccordionItem *ngFor="let metaTypeOption of metaTypeOptions" [collapsed]="true">
             <div ngbAccordionHeader class="accordion-button meta-type-selection-header justify-content-between">
-                <p class="text-info m-0">{{ metaTypeOption | titlecase }}</p>
+                <p class="text-info m-0">
+                    {{ metaTypeOption.name | titlecase }} ({{ metaTypeOption.specialAttrPoints }})
+                </p>
                 <div>
                     <button class="btn btn-secondary spin-button mx-2" ngbAccordionToggle>
                         <i class="bi bi-chevron-bar-expand"></i>
                     </button>
-                    <button class="btn btn-primary" (click)="emitSelectMetaType(metaTypeOption)">
+                    <button class="btn btn-primary" (click)="emitSelectMetaType(metaTypeOption.name)">
                         Select
                     </button>
                 </div>
@@ -22,13 +24,13 @@
                         <div class="col-12">
                             <span>
                                 <strong class="text-info">Racial Abilities: </strong>
-                                {{ getMetaTypeRacial(metaTypeOption) }}
+                                {{ getMetaTypeRacial(metaTypeOption.name) }}
                             </span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <app-meta-type-starting-attrs-table [metaType]="metaTypeOption"/>
+                            <app-meta-type-starting-attrs-table [metaType]="metaTypeOption.name"/>
                         </div>
                     </div>
                 </div>

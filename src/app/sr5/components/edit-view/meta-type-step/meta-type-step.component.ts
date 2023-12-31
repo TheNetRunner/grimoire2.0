@@ -21,24 +21,17 @@ export class MetaTypeStepComponent implements OnInit {
 
     @Input() character!: ShadowRun5ECharacter;
 
-    currentMetaType!: MetaType;
     metaTypeDescription!: MetaTypeDescription;
     metaTypeAttributesTableRow!: MetaTypeAttributesTableRow;
 
     ngOnInit(): void {
-        this.setCurrentMetaType();
         this.setMetaTypeDescription();
         this.setMetaTypeAttributesTableRow();
     }
 
     handleMetaTypeChange(): void {
-        this.setCurrentMetaType();
         this.setMetaTypeDescription();
         this.setMetaTypeAttributesTableRow();
-    }
-
-    setCurrentMetaType(): void {
-        this.currentMetaType = this.character.metaType;
     }
 
     setMetaTypeDescription(): void {
@@ -55,6 +48,7 @@ export class MetaTypeStepComponent implements OnInit {
             { size: 'lg', scrollable: true }
         );
 
+        modalRef.componentInstance.metaTypePriority = this.character.priorities.metaType;
         modalRef.componentInstance.currentMetaType = this.character.metaType;
 
         modalRef.componentInstance.metaTypeSelectEvent.subscribe((metaType: MetaType) => {

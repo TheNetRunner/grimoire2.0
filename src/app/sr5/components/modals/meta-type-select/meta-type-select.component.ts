@@ -4,25 +4,37 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetaType } from '../../../character/interfaces/meta-type.interface';
 import { metaTypeAttributesTable } from '../../../character/tables/meta-type-attributes.table';
 import { MetaTypeAttributesTableRow } from '../../../character/interfaces/attribute.interface';
+import { MetaTypeStartingValues } from '../../../character/interfaces/priority.interface';
+import { priorityTable } from '../../../character/tables/priority-table.data';
+import { Priority } from '../../../character/interfaces/priority.interface';
+
+interface MetaTypeOptions {
+    metaType: MetaType;
+    specialAttrPoints: number;
+}
 
 @Component({
   selector: 'app-meta-type-select',
   templateUrl: './meta-type-select.component.html',
   styleUrl: './meta-type-select.component.css'
 })
-export class MetaTypeSelectComponent {
+export class MetaTypeSelectComponent implements OnInit {
     private activeModalService = inject(NgbActiveModal)
 
+    @Input() metaTypePriority!: Priority;
     @Input() currentMetaType!: MetaType;
     @Output() metaTypeSelectEvent = new EventEmitter<MetaType>();
 
-    metaTypeOptions: MetaType[] = Object.values(MetaType);
+    metaTypeOptions: MetaTypeStartingValues[] = [];
 
-    humanCollapsed = true;
-    orkCollapsed = true;
-    elfCollapsed = true;
-    dwarfCollapsed = true;
-    trollCollapsed = true;
+    ngOnInit(): void {
+        this.setMetaTypeOptions();
+    }
+
+    setMetaTypeOptions(): void {
+        const priorityTableRow = priorityTable[this.metaTypePriority];
+        this.metaTypeOptions = priorityTableRow.metaTypes
+    }
 
     dismiss(): void {
         this.activeModalService.dismiss();
