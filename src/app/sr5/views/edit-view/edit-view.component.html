@@ -2,12 +2,10 @@
 
 <div class="container-fluid" *ngIf="character">
 
-    <div class="editor-wrapper">
+    <app-concept-step *ngIf="currentEditorStep === 'concept'" [character]="character"></app-concept-step>
 
-        <app-concept-step *ngIf="currentEditorStep === 'concept'" [character]="character"></app-concept-step>
+    <app-priority-step *ngIf="currentEditorStep === 'priorities'" [character]="character"></app-priority-step>
 
-        <app-priority-step *ngIf="currentEditorStep === 'priorities'" [character]="character"></app-priority-step>
-    
-    </div>
+    <app-meta-type-step *ngIf="currentEditorStep === 'meta-type'" [character]="character"></app-meta-type-step>
 
 </div>

@@ -1,0 +1,9 @@
+@import url("../../../css/editor.css");
+
+.meta-type-selection-header::after {
+    content: none;
+}
+
+.accordion-header .selected {
+    border: 2px solid var(--bs-success);
+}

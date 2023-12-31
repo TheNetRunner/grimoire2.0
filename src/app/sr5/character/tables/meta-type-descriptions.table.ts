@@ -1,4 +1,4 @@
-import { MetaType, MetaTypeDescriptions } from "../models/meta-type.model";
+import { MetaType, MetaTypeDescriptions } from "../interfaces/meta-type.interface";
 
 export const metaTypeDescriptions: MetaTypeDescriptions = {
 	[MetaType.Human]: {

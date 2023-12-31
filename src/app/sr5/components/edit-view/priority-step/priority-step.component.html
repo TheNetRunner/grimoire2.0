@@ -91,7 +91,7 @@
                             <ul class="list-unstyled fs-7">
                                 <li *ngFor="let text of getPriorityMagicTextFromTable(priority)">
                                     <strong [ngClass]="{ 'text-info': this.character.priorities.magic === priority }">{{ text.title }}: </strong>
-                                    <span [ngClass]="{ 'text-white': this.character.priorities.magic === priority }">{{ text.description }}</span>
+                                    <span class="text-white">{{ text.description }}</span>
                                 </li>
                             </ul>
                         </td>
