@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { DatabaseService } from '../../shared/services/database.service';
 import { ShadowRun5ECharacterData } from '../character/interfaces/character.interface';
-import { characterObject } from '../character/new-character';
+import { characterObject } from '../character/data/new-character.data';
 
 const SHADOW_RUN_CHARACTERS_TABLE_NAME = "shadowRun5ECharacters";
 

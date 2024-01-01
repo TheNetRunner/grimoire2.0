@@ -1,9 +1,9 @@
-import { ShadowRun5ECharacterData, RoleName } from "./interfaces/character.interface";
-import { MetaType } from "./interfaces/meta-type.interface";
-import { Priority } from "./interfaces/priority.interface";
-import { AttributeName, MagicAttributeName } from "./interfaces/attribute.interface";
-import { MagicUserType } from "./interfaces/magic.interface";
-import { LevelOfPlayName } from "./interfaces/settings.interface";
+import { ShadowRun5ECharacterData, RoleName } from "../interfaces/character.interface";
+import { MetaType } from "../interfaces/meta-type.interface";
+import { Priority } from "../interfaces/priority.interface";
+import { AttributeName, MagicAttributeName } from "../interfaces/attribute.interface";
+import { MagicUserType } from "../interfaces/magic.interface";
+import { LevelOfPlayName } from "../interfaces/settings.interface";
 
 export const characterObject: ShadowRun5ECharacterData = {
     id: "",
@@ -78,7 +78,7 @@ export const characterObject: ShadowRun5ECharacterData = {
         [MagicAttributeName.Magic]: { buildPoints: 0, increases: 0 },
         [MagicAttributeName.Resonance]: { buildPoints: 0, increases: 0 }
     },
-    exceptionalAttribute: undefined,
+    exceptionalAttributes: [],
     qualities: { negative: [], positive: [] },
     magic: {
         magicUserType: MagicUserType.None,

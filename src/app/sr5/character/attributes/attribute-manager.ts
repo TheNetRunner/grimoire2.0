@@ -1,33 +1,54 @@
 import { MetaType } from "../interfaces/meta-type.interface";
 import { AttributeName, MagicAttributeName } from "../interfaces/attribute.interface";
-import { AttributesData, ShadowRun5ECharacterData } from "../interfaces/character.interface";
-import { ExceptionalAttribute } from "../../common/constants";
+import { AttributesData, ShadowRun5ECharacterData, ExceptionalAttributesData } from "../interfaces/character.interface";
 
 import { metaTypeAttributesTable } from "../tables/meta-type-attributes.table";
 
-export default class AttributeHandler {
-    private exceptionalAttribute: AttributeName | MagicAttributeName | undefined;
+export default class AttributeManager {
+    private exceptionalAttributesData: ExceptionalAttributesData[] = [];
     private attributesData: AttributesData;
 
     constructor(characterData: ShadowRun5ECharacterData) {
-        this.exceptionalAttribute = characterData.exceptionalAttribute;
+        this.exceptionalAttributes = characterData.exceptionalAttributes;
         this.attributesData = characterData.attributes;
     }
 
-    getAttributes(): AttributesData {
+    get attributes(): AttributesData {
         return this.attributesData
     }
 
-    setAttributes(attributes: AttributesData) {
+    set attributes(attributes: AttributesData) {
         this.attributesData = attributes;
     }
 
-    getExceptionalAttribute(): ExceptionalAttribute | undefined{
-        return this.exceptionalAttribute;
+    get exceptionalAttributes(): ExceptionalAttributesData[] {
+        return this.exceptionalAttributesData;
     }
 
-    setExceptionalAttribute(attribute: ExceptionalAttribute | undefined) {
-        this.exceptionalAttribute = attribute;
+    set exceptionalAttributes(attributes: ExceptionalAttributesData[]) {
+        this.exceptionalAttributesData = attributes;
+    }
+
+    setExceptionalAttribute(attributeName: AttributeName | MagicAttributeName): void {
+        this.removeExceptionalAttribute();
+        this.exceptionalAttributes.push(attributeName);
+    }
+
+    removeExceptionalAttribute(): void {
+        for(let i = 0; i < this.exceptionalAttributes.length; i++) {
+            if(this.exceptionalAttributes[i] !== AttributeName.Edge) {
+                this.exceptionalAttributes.splice(i, 1);
+            }
+        }
+    }
+
+    setLucky(): void {
+        this.exceptionalAttributes.push(AttributeName.Edge);
+    }
+
+    removeLucky(): void {
+        const index = this.exceptionalAttributes.indexOf(AttributeName.Edge);
+        this.exceptionalAttributes.splice(index, 1);
     }
 
     getAttributeBaseValue(attributeName: AttributeName, metaType: MetaType): number {
@@ -106,7 +127,7 @@ export default class AttributeHandler {
 
     getAttributeIncreaseCost(attributeName: AttributeName, metaType: MetaType): number {
         let totalIncreaseSpent = 0;
-        const attr = this.getAttributes()[attributeName];
+        const attr = this.attributes[attributeName];
 
         const attributeStartingValue = this.getAttributeBaseValue(attributeName, metaType);
         const attributeBuildPoints = this.getAttributeBuildPoints(attributeName);
@@ -128,6 +149,6 @@ export default class AttributeHandler {
     }
 
     isAttributeExceptional(attributeName: AttributeName): boolean {
-        return this.exceptionalAttribute === attributeName;
+        return this.exceptionalAttributes.includes(attributeName);
     }
 }

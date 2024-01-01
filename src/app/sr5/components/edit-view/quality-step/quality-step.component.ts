@@ -33,7 +33,7 @@ export class QualityStepComponent implements OnInit {
     }
 
     setPostiveQualityOptions(filterString: string = ""): Quality[] {
-        const selectedQualityNames = this.character.qualityHandler.selectedQualityNames;
+        const selectedQualityNames = this.character.qualityManager.selectedQualityNames;
         let unselectedQualities: Quality[] = [];
 
         for(let quality of positiveQualities) {
@@ -46,7 +46,7 @@ export class QualityStepComponent implements OnInit {
     }
 
     setNegativeQualityOptions(filterString: string = ""): Quality[] {
-        const selectedQualityNames = this.character.qualityHandler.selectedQualityNames;
+        const selectedQualityNames = this.character.qualityManager.selectedQualityNames;
         let unselectedQualities: Quality[] = [];
 
         for(let quality of negativeQualities) {
@@ -77,6 +77,7 @@ export class QualityStepComponent implements OnInit {
             }
         });
     }
+    
     addQualityReference(quality: Quality): void {
         this.character.addQuality(quality);
         this.updateCharacter();
@@ -87,6 +88,8 @@ export class QualityStepComponent implements OnInit {
     updateQualityReference(qualityReferenceUpdate: QualityReference, qualityType: string): void {
         this.character.updateQuality(qualityReferenceUpdate, qualityType);
         this.dataService.updateCharacter(this.character.id, this.character.getSaveObject());
+
+        this.setQualityOptions();
     }
 
     removeQualityReference(qualityReference: QualityReference): void {

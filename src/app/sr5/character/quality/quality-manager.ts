@@ -4,7 +4,7 @@ import { ShadowRun5ECharacterData } from '../interfaces/character.interface';
 import { Quality, QualityReference } from '../interfaces/quality.interface';
 import { AttributeName } from '../interfaces/attribute.interface';
 
-export default class QualityHandler {
+export default class QualityManager {
     private positiveQualities: QualityReference[] = [];
     private negativeQualities: QualityReference[] = [];
 
@@ -33,7 +33,7 @@ export default class QualityHandler {
     }
 
     get selectedQualityNames(): string[] {
-        const allQualities = [...this.positiveQualities, ...this.negativeQualities];
+        const allQualities = this.qualityReferenceArray;
         let selectedQualityNames: string[] = [];
 
         for(let quality of allQualities) {
@@ -69,16 +69,99 @@ export default class QualityHandler {
     updatePositiveQuality(qualityReferenceUpdate: QualityReference): void {
         const index = this.positiveQualities.findIndex(q => q.id === qualityReferenceUpdate.id);
 
+        if(qualityReferenceUpdate.name === "natural immunity") {
+            
+            if(qualityReferenceUpdate.optionSelection === "minimal") {
+                qualityReferenceUpdate.karmaCost = 4;
+            }
+
+            if(qualityReferenceUpdate.optionSelection === "maximum") {
+                qualityReferenceUpdate.karmaCost = 10;
+            }
+        }
+
+        if(qualityReferenceUpdate.name === "resistant to pathogens / toxins") {
+            
+            if(qualityReferenceUpdate.optionSelection === "minimal") {
+                qualityReferenceUpdate.karmaCost = 4;
+            }
+
+            if(qualityReferenceUpdate.optionSelection === "maximum") {
+                qualityReferenceUpdate.karmaCost = 8;
+            }
+        }
+
         if(index > -1) {
-            this.positiveQualities.splice(index, 1, qualityReferenceUpdate);
+            this.positiveQualities[index] = qualityReferenceUpdate;
         }
     }
 
     updateNegativeQuality(qualityReferenceUpdate: QualityReference): void {
         const index = this.negativeQualities.findIndex(q => q.id === qualityReferenceUpdate.id);
 
+        if(qualityReferenceUpdate.name === "addiction") {
+            switch(qualityReferenceUpdate.optionSelection) {
+                case "mild":
+                    qualityReferenceUpdate.karmaCost = 4;
+                    break;
+                case "moderate":
+                    qualityReferenceUpdate.karmaCost = 9;
+                    break;
+                case "severe":
+                    qualityReferenceUpdate.karmaCost = 20;
+                    break;
+                case "burnout":
+                    qualityReferenceUpdate.karmaCost = 25;
+                    break;
+            }
+        }
+
+        if(qualityReferenceUpdate.name.includes("allergy")) {
+            let baseCost = 2;
+
+            if(qualityReferenceUpdate.name.includes("(uncommon)")) {
+                baseCost = 7;
+            }
+
+            switch(qualityReferenceUpdate.optionSelection) {
+                case "mild":
+                    qualityReferenceUpdate.karmaCost = baseCost + 3;
+                    break;
+                case "moderate":
+                    qualityReferenceUpdate.karmaCost = baseCost + 8;
+                    break;
+                case "severe":
+                    qualityReferenceUpdate.karmaCost = baseCost + 13;
+                    break;
+                case "extreme":
+                    qualityReferenceUpdate.karmaCost = baseCost + 18;
+                    break;
+            }
+        }
+
+        if (qualityReferenceUpdate.name.includes("prejudiced")) {
+            
+            let baseCost = 5;
+
+            if(qualityReferenceUpdate.name.includes("(specific target group)")) {
+                baseCost = 3;
+            }
+
+            switch(qualityReferenceUpdate.optionSelection) {
+                case "biased":
+                    qualityReferenceUpdate.karmaCost = baseCost;
+                    break;
+                case "outspoken":
+                    qualityReferenceUpdate.karmaCost = baseCost + 2;
+                    break;
+                case "radical":
+                    qualityReferenceUpdate.karmaCost = baseCost + 5;
+                    break;
+            }
+        }
+
         if(index > -1) {
-            this.positiveQualities.splice(index, 1, qualityReferenceUpdate);
+            this.negativeQualities[index] = qualityReferenceUpdate;
         }
     }
 
@@ -95,6 +178,10 @@ export default class QualityHandler {
 
         if(newQualityReference.name === "exceptional attribute") {
             newQualityReference.attribute = AttributeName.Body;
+        }
+
+        if(newQualityReference.name === "lucky") {
+            newQualityReference.attribute = AttributeName.Edge;
         }
 
         if(newQualityReference.name === "home ground") {
@@ -143,5 +230,20 @@ export default class QualityHandler {
         const allQualities = [...this.positiveQualities, ...this.negativeQualities];
 
         return !allQualities.find(q => q.id === id);
+    }
+
+    getTotalQualityKarmaCost(): number {
+        let karmaCost = 0;
+
+        for(let qualityReference of this.positiveQualityReferences) {
+            karmaCost += qualityReference.karmaCost * qualityReference.ratingValue;
+        }
+
+        for(let qualityReference of this.negativeQualityReferences) {
+            karmaCost -= qualityReference.karmaCost * qualityReference.ratingValue;
+        }
+
+        return karmaCost;
+
     }
 }

@@ -4,6 +4,7 @@ import { MetaType } from "./meta-type.interface";
 import { Priority } from "./priority.interface";
 import { QualityReference } from "./quality.interface";
 import { MagicUserType } from "./magic.interface";
+import { ExceptionalAttribute } from "../../common/constants";
 
 export enum RoleName { 
     Decker = 'decker',
@@ -62,6 +63,8 @@ export interface MagicAttributesData {
     [MagicAttributeName.Resonance]: AttributeData;
 }
 
+export type ExceptionalAttributesData = AttributeName | MagicAttributeName;
+
 export interface SettingsData {
     levelOfPlay: LevelOfPlayName;
 }
@@ -74,7 +77,7 @@ export interface ShadowRun5ECharacterData {
     metaType: MetaType;
     attributes: AttributesData;
     magicAttributes: MagicAttributesData;
-    exceptionalAttribute: AttributeName | MagicAttributeName | undefined;
+    exceptionalAttributes: ExceptionalAttributesData[];
     startingKarma: number;
     karmaPoints: number;
     nuyen: number;

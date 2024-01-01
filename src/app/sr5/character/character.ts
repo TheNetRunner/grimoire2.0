@@ -6,27 +6,28 @@ import { Quality, QualityReference } from './interfaces/quality.interface';
 
 import { priorityTable } from './tables/priority-table.data';
 
-import AttributeHandler from './attributes/attribute-handler';
-import QualityHandler from './quality/quality-handler';
+import AttributeManager from './attributes/attribute-manager';
+import QualityManager from './quality/quality-manager';
 import { AttributeName } from './interfaces/attribute.interface';
+import { LevelOfPlayName } from './interfaces/settings.interface';
 
 
 export class ShadowRun5ECharacter {
     private characterData: ShadowRun5ECharacterData;
-    public attributeHandler: AttributeHandler;
-    public qualityHandler: QualityHandler;
+    public attributeManager: AttributeManager;
+    public qualityManager: QualityManager;
     
     constructor(characterData: ShadowRun5ECharacterData) {
         this.characterData = characterData;
-        this.attributeHandler = new AttributeHandler(characterData);
-        this.qualityHandler = new QualityHandler(characterData);
+        this.attributeManager = new AttributeManager(characterData);
+        this.qualityManager = new QualityManager(characterData);
     }
 
     get id() {
         return this.characterData.id;
     }
 
-    get basic() {
+    get basic(): BasicData {
         return this.characterData.basic;
     }
 
@@ -35,7 +36,8 @@ export class ShadowRun5ECharacter {
     }
 
     // Priorities
-    get priorities() {
+
+    get priorities(): PriorityData {
         return this.characterData.priorities;
     }
 
@@ -52,44 +54,54 @@ export class ShadowRun5ECharacter {
     }
 
     // Qualities
+
     addQuality(quality: Quality): void {
+        if(quality.name === "exceptional attribute") {
+            this.attributeManager.setExceptionalAttribute(AttributeName.Body);
+        }
+
+        if(quality.name === "lucky") {
+            this.attributeManager.setLucky();
+        }
+
         if(quality.type === "positive") {
-            this.qualityHandler.addPositiveQuality(quality);
+            this.qualityManager.addPositiveQuality(quality);
         }
 
         if(quality.type === "negative") {
-            this.qualityHandler.addNegativeQuality(quality);
-        }
-
-        if(quality.name === "exceptional attribute") {
-            this.attributeHandler.setExceptionalAttribute(AttributeName.Body);
+            this.qualityManager.addNegativeQuality(quality);
         }
     }
 
     updateQuality(qualityReferenceUpdate: QualityReference, qualityType: string): void {
+        if(qualityReferenceUpdate.name === "exceptional attribute" && qualityReferenceUpdate.attribute) {
+            this.attributeManager.setExceptionalAttribute(qualityReferenceUpdate.attribute);
+        }
+
         if(qualityType === "positive") {
-            this.qualityHandler.updatePositiveQuality(qualityReferenceUpdate);
+            this.qualityManager.updatePositiveQuality(qualityReferenceUpdate);
         }
 
         if(qualityType === "negative") {
-            this.qualityHandler.updateNegativeQuality(qualityReferenceUpdate);
-        }
-
-        if(qualityReferenceUpdate.name === "exceptional attribute") {
-            this.attributeHandler.setExceptionalAttribute(qualityReferenceUpdate.attribute);
+            this.qualityManager.updateNegativeQuality(qualityReferenceUpdate);
         }
     }
 
     removeQuality(qualityReference: QualityReference): void {
-        this.qualityHandler.removeQuality(qualityReference.id);
+        this.qualityManager.removeQuality(qualityReference.id);
 
         if(qualityReference.name === "exceptional attribute") {
-            this.attributeHandler.setExceptionalAttribute(undefined);
+            this.attributeManager.removeExceptionalAttribute();
+        }
+
+        if(qualityReference.name === "lucky") {
+            this.attributeManager.removeLucky();
         }
     }
 
     // Meta Type
-    get metaType() {
+
+    get metaType(): MetaType {
         return this.characterData.metaType;
     }
 
@@ -97,7 +109,7 @@ export class ShadowRun5ECharacter {
         this.characterData.metaType = metaType;
     }
 
-    get imageName() {
+    get imageName(): string {
         return this.characterData.imageName;
     }
 
@@ -111,22 +123,66 @@ export class ShadowRun5ECharacter {
         return metaTypeOption?.specialAttrPoints;
     }
 
+    // Karma
+
+    get startingKarma(): number {
+        return this.characterData.startingKarma;
+    }
+
+    set startingKarma(karma: number) {
+        this.characterData.startingKarma = karma;
+    }
+
+    get remainingStartingKarma(): number {
+        return this.startingKarma
+    }
+
+    get startingKarmaSpend(): number {
+        const totalQualitySpend = this.qualityManager.getTotalQualityKarmaCost();
+        return totalQualitySpend;
+    }
+
     // Settings
-    get settings() {
+
+    get settings(): SettingsData {
         return this.characterData.settings;
     }
 
     set settings(settings: SettingsData) {
         this.characterData.settings = settings;
+        this.handleLevelOfPlayChange();
+    }
+
+    set levelOfPlay(levelOfPlay: LevelOfPlayName) {
+        this.characterData.settings.levelOfPlay = levelOfPlay;
+        this.handleLevelOfPlayChange();
+    }
+
+    handleLevelOfPlayChange(): void {
+        this.startingKarma = this.getStartingKarma(this.settings.levelOfPlay);
+    }
+
+    private getStartingKarma(LevelOfPlay: LevelOfPlayName): number {
+        switch(LevelOfPlay) {
+            case LevelOfPlayName.Street:
+                return 13;
+            case LevelOfPlayName.Normal:
+                return 25;
+            case LevelOfPlayName.Prime:
+                return 35;
+            default:
+                return 0;
+        }
     }
 
     // Save
+
     getSaveObject(): ShadowRun5ECharacterData {
         const saveObject: ShadowRun5ECharacterData = {
             ...this.characterData,
-            exceptionalAttribute: this.attributeHandler.getExceptionalAttribute(),
-            attributes: this.attributeHandler.getAttributes(),
-            qualities: this.qualityHandler.qualityReferences
+            exceptionalAttributes: this.attributeManager.exceptionalAttributes,
+            attributes: this.attributeManager.attributes,
+            qualities: this.qualityManager.qualityReferences
         }
 
         return saveObject;
