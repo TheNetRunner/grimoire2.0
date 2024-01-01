@@ -175,6 +175,15 @@ export class ShadowRun5ECharacter {
         }
     }
 
+    // Final Calculations
+
+    get initiative(): number {
+        const totalReaction = this.attributeManager.getAttributeTotalValue(AttributeName.Reaction, this.metaType)
+        const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition, this.metaType);
+
+        return totalReaction + totalIntuition;
+    }
+
     // Save
 
     getSaveObject(): ShadowRun5ECharacterData {

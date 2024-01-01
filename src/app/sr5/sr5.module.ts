@@ -20,6 +20,7 @@ import { MetaTypeStartingAttrsTableComponent } from './components/edit-view/meta
 import { QualityStepComponent } from './components/edit-view/quality-step/quality-step.component';
 import { QualityListItemComponent } from './components/edit-view/quality-list-item/quality-list-item.component';
 import { QualityReferenceListItemComponent } from './components/edit-view/quality-reference-list-item/quality-reference-list-item.component';
+import { AttributeStepComponent } from './components/edit-view/attribute-step/attribute-step.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { QualityReferenceListItemComponent } from './components/edit-view/qualit
     MetaTypeStartingAttrsTableComponent,
     QualityStepComponent,
     QualityListItemComponent,
-    QualityReferenceListItemComponent
+    QualityReferenceListItemComponent,
+    AttributeStepComponent
   ],
   imports: [
     CommonModule,

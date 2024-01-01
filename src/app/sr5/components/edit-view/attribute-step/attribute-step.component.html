@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-12">
+
+        <form>
+
+            <table class="table table-secondary rounded-table text-center">
+                <thead>
+                    <tr>
+                        <th colspan="6">Attributes</th>
+                    </tr>
+                    <tr>
+                        <th class="col-2"></th>
+                        <th class="col-1">Race</th>
+                        <th class="col-1">Build Points</th>
+                        <th class="col-1">Increases</th>
+                        <th class="col-1">Bonuses</th>
+                        <th class="col-1">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let normalAttribute of normalAttributes">
+                        <td>
+                            <span>
+                                {{ normalAttribute | titlecase }}
+                            </span>
+                            <i  
+                                ngbTooltip="Exceptional Attribute, +1 to attribute max"
+                                position="bottom"
+                                class="bi bi-caret-up-fill text-success"
+                                *ngIf="this.character.attributeManager.exceptionalAttributes.includes(normalAttribute)"
+                            ></i>
+                        </td>
+                        <td>
+                            {{ this.character.attributeManager.getAttributeBaseValue(normalAttribute, this.character.metaType) }}
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm text-center p-0">
+                                <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm text-center p-0">
+                                <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
+                            </select>
+                        </td>
+                        <td>0</td>
+                        <td>
+                            {{ this.character.attributeManager.getAttributeTotalValue(normalAttribute, this.character.metaType) }} / 
+                            {{ this.character.attributeManager.getAttributeMaxValue(normalAttribute, this.character.metaType) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        
+                    </tr>
+                    <tr class="text-center">
+                        <td>Essence</td>
+                        <td colspan="4"></td>
+                        <td>6</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td>
+                            <p class="m-0">Initiative</p>
+                            <span>(Reaction + Intuition)</span>
+                        </td>
+                        <td colspan="4"></td>
+                        <td class="align-middle">
+                            {{ this.character.initiative }}
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </form>
+
+    </div>
+</div>

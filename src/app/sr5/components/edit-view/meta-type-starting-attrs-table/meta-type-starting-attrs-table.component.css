@@ -1,0 +1,4 @@
+.rounded-table {
+    overflow: hidden;
+    border-radius: var(--bs-border-radius);
+}
