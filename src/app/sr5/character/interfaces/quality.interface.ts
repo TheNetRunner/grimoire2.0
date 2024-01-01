@@ -1,4 +1,4 @@
-import { AttributeName, MagicAttributeName } from './attribute.interface';
+import { ExceptionalAttribute } from '../../common/constants';
 
 export interface Quality {
     name: string;
@@ -22,5 +22,5 @@ export interface QualityReference {
     ratingValue: number;
     maxRating: number;
     optionSelection: string;
-    attribute?: AttributeName | MagicAttributeName;
+    attribute?: ExceptionalAttribute;
 }

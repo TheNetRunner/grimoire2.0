@@ -17,6 +17,9 @@ import { PriorityStepComponent } from './components/edit-view/priority-step/prio
 import { MetaTypeStepComponent } from './components/edit-view/meta-type-step/meta-type-step.component';
 import { MetaTypeSelectComponent } from './components/modals/meta-type-select/meta-type-select.component';
 import { MetaTypeStartingAttrsTableComponent } from './components/edit-view/meta-type-starting-attrs-table/meta-type-starting-attrs-table.component';
+import { QualityStepComponent } from './components/edit-view/quality-step/quality-step.component';
+import { QualityListItemComponent } from './components/edit-view/quality-list-item/quality-list-item.component';
+import { QualityReferenceListItemComponent } from './components/edit-view/quality-reference-list-item/quality-reference-list-item.component';
 
 
 @NgModule({
@@ -32,7 +35,10 @@ import { MetaTypeStartingAttrsTableComponent } from './components/edit-view/meta
     PriorityStepComponent,
     MetaTypeStepComponent,
     MetaTypeSelectComponent,
-    MetaTypeStartingAttrsTableComponent
+    MetaTypeStartingAttrsTableComponent,
+    QualityStepComponent,
+    QualityListItemComponent,
+    QualityReferenceListItemComponent
   ],
   imports: [
     CommonModule,

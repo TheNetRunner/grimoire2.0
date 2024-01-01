@@ -1,6 +1,7 @@
 import { MetaType } from "../interfaces/meta-type.interface";
 import { AttributeName, MagicAttributeName } from "../interfaces/attribute.interface";
 import { AttributesData, ShadowRun5ECharacterData } from "../interfaces/character.interface";
+import { ExceptionalAttribute } from "../../common/constants";
 
 import { metaTypeAttributesTable } from "../tables/meta-type-attributes.table";
 
@@ -21,11 +22,11 @@ export default class AttributeHandler {
         this.attributesData = attributes;
     }
 
-    getExceptionalAttribute(): AttributeName | MagicAttributeName | undefined {
+    getExceptionalAttribute(): ExceptionalAttribute | undefined{
         return this.exceptionalAttribute;
     }
 
-    setExceptionalAttribute(attribute: AttributeName | undefined) {
+    setExceptionalAttribute(attribute: ExceptionalAttribute | undefined) {
         this.exceptionalAttribute = attribute;
     }
 

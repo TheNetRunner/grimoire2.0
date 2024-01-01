@@ -1,0 +1,43 @@
+<li class="list-group-item">
+
+    <div class="row mb-2">
+
+        <div class="col">
+            <h6 class="mt-2">{{ quality.name | titlecase }}</h6>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <button class="btn btn-primary" (click)="emitAddQualityEvent()">Add</button>
+            <button class="btn btn-secondary spin-button mx-2" (click)="collapsed = !collapsed">
+                <i class="bi bi-chevron-bar-expand"></i>
+            </button>
+        </div>
+
+    </div>
+    <div [(ngbCollapse)]="collapsed">
+        <div class="row text-center">
+
+            <div class="col-4">
+                <strong class="text-info" *ngIf="quality.type === 'positive'">Karma Cost:</strong>
+                <strong class="text-info" *ngIf="quality.type === 'negative'">Karma Reward:</strong>
+                <span> {{ quality.karmaCost }}</span>
+                <span *ngIf="quality.maxRating > 1"> Per Level (Max {{ quality.maxRating }})</span>
+            </div>
+
+            <div class="col-5">
+                <strong class="text-info">Source:</strong>
+                <span> {{ quality.source }}</span>
+            </div>
+
+            <div class="col-3">
+                <strong class="text-success" *ngIf="quality.type === 'positive'">{{ quality.type | titlecase }}</strong>
+                <strong class="text-danger" *ngIf="quality.type === 'negative'">{{ quality.type | titlecase }}</strong>
+            </div>
+            
+        </div>
+
+
+        <div class="row">
+            <span class="">{{ quality.description }}</span>
+        </div>
+    </div>
+</li>

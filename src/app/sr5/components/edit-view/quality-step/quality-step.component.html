@@ -1,0 +1,65 @@
+<div class="row">
+
+    <div class="col-12 mb-3">
+
+        <ul class="list-group">
+            <li class="list-group-item active">
+                <div class="d-flex justify-content-between">
+                    <h5 class="my-auto">Selected Qualities</h5>
+                    <span class="my-auto">Remaining Starting Karma: 0</span>
+                </div>
+            </li>
+            <app-quality-reference-list-item
+                *ngFor="let qualityReference of this.character.qualityHandler.qualityReferenceArray"
+                [qualityReference]="qualityReference"
+                (removeQualityReferenceEvent)="removeQualityReference($event)"
+                (updateQualityReferenceEvent)="updateQualityReference($event.qualityReference, $event.qualityType)"
+            ></app-quality-reference-list-item>
+        </ul>
+
+    </div>
+
+    <div class="col-12 mb-3">
+
+        <ul class="list-group">
+            <li class="list-group-item active">
+                <div class="d-flex justify-content-between">
+                    <h5 class="my-auto">Qualities</h5>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <form class="row" [formGroup]="searchFilterForm">
+                    <div class="col-md-6">
+                        <input class="form-control" type="search" placeholder="Search..." formControlName="filterString">
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <div class="d-flex justify-content-center my-auto">
+                            <div class="form-check form-switch mx-2">
+                                <input class="form-check-input" type="checkbox" role="switch" id="positive" formControlName="positiveQualities">
+                                <label class="form-check-label" for="positive">Positive</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="negative" formControlName="negativeQualities">
+                                <label class="form-check-label" for="negativeQualities">Negative</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </li>
+            <app-quality-list-item 
+                *ngFor="let positiveQualityOption of positiveQualityOptions"
+                [quality]="positiveQualityOption"
+                (addQualityEvent)="addQualityReference($event)"
+            ></app-quality-list-item>
+            <hr>
+            <app-quality-list-item 
+                *ngFor="let negativeQualityOption of negativeQualityOptions"
+                [quality]="negativeQualityOption"
+                (addQualityEvent)="addQualityReference($event)"
+            ></app-quality-list-item>
+        </ul>
+
+    </div>
+
+</div>
