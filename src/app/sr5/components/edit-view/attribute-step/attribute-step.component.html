@@ -1,7 +1,12 @@
+<div class="d-flex justify-content-end mb-2">
+    <span class="fs-7 me-2">{{ this.character.totalKarmaSpent }}</span> 
+    <span class="text-info fs-7">Total Karma Spent</span>
+</div>
+
 <div class="row">
     <div class="col-12">
 
-        <form>
+        <form [formGroup]="normalAttributeForm">
 
             <table class="table table-secondary rounded-table text-center">
                 <thead>
@@ -18,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let normalAttribute of normalAttributes">
+                    <tr *ngFor="let normalAttribute of normalAttributes" formGroupName="{{ normalAttribute }}">
                         <td>
                             <span>
                                 {{ normalAttribute | titlecase }}
@@ -34,12 +39,12 @@
                             {{ this.character.attributeManager.getAttributeBaseValue(normalAttribute, this.character.metaType) }}
                         </td>
                         <td>
-                            <select class="form-select form-select-sm text-center p-0">
+                            <select class="form-select form-select-sm text-center p-0" formControlName="buildPoints">
                                 <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
                             </select>
                         </td>
                         <td>
-                            <select class="form-select form-select-sm text-center p-0">
+                            <select class="form-select form-select-sm text-center p-0" formControlName="increases">
                                 <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
                             </select>
                         </td>
@@ -47,10 +52,22 @@
                         <td>
                             {{ this.character.attributeManager.getAttributeTotalValue(normalAttribute, this.character.metaType) }} / 
                             {{ this.character.attributeManager.getAttributeMaxValue(normalAttribute, this.character.metaType) }}
+                            <i 
+                                class="bi bi-exclamation-diamond-fill text-warning warning-flash px-1"
+                                *ngIf="this.character.attributeManager.isAttributeTotalAboveMaximum(normalAttribute, this.character.metaType)"
+                            ></i>
                         </td>
                     </tr>
                     <tr>
-                        
+                        <td colspan="2"></td>
+                        <td [ngClass]="{ 'text-danger': this.character.attributeManager.attributeBuildPointsTotal > this.character.attributeBuildPoints }">
+                            {{ this.character.attributeManager.attributeBuildPointsTotal }} / {{ this.character.attributeBuildPoints }}
+
+                        </td>
+                        <td>
+                            {{ this.character.attributeManager.getAttributeIncreasesKarmaCostTotal(this.character.metaType) }} karma
+                        </td>
+                        <td colspan="2"></td>
                     </tr>
                     <tr class="text-center">
                         <td>Essence</td>
@@ -68,6 +85,23 @@
                         </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            <div class="d-flex justify-content-between mx-4">
+                                <span ngbTooltip="{{ this.character }}" placement="bottom">
+                                    Physical Limit: {{ this.character.physicalLimit }}
+                                </span>
+                                <span ngbTooltip="{{ this.character }}" placement="bottom">
+                                    Mental Limit: {{ this.character.mentalLimit }}
+                                </span>
+                                <span ngbTooltip="{{ this.character }}" placement="bottom">
+                                    Social Limit: {{ this.character.socialLimit }}
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
 
             </table>
 

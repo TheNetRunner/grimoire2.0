@@ -53,6 +53,11 @@ export class ShadowRun5ECharacter {
         this.metaType = MetaType.Human;
     }
 
+    get attributeBuildPoints(): number {
+        const priorityTableRow = priorityTable[this.priorities.attributes];
+        return priorityTableRow.attributePoints;
+    }
+
     // Qualities
 
     addQuality(quality: Quality): void {
@@ -125,6 +130,14 @@ export class ShadowRun5ECharacter {
 
     // Karma
 
+    get totalKarmaSpent(): number {
+        let total = 0;
+
+        total += this.attributeManager.getAttributeIncreasesKarmaCostTotal(this.metaType);
+
+        return total;
+    }
+
     get startingKarma(): number {
         return this.characterData.startingKarma;
     }
@@ -182,6 +195,48 @@ export class ShadowRun5ECharacter {
         const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition, this.metaType);
 
         return totalReaction + totalIntuition;
+    }
+
+    get mentalLimit(): number {
+        const totalLogic = this.attributeManager.getAttributeTotalValue(AttributeName.Logic, this.metaType);
+        const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition, this.metaType);
+        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower, this.metaType);
+
+        return Math.ceil(((totalLogic * 2) + totalIntuition + totalWillpower ) / 3);
+    }
+
+    get physicalLimit(): number {
+        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body, this.metaType);
+        const totalStrength = this.attributeManager.getAttributeTotalValue(AttributeName.Strength, this.metaType);
+        const totalReaction = this.attributeManager.getAttributeTotalValue(AttributeName.Reaction, this.metaType);
+
+        return Math.ceil(((totalStrength * 2) + totalBody + totalReaction ) / 3);
+    }
+
+    get socialLimit(): number {
+        const totalCharisma = this.attributeManager.getAttributeTotalValue(AttributeName.Charisma, this.metaType);
+        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower, this.metaType);
+        const totalEssence = this.characterData.essence;
+
+        return Math.ceil(((totalCharisma * 2) + totalWillpower + totalEssence ) / 3);
+    }
+
+    get physicalMonitorBoxes(): number {
+        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body, this.metaType);
+
+        return (totalBody / 2) + 8;
+    }
+
+    get stunMonitorBoxes(): number {
+        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower, this.metaType);
+
+        return (totalWillpower / 2) + 8;
+    }
+
+    get overflowBoxes(): number {
+        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body, this.metaType);
+
+        return totalBody;
     }
 
     // Save
