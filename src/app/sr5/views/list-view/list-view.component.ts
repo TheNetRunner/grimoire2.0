@@ -40,7 +40,7 @@ export class ListViewComponent implements OnInit {
             character => character.id === characterId);
 
         if (copy) {
-            this.characters.push(copy);
+            this.dataStoreService.copyCharacter(copy);
         }
     }
 

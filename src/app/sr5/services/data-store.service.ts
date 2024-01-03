@@ -24,6 +24,19 @@ export class DataStoreService {
         return newId;
     }
 
+    async copyCharacter(characterCopy: ShadowRun5ECharacterData): Promise<string> {
+        const newId = await this.generateId();
+        const newCharacter = {
+            ...characterCopy, 
+            id: newId, 
+            name: `${characterCopy.basic.name} (Copy)`
+        }
+
+        this.addCharacterToDatabase(newCharacter);
+
+        return newId;
+    }
+
     async addCharacterToDatabase(character: ShadowRun5ECharacterData): Promise<void> {
         this.databaseService.addItem(SHADOW_RUN_CHARACTERS_TABLE_NAME, character, character.id);
     }
