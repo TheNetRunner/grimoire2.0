@@ -1,8 +1,8 @@
 import { MetaType } from "../interfaces/meta-type.interface";
 import { AttributeName, MagicAttributeName } from "../interfaces/attribute.interface";
 import { 
-    AttributesData, 
-    AttributeData, 
+    AttributesData,
+    MagicAttributesData, 
     ShadowRun5ECharacterData, 
     ExceptionalAttributesData 
 } from "../interfaces/character.interface";
@@ -12,10 +12,12 @@ import { metaTypeAttributesTable } from "../tables/meta-type-attributes.table";
 export default class AttributeManager {
     private exceptionalAttributesData: ExceptionalAttributesData[] = [];
     private attributesData: AttributesData;
+    private magicAttributesData: MagicAttributesData
 
     constructor(characterData: ShadowRun5ECharacterData) {
         this.exceptionalAttributes = characterData.exceptionalAttributes;
         this.attributesData = characterData.attributes;
+        this.magicAttributesData = characterData.magicAttributes;
     }
 
     get attributes(): AttributesData {
@@ -155,5 +157,23 @@ export default class AttributeManager {
 
     isAttributeExceptional(attributeName: AttributeName): boolean {
         return this.exceptionalAttributes.includes(attributeName);
+    }
+
+    // Magic Attributes
+
+    get magicAttributes(): MagicAttributesData {
+        return this.magicAttributesData;
+    }
+
+    set magicAttributes(magicAttributes: MagicAttributesData) {
+        this.magicAttributesData = magicAttributes;
+    }
+
+    getMagicAttributeBuildPoints(attributeName: MagicAttributeName): number {
+        return this.magicAttributesData[attributeName].buildPoints;
+    }
+
+    getMagicAttributeIncreases(attributeName: MagicAttributeName): number {
+        return this.magicAttributesData[attributeName].increases;
     }
 }

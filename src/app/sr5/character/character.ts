@@ -12,6 +12,7 @@ import { AttributeName } from './interfaces/attribute.interface';
 import { LevelOfPlayName } from './interfaces/settings.interface';
 
 
+
 export class ShadowRun5ECharacter {
     private characterData: ShadowRun5ECharacterData;
     public attributeManager: AttributeManager;

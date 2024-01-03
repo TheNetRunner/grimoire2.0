@@ -26,23 +26,19 @@ export class AttributeStepComponent implements OnInit {
     normalAttributes = normalAttributes;
     specialAttributes = specialAttributes;
 
-    normalAttributeForm!: FormGroup;
-    specialAttributeForm!: FormGroup;
+    normalAttributesForm!: FormGroup;
+    specialAttributesForm!: FormGroup;
 
     ngOnInit(): void {
-        this.setForms();
+        this.setNormalAttributesForm();
+        this.setSpecialAttributesForm();
     }
 
-    setForms(): void {
-        this.setNormalAttributeForm();
-        this.setSpecialAttributeForm();
-    }
-
-    setNormalAttributeForm(): void {
-        this.normalAttributeForm = this.formBuilder.group({
+    setNormalAttributesForm(): void {
+        this.normalAttributesForm = this.formBuilder.group({
             body: this.formBuilder.group({
-                buildPoints: [this.character.attributeManager.getAttributeBuildPoints(AttributeName.Body)],
-                increases: [this.character.attributeManager.getAttributeIncreases(AttributeName.Body)]
+                buildPoints: [this.character.attributeManager.attributes.body.buildPoints],
+                increases: [this.character.attributeManager.attributes.body.increases]
             }),
             agility: this.formBuilder.group({
                 buildPoints: [this.character.attributeManager.getAttributeBuildPoints(AttributeName.Agility)],
@@ -74,13 +70,33 @@ export class AttributeStepComponent implements OnInit {
             })
         });
 
-        this.normalAttributeForm.valueChanges.subscribe((formData: any) => {
+        this.normalAttributesForm.valueChanges.subscribe((formData: any) => {
             this.character.attributeManager.attributes = formData;
             this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
         });
     }
 
-    setSpecialAttributeForm(): void {
+    setSpecialAttributesForm(): void {
+        this.specialAttributesForm = this.formBuilder.group({
+            edge: this.formBuilder.group({
+                buildPoints: [this.character.attributeManager.attributes.edge.buildPoints],
+                increases: [this.character.attributeManager.attributes.edge.increases]
+            }),
+            magic: this.formBuilder.group({
+                buildPoints: [this.character.attributeManager.magicAttributes.magic.buildPoints],
+                increases: [this.character.attributeManager.magicAttributes.magic.increases]
+            }),
+            resonance: this.formBuilder.group({
+                buildPoints: [this.character.attributeManager.magicAttributes.resonance.buildPoints],
+                increases: [this.character.attributeManager.magicAttributes.resonance.increases]
+            })
+        });
 
+        this.specialAttributesForm.valueChanges.subscribe((formData: any) => {
+            this.character.attributeManager.attributes.edge = formData.edge;
+            this.character.attributeManager.magicAttributes.magic = formData.magic;
+            this.character.attributeManager.magicAttributes.resonance = formData.resonance;
+            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+        });
     }
 }
