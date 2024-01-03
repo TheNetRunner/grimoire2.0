@@ -8,7 +8,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { InventoryModule } from "./gaming-tools/inventory/inventory.module";
 import { Sr5Module } from "./sr5/sr5.module";
-import { TftaModule } from "./tfta/tfta.module";
 
 import { MainNavbarComponent } from './components/main-navbar/main-navbar.component';
 
@@ -22,7 +21,6 @@ import { MainNavbarComponent } from './components/main-navbar/main-navbar.compon
 		ReactiveFormsModule,
 		InventoryModule,
         Sr5Module,
-        TftaModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

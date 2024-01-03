@@ -28,16 +28,18 @@ export class QualityStepComponent implements OnInit {
     }
 
     setQualityOptions(filterString: string = ""): void {
-        this.positiveQualityOptions = this.setPostiveQualityOptions(filterString);
-        this.negativeQualityOptions = this.setNegativeQualityOptions(filterString);
+        const filterStringLower = filterString.toLowerCase();
+        this.positiveQualityOptions = this.setPostiveQualityOptions(filterStringLower);
+        this.negativeQualityOptions = this.setNegativeQualityOptions(filterStringLower);
     }
 
     setPostiveQualityOptions(filterString: string = ""): Quality[] {
+        const filterStringLower = filterString.toLowerCase();
         const selectedQualityNames = this.character.qualityManager.selectedQualityNames;
         let unselectedQualities: Quality[] = [];
 
         for(let quality of positiveQualities) {
-            if(!selectedQualityNames.includes(quality.name) && quality.name.includes(filterString)) {
+            if(!selectedQualityNames.includes(quality.name) && quality.name.includes(filterStringLower)) {
                 unselectedQualities.push(quality);
             }
         }
@@ -46,11 +48,12 @@ export class QualityStepComponent implements OnInit {
     }
 
     setNegativeQualityOptions(filterString: string = ""): Quality[] {
+        const filterStringLower = filterString.toLowerCase();
         const selectedQualityNames = this.character.qualityManager.selectedQualityNames;
         let unselectedQualities: Quality[] = [];
 
         for(let quality of negativeQualities) {
-            if(!selectedQualityNames.includes(quality.name) && quality.name.includes(filterString)) {
+            if(!selectedQualityNames.includes(quality.name) && quality.name.includes(filterStringLower)) {
                 unselectedQualities.push(quality);
             }
         }
