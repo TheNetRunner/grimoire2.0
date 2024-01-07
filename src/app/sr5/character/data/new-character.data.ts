@@ -7,6 +7,7 @@ import { LevelOfPlayName } from "../interfaces/settings.interface";
 
 export const characterObject: ShadowRun5ECharacterData = {
     id: "",
+    version: "1.0.0",
     basic: {
         name: "New Character",
         role: RoleName.Face,

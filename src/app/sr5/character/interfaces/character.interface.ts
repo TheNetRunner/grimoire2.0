@@ -76,6 +76,7 @@ export interface SettingsData {
 
 export interface ShadowRun5ECharacterData {
     id: string;
+    version: string;
     basic: BasicData;
     imageName: string;
     priorities: PriorityData;
