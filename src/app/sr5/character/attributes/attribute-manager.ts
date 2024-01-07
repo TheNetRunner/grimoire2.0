@@ -1,56 +1,77 @@
 import { MetaType } from "../interfaces/meta-type.interface";
-import { AttributeName, MagicAttributeName } from "../interfaces/attribute.interface";
+import { AttributeName, SpecialAttributeName } from "../interfaces/attribute.interface";
 import { 
     AttributesData,
-    MagicAttributesData, 
+    SpecialAttributesData, 
     ShadowRun5ECharacterData, 
     ExceptionalAttributesData 
 } from "../interfaces/character.interface";
 
 import { metaTypeAttributesTable } from "../tables/meta-type-attributes.table";
+import PriorityTableProvider from "../tables/priority-table-provider";
+import { Priority } from "../interfaces/priority.interface";
+import { MagicUserType } from "../interfaces/magic.interface";
 
 export default class AttributeManager {
-    private exceptionalAttributesData: ExceptionalAttributesData[] = [];
-    private attributesData: AttributesData;
-    private magicAttributesData: MagicAttributesData
+    private characterData: ShadowRun5ECharacterData;
+    private priorityTableProvider: PriorityTableProvider;
 
     constructor(characterData: ShadowRun5ECharacterData) {
-        this.exceptionalAttributes = characterData.exceptionalAttributes;
-        this.attributesData = characterData.attributes;
-        this.magicAttributesData = characterData.magicAttributes;
+        this.characterData = characterData;
+        this.priorityTableProvider = new PriorityTableProvider();
     }
 
-    get attributes(): AttributesData {
-        return this.attributesData
+    get attributes(): AttributesData['attributes'] {
+        return this.characterData.attributesData.attributes;
     }
 
-    set attributes(attributes: AttributesData) {
-        this.attributesData = attributes;
+    set attributes(attributes: AttributesData['attributes']) {
+        this.characterData.attributesData.attributes = attributes;
+    }
+
+    get attributePoints(): number {
+        return this.characterData.attributesData.attributePoints;
+    }
+
+    set attributePoints(attributePoints: number) {
+        this.characterData.attributesData.attributePoints = attributePoints;
     }
 
     get exceptionalAttributes(): ExceptionalAttributesData[] {
-        return this.exceptionalAttributesData;
+        return this.characterData.exceptionalAttributes;
     }
 
-    set exceptionalAttributes(attributes: ExceptionalAttributesData[]) {
-        this.exceptionalAttributesData = attributes;
+    set exceptionalAttributes(exceptionalAttributes: ExceptionalAttributesData[]) {
+        this.exceptionalAttributes = exceptionalAttributes;
     }
 
-    getAttributeBaseValue(attributeName: AttributeName, metaType: MetaType): number {
-        const metaTypeAttributesTableRow = metaTypeAttributesTable[metaType];
+    get metaType(): MetaType {
+        return this.characterData.metaType;
+    }
+
+    get magicUserType(): MagicUserType {
+        return this.characterData.magicUserType;
+    }
+
+    get magicPriority(): Priority {
+        return this.characterData.priorities.magic;
+    }
+
+    getAttributeBaseValue(attributeName: AttributeName): number {
+        const metaTypeAttributesTableRow = metaTypeAttributesTable[this.metaType];
         return metaTypeAttributesTableRow.attributes[attributeName].base;
     }
 
     getAttributeBuildPoints(attributeName: AttributeName): number {
-        return this.attributesData[attributeName].buildPoints;
+        return this.attributes[attributeName].buildPoints;
     }
 
     getAttributeIncreases(attributeName: AttributeName): number {
-        return this.attributesData[attributeName].increases;
+        return this.attributes[attributeName].increases;
     }
 
-    getAttributeMaxValue(attribute: AttributeName, metaType: MetaType): number {
-        const metaTypeAttributesTableRow = metaTypeAttributesTable[metaType];
+    getAttributeMaxValue(attribute: AttributeName): number {
+        const metaTypeAttributesTableRow = metaTypeAttributesTable[this.metaType];
         let maxValue = metaTypeAttributesTableRow.attributes[attribute].max;
 
         if(this.isAttributeExceptional(attribute)) {
@@ -60,8 +81,8 @@ export default class AttributeManager {
         return maxValue;
     }
 
-    getAttributeTotalValue(attributeName: AttributeName, metaType: MetaType): number {
-        const minimumValue = this.getAttributeBaseValue(attributeName, metaType);
+    getAttributeTotalValue(attributeName: AttributeName): number {
+        const minimumValue = this.getAttributeBaseValue(attributeName);
         const buildPoints = this.getAttributeBuildPoints(attributeName);
         const increases = this.getAttributeIncreases(attributeName);
 
@@ -71,12 +92,9 @@ export default class AttributeManager {
     get attributeBuildPointsTotal(): number {
         let total = 0;
 
-        for(const attributeName in this.attributesData) {
-            const key = attributeName as keyof typeof this.attributesData;
-
-            if(attributeName !== AttributeName.Edge) {
-                total += this.attributesData[key].buildPoints;
-            }
+        for(const attributeName in this.attributes) {
+            const key = attributeName as keyof typeof this.attributes;
+            total += this.attributes[key].buildPoints;
         }
 
         return total;
@@ -85,36 +103,30 @@ export default class AttributeManager {
     get attributeIncreasesTotal(): number {
         let total = 0;
 
-        for(const attribute in this.attributesData) {
-            const key = attribute as keyof typeof this.attributesData;
-
-            if(attribute !== AttributeName.Edge) {
-                total += this.attributesData[key].increases;
-            }
+        for(const attribute in this.attributes) {
+            const key = attribute as keyof typeof this.attributes;
+            total += this.attributes[key].increases;
         }
 
         return total;
     }
 
-    getAttributeIncreasesKarmaCostTotal(metaType: MetaType): number {
+    getAttributeIncreasesKarmaCostTotal(): number {
         let total = 0;
 
-        for(const attribute in this.attributesData) {
-            const key = attribute as keyof typeof this.attributesData;
-
-            if(attribute !== AttributeName.Edge) {
-                total += this.getAttributeIncreaseCost(key as AttributeName, metaType);
-            }
+        for(const attribute in this.attributes) {
+            const key = attribute as keyof typeof this.attributes;
+            total += this.getAttributeIncreaseCost(key as AttributeName);
         }
 
         return total;
     }
 
-    getAttributeIncreaseCost(attributeName: AttributeName, metaType: MetaType): number {
+    getAttributeIncreaseCost(attributeName: AttributeName): number {
         let totalIncreaseSpent = 0;
         const attr = this.attributes[attributeName];
 
-        const attributeStartingValue = this.getAttributeBaseValue(attributeName, metaType);
+        const attributeStartingValue = this.getAttributeBaseValue(attributeName);
         const attributeBuildPoints = this.getAttributeBuildPoints(attributeName);
         const attributeValueBeforeIncreases = attributeStartingValue + attributeBuildPoints;
 
@@ -127,31 +139,31 @@ export default class AttributeManager {
         return totalIncreaseSpent;
     }
 
-    isAttributeTotalAboveMaximum(attributeName: AttributeName, metaType: MetaType): boolean {
-        const attributeTotalValue = this.getAttributeTotalValue(attributeName, metaType);
-        const maximum = this.getAttributeMaxValue(attributeName, metaType);
+    isAttributeTotalAboveMaximum(attributeName: AttributeName): boolean {
+        const attributeTotalValue = this.getAttributeTotalValue(attributeName);
+        const maximum = this.getAttributeMaxValue(attributeName);
         return attributeTotalValue > maximum;
     }
 
-        setExceptionalAttribute(attributeName: AttributeName | MagicAttributeName): void {
+        setExceptionalAttribute(attributeName: AttributeName | SpecialAttributeName): void {
         this.removeExceptionalAttribute();
         this.exceptionalAttributes.push(attributeName);
     }
 
     removeExceptionalAttribute(): void {
         for(let i = 0; i < this.exceptionalAttributes.length; i++) {
-            if(this.exceptionalAttributes[i] !== AttributeName.Edge) {
+            if(this.exceptionalAttributes[i] !== SpecialAttributeName.Edge) {
                 this.exceptionalAttributes.splice(i, 1);
             }
         }
     }
 
     setLucky(): void {
-        this.exceptionalAttributes.push(AttributeName.Edge);
+        this.exceptionalAttributes.push(SpecialAttributeName.Edge);
     }
 
     removeLucky(): void {
-        const index = this.exceptionalAttributes.indexOf(AttributeName.Edge);
+        const index = this.exceptionalAttributes.indexOf(SpecialAttributeName.Edge);
         this.exceptionalAttributes.splice(index, 1);
     }
 
@@ -159,21 +171,68 @@ export default class AttributeManager {
         return this.exceptionalAttributes.includes(attributeName);
     }
 
-    // Magic Attributes
+    // Special Attributes
 
-    get magicAttributes(): MagicAttributesData {
-        return this.magicAttributesData;
+    get specialAttributes(): SpecialAttributesData['specialAttributes'] {
+        return this.characterData.specialAttributesData.specialAttributes;
     }
 
-    set magicAttributes(magicAttributes: MagicAttributesData) {
-        this.magicAttributesData = magicAttributes;
+    set specialAttributes(specialAttributes: SpecialAttributesData['specialAttributes']) {
+        this.characterData.specialAttributesData.specialAttributes = specialAttributes;
     }
 
-    getMagicAttributeBuildPoints(attributeName: MagicAttributeName): number {
-        return this.magicAttributesData[attributeName].buildPoints;
+    get specialAttributePoints(): number {
+        return this.characterData.specialAttributesData.specialAttributePoints;
     }
 
-    getMagicAttributeIncreases(attributeName: MagicAttributeName): number {
-        return this.magicAttributesData[attributeName].increases;
+    set specialAttributePoints(specialAttributeBuildPoints: number) {
+        this.characterData.specialAttributesData.specialAttributePoints = specialAttributeBuildPoints;
+    }
+
+    getSpecialAttributeBuildPoints(attributeName: SpecialAttributeName): number {
+        return this.specialAttributes[attributeName].buildPoints;
+    }
+
+    getSpecialAttributeIncreases(attributeName: SpecialAttributeName): number {
+        return this.specialAttributes[attributeName].increases;
+    }
+
+    getSpecialAttributeBaseValue(attributeName: SpecialAttributeName): number {
+
+        let value = 0;
+
+        if(attributeName === SpecialAttributeName.Edge) {
+            const metaTypeAttributesTableRow = metaTypeAttributesTable[this.metaType];
+            value = metaTypeAttributesTableRow.attributes[attributeName].base;
+        }
+
+        if(attributeName === SpecialAttributeName.Magic) {
+            this.priorityTableProvider.getMagicBaseValue(this.magicPriority);
+        }
+
+        if(attributeName === SpecialAttributeName.Resonance) {
+            this.priorityTableProvider.getResonanceBaseValue(this.magicPriority);
+        }
+
+        return value;
+    }
+
+    getSpecialAttributeMaxValue(attributeName: SpecialAttributeName): number {
+        let maxValue = 0;
+
+        if(attributeName === SpecialAttributeName.Edge) {
+            const metaTypeAttributesTableRow = metaTypeAttributesTable[this.metaType];
+            maxValue = metaTypeAttributesTableRow.attributes[attributeName].max;
+        }
+
+        return maxValue;
+    }
+
+    getSpecialAttributeTotalValue(attributeName: SpecialAttributeName): number {
+        const minimumValue = this.getSpecialAttributeBaseValue(attributeName);
+        const buildPoints = this.getSpecialAttributeBuildPoints(attributeName);
+        const increases = this.getSpecialAttributeIncreases(attributeName);
+
+        return minimumValue + buildPoints + increases;
     }
 }

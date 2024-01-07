@@ -1,10 +1,9 @@
-import { AttributeName, MagicAttributeName } from "./attribute.interface"
+import { AttributeName, SpecialAttributeName } from "./attribute.interface"
 import { LevelOfPlayName } from "./settings.interface";
 import { MetaType } from "./meta-type.interface";
 import { Priority } from "./priority.interface";
 import { QualityReference } from "./quality.interface";
 import { MagicUserType } from "./magic.interface";
-import { ExceptionalAttribute } from "../../common/constants";
 
 export enum RoleName { 
     Decker = 'decker',
@@ -47,23 +46,29 @@ export interface AttributeData {
 }
 
 export interface AttributesData {
-    [AttributeName.Body]: AttributeData;
-    [AttributeName.Agility]: AttributeData;
-    [AttributeName.Reaction]: AttributeData;
-    [AttributeName.Strength]: AttributeData;
-    [AttributeName.Willpower]: AttributeData;
-    [AttributeName.Logic]: AttributeData;
-    [AttributeName.Intuition]: AttributeData;
-    [AttributeName.Charisma]: AttributeData;
-    [AttributeName.Edge]: AttributeData;
+    attributePoints: number;
+    attributes: {
+        [AttributeName.Body]: AttributeData;
+        [AttributeName.Agility]: AttributeData;
+        [AttributeName.Reaction]: AttributeData;
+        [AttributeName.Strength]: AttributeData;
+        [AttributeName.Willpower]: AttributeData;
+        [AttributeName.Logic]: AttributeData;
+        [AttributeName.Intuition]: AttributeData;
+        [AttributeName.Charisma]: AttributeData;
+    }
 }
 
-export interface MagicAttributesData {
-    [MagicAttributeName.Magic]: AttributeData;
-    [MagicAttributeName.Resonance]: AttributeData;
+export interface SpecialAttributesData {
+    specialAttributePoints: number;
+    specialAttributes: {
+        [SpecialAttributeName.Edge]: AttributeData;
+        [SpecialAttributeName.Magic]: AttributeData;
+        [SpecialAttributeName.Resonance]: AttributeData;
+    }
 }
 
-export type ExceptionalAttributesData = AttributeName | MagicAttributeName;
+export type ExceptionalAttributesData = AttributeName | SpecialAttributeName;
 
 export interface SettingsData {
     levelOfPlay: LevelOfPlayName;
@@ -75,8 +80,8 @@ export interface ShadowRun5ECharacterData {
     imageName: string;
     priorities: PriorityData;
     metaType: MetaType;
-    attributes: AttributesData;
-    magicAttributes: MagicAttributesData;
+    attributesData: AttributesData;
+    specialAttributesData: SpecialAttributesData;
     exceptionalAttributes: ExceptionalAttributesData[];
     startingKarma: number;
     karmaPoints: number;
@@ -86,8 +91,6 @@ export interface ShadowRun5ECharacterData {
         positive: QualityReference[];
         negative: QualityReference[];
     },
-    magic: {
-        magicUserType: MagicUserType;
-    },
+    magicUserType: MagicUserType;
     settings: SettingsData;
 }

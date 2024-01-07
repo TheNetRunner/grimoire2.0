@@ -19,7 +19,7 @@ interface MetaTypeOptions {
   styleUrl: './meta-type-select.component.css'
 })
 export class MetaTypeSelectComponent implements OnInit {
-    private activeModalService = inject(NgbActiveModal)
+    private activeModalService = inject(NgbActiveModal);
 
     @Input() metaTypePriority!: Priority;
     @Input() currentMetaType!: MetaType;

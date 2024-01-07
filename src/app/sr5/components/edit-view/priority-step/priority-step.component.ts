@@ -2,9 +2,7 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ShadowRun5ECharacter } from '../../../character/character';
-import { PortraitSelectComponent } from '../../modals/portrait-select/portrait-select.component';
 import { DataStoreService } from '../../../services/data-store.service';
-import { RoleName } from '../../../character/interfaces/character.interface';
 import { LevelOfPlayName } from '../../../character/interfaces/settings.interface';
 import { Priority } from '../../../character/interfaces/priority.interface';
 import { areFormValuesUnique } from "../../../../shared/form-validators/unique-values-validator/unique-values-validator.module"
@@ -39,7 +37,7 @@ export class PriorityStepComponent implements OnInit {
         }, { validators: areFormValuesUnique() });
 
         this.form.valueChanges.subscribe((formData: any) => {
-            this.character.priorities = formData;
+            this.character.handlePriorityChanges(formData);
             this.dataService.updateCharacter(this.character.id, this.character.getSaveObject());
         });
     }

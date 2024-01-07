@@ -1,4 +1,4 @@
-import { AttributeName } from "../interfaces/attribute.interface";
+import { AttributeName, SpecialAttributeName } from "../interfaces/attribute.interface";
 import { MetaType } from "../interfaces/meta-type.interface";
 
 export const metaTypeAttributesTable = {
@@ -13,7 +13,7 @@ export const metaTypeAttributesTable = {
             [AttributeName.Logic]: { base: 1, max: 6 },
             [AttributeName.Intuition]: { base: 1, max: 6 },
             [AttributeName.Charisma]: { base: 1, max: 6 },
-            [AttributeName.Edge]: { base: 2, max: 7 },
+            [SpecialAttributeName.Edge]: { base: 2, max: 7 },
         }
     },
     [MetaType.Elf]: {
@@ -27,7 +27,7 @@ export const metaTypeAttributesTable = {
             [AttributeName.Logic]: { base: 1, max: 6 },
             [AttributeName.Intuition]: { base: 1, max: 6 },
             [AttributeName.Charisma]: { base: 3, max: 8 },
-            [AttributeName.Edge]: { base: 2, max: 6 },
+            [SpecialAttributeName.Edge]: { base: 2, max: 6 },
         }
     },
     [MetaType.Dwarf]: {
@@ -41,7 +41,7 @@ export const metaTypeAttributesTable = {
             [AttributeName.Logic]: { base: 1, max: 6 },
             [AttributeName.Intuition]: { base: 1, max: 6 },
             [AttributeName.Charisma]: { base: 1, max: 5 },
-            [AttributeName.Edge]: { base: 2, max: 6 },
+            [SpecialAttributeName.Edge]: { base: 2, max: 6 },
         }
     },
     [MetaType.Ork]: {
@@ -55,7 +55,7 @@ export const metaTypeAttributesTable = {
             [AttributeName.Logic]: { base: 1, max: 6 },
             [AttributeName.Intuition]: { base: 1, max: 6 },
             [AttributeName.Charisma]: { base: 1, max: 5 },
-            [AttributeName.Edge]: { base: 2, max: 6 },
+            [SpecialAttributeName.Edge]: { base: 2, max: 6 },
         }
     },
     [MetaType.Troll]: {
@@ -69,7 +69,7 @@ export const metaTypeAttributesTable = {
             [AttributeName.Logic]: { base: 1, max: 5 },
             [AttributeName.Intuition]: { base: 1, max: 5 },
             [AttributeName.Charisma]: { base: 1, max: 4 },
-            [AttributeName.Edge]: { base: 2, max: 5 },
+            [SpecialAttributeName.Edge]: { base: 2, max: 5 },
         }
     }
 }

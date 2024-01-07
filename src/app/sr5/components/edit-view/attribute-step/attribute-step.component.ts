@@ -3,14 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { DataStoreService } from '../../../services/data-store.service';
 import { ShadowRun5ECharacter } from '../../../character/character';
-import { AttributeName, MagicAttributeName } from '../../../character/interfaces/attribute.interface';
-
-const normalAttributes = [
-    AttributeName.Body, AttributeName.Agility, AttributeName.Reaction, AttributeName.Strength, 
-    AttributeName.Willpower, AttributeName.Logic, AttributeName.Intuition, AttributeName.Charisma
-]
-
-const specialAttributes = [AttributeName.Edge, MagicAttributeName.Magic, MagicAttributeName.Resonance]
+import { AttributeName, SpecialAttributeName } from '../../../character/interfaces/attribute.interface';
 
 @Component({
   selector: 'app-attribute-step',
@@ -23,8 +16,8 @@ export class AttributeStepComponent implements OnInit {
 
     @Input() character!: ShadowRun5ECharacter;
 
-    normalAttributes = normalAttributes;
-    specialAttributes = specialAttributes;
+    normalAttributes = Object.values(AttributeName);
+    specialAttributes = Object.values(SpecialAttributeName);
 
     normalAttributesForm!: FormGroup;
     specialAttributesForm!: FormGroup;
@@ -79,23 +72,23 @@ export class AttributeStepComponent implements OnInit {
     setSpecialAttributesForm(): void {
         this.specialAttributesForm = this.formBuilder.group({
             edge: this.formBuilder.group({
-                buildPoints: [this.character.attributeManager.attributes.edge.buildPoints],
-                increases: [this.character.attributeManager.attributes.edge.increases]
+                buildPoints: [this.character.attributeManager.specialAttributes.edge.buildPoints],
+                increases: [this.character.attributeManager.specialAttributes.edge.increases]
             }),
             magic: this.formBuilder.group({
-                buildPoints: [this.character.attributeManager.magicAttributes.magic.buildPoints],
-                increases: [this.character.attributeManager.magicAttributes.magic.increases]
+                buildPoints: [this.character.attributeManager.specialAttributes.magic.buildPoints],
+                increases: [this.character.attributeManager.specialAttributes.magic.increases]
             }),
             resonance: this.formBuilder.group({
-                buildPoints: [this.character.attributeManager.magicAttributes.resonance.buildPoints],
-                increases: [this.character.attributeManager.magicAttributes.resonance.increases]
+                buildPoints: [this.character.attributeManager.specialAttributes.resonance.buildPoints],
+                increases: [this.character.attributeManager.specialAttributes.resonance.increases]
             })
         });
 
         this.specialAttributesForm.valueChanges.subscribe((formData: any) => {
-            this.character.attributeManager.attributes.edge = formData.edge;
-            this.character.attributeManager.magicAttributes.magic = formData.magic;
-            this.character.attributeManager.magicAttributes.resonance = formData.resonance;
+            this.character.attributeManager.specialAttributes.edge = formData.edge;
+            this.character.attributeManager.specialAttributes.magic = formData.magic;
+            this.character.attributeManager.specialAttributes.resonance = formData.resonance;
             this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
         });
     }

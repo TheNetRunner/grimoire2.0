@@ -4,22 +4,25 @@ import { MetaType } from './interfaces/meta-type.interface';
 import { SettingsData } from './interfaces/character.interface';
 import { Quality, QualityReference } from './interfaces/quality.interface';
 
-import { priorityTable } from './tables/priority-table.data';
+import PriorityTableProvider from './tables/priority-table-provider';
 
 import AttributeManager from './attributes/attribute-manager';
 import QualityManager from './quality/quality-manager';
 import { AttributeName } from './interfaces/attribute.interface';
 import { LevelOfPlayName } from './interfaces/settings.interface';
+import { Priority } from './interfaces/priority.interface';
 
 
 
 export class ShadowRun5ECharacter {
     private characterData: ShadowRun5ECharacterData;
+    private priorityTableProvider: PriorityTableProvider;
     public attributeManager: AttributeManager;
     public qualityManager: QualityManager;
     
     constructor(characterData: ShadowRun5ECharacterData) {
         this.characterData = characterData;
+        this.priorityTableProvider = new PriorityTableProvider();
         this.attributeManager = new AttributeManager(characterData);
         this.qualityManager = new QualityManager(characterData);
     }
@@ -43,20 +46,31 @@ export class ShadowRun5ECharacter {
     }
 
     set priorities(priorities: PriorityData) {
-        if(priorities.metaType !== this.characterData.priorities.metaType) {
-            this.handleMetaTypePriorityChange();
-        }
-
         this.characterData.priorities = priorities;
     }
 
-    handleMetaTypePriorityChange(): void {
-        this.metaType = MetaType.Human;
+    handlePriorityChanges(priorities: PriorityData): void {
+        if(priorities.metaType !== this.priorities.metaType) {
+            this.handleMetaTypePriorityChange(priorities.metaType);
+        }
+
+        if(priorities.attributes !== this.priorities.attributes) {
+            this.handleAttributePriorityChange(priorities.attributes);
+        }
+
+        this.priorities = priorities;
     }
 
-    get attributeBuildPoints(): number {
-        const priorityTableRow = priorityTable[this.priorities.attributes];
-        return priorityTableRow.attributePoints;
+    handleMetaTypePriorityChange(metaTypePriority: Priority): void {
+        this.priorities = {...this.priorities, metaType: metaTypePriority}
+        this.metaType = MetaType.Human;
+        this.attributeManager.specialAttributePoints = this.priorityTableProvider.getSpecialAttributePoints(metaTypePriority, this.metaType);
+    }
+
+    handleAttributePriorityChange(attributePriority: Priority): void {
+        this.priorities = {...this.priorities, attributes: attributePriority}
+        this.attributeManager.attributePoints = this.priorityTableProvider.getAttributePoints(attributePriority);
+        console.log(this.attributeManager.attributePoints);
     }
 
     // Qualities
@@ -123,10 +137,9 @@ export class ShadowRun5ECharacter {
         this.characterData.imageName = imageName;
     }
 
-    getSpecialAttributePoints(): number | undefined {
-        const priorityTableRow = priorityTable[this.priorities.metaType];
-        const metaTypeOption = priorityTableRow.metaTypes.find(metaType => metaType.name === this.metaType);
-        return metaTypeOption?.specialAttrPoints;
+    handleMetaTypeChange(metaType: MetaType): void {
+        this.metaType = metaType;
+        this.attributeManager.specialAttributePoints = this.priorityTableProvider.getSpecialAttributePoints(this.priorities.metaType, metaType);
     }
 
     // Karma
@@ -134,7 +147,7 @@ export class ShadowRun5ECharacter {
     get totalKarmaSpent(): number {
         let total = 0;
 
-        total += this.attributeManager.getAttributeIncreasesKarmaCostTotal(this.metaType);
+        total += this.attributeManager.getAttributeIncreasesKarmaCostTotal();
 
         return total;
     }
@@ -192,50 +205,50 @@ export class ShadowRun5ECharacter {
     // Final Calculations
 
     get initiative(): number {
-        const totalReaction = this.attributeManager.getAttributeTotalValue(AttributeName.Reaction, this.metaType)
-        const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition, this.metaType);
+        const totalReaction = this.attributeManager.getAttributeTotalValue(AttributeName.Reaction)
+        const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition);
 
         return totalReaction + totalIntuition;
     }
 
     get mentalLimit(): number {
-        const totalLogic = this.attributeManager.getAttributeTotalValue(AttributeName.Logic, this.metaType);
-        const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition, this.metaType);
-        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower, this.metaType);
+        const totalLogic = this.attributeManager.getAttributeTotalValue(AttributeName.Logic);
+        const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition);
+        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower);
 
         return Math.ceil(((totalLogic * 2) + totalIntuition + totalWillpower ) / 3);
     }
 
     get physicalLimit(): number {
-        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body, this.metaType);
-        const totalStrength = this.attributeManager.getAttributeTotalValue(AttributeName.Strength, this.metaType);
-        const totalReaction = this.attributeManager.getAttributeTotalValue(AttributeName.Reaction, this.metaType);
+        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body);
+        const totalStrength = this.attributeManager.getAttributeTotalValue(AttributeName.Strength);
+        const totalReaction = this.attributeManager.getAttributeTotalValue(AttributeName.Reaction);
 
         return Math.ceil(((totalStrength * 2) + totalBody + totalReaction ) / 3);
     }
 
     get socialLimit(): number {
-        const totalCharisma = this.attributeManager.getAttributeTotalValue(AttributeName.Charisma, this.metaType);
-        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower, this.metaType);
+        const totalCharisma = this.attributeManager.getAttributeTotalValue(AttributeName.Charisma);
+        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower);
         const totalEssence = this.characterData.essence;
 
         return Math.ceil(((totalCharisma * 2) + totalWillpower + totalEssence ) / 3);
     }
 
     get physicalMonitorBoxes(): number {
-        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body, this.metaType);
+        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body);
 
         return (totalBody / 2) + 8;
     }
 
     get stunMonitorBoxes(): number {
-        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower, this.metaType);
+        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower);
 
         return (totalWillpower / 2) + 8;
     }
 
     get overflowBoxes(): number {
-        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body, this.metaType);
+        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body);
 
         return totalBody;
     }
@@ -243,13 +256,6 @@ export class ShadowRun5ECharacter {
     // Save
 
     getSaveObject(): ShadowRun5ECharacterData {
-        const saveObject: ShadowRun5ECharacterData = {
-            ...this.characterData,
-            exceptionalAttributes: this.attributeManager.exceptionalAttributes,
-            attributes: this.attributeManager.attributes,
-            qualities: this.qualityManager.qualityReferences
-        }
-
-        return saveObject;
+        return this.characterData;
     }
 }

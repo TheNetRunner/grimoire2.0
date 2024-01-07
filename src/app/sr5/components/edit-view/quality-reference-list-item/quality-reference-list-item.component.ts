@@ -1,9 +1,11 @@
-import { Component, Output, Input, EventEmitter, OnInit, inject } from '@angular/core';
+import { Component, Output, Input, EventEmitter, OnInit, inject, Attribute } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Quality, QualityReference, QualityOption } from '../../../character/interfaces/quality.interface';
 import { positiveQualities, negativeQualities } from '../../../character/data/qualities.data';
-import { EXCEPTIONAL_ATTRIBUTE_NAMES, ExceptionalAttribute } from '../../../common/constants';
+import { AttributeName, SpecialAttributeName } from '../../../character/interfaces/attribute.interface';
+
+type ExceptionalAttributeName = AttributeName.Body | AttributeName.Agility | AttributeName.Reaction | AttributeName.Strength | AttributeName.Willpower | AttributeName.Logic | AttributeName.Intuition | AttributeName.Charisma | SpecialAttributeName.Magic | SpecialAttributeName.Resonance;
 
 interface QualityReferenceUpdate {
     qualityReference: QualityReference,
@@ -26,7 +28,7 @@ export class QualityReferenceListItemComponent implements OnInit {
     collapsed: boolean = true;
 
     attributeForm!: FormGroup;
-    attributeOptions: ExceptionalAttribute[] = [];
+    attributeOptions: ExceptionalAttributeName[] = [];
 
     optionsForm!: FormGroup;
     formOptions: QualityOption[] = [];
@@ -59,7 +61,7 @@ export class QualityReferenceListItemComponent implements OnInit {
     }
 
     setAttributeForm(): void {
-        this.attributeOptions = EXCEPTIONAL_ATTRIBUTE_NAMES;
+        this.attributeOptions = [...Object.values(AttributeName), SpecialAttributeName.Magic, SpecialAttributeName.Resonance]
 
         this.attributeForm = this.formBuilder.group({
             attributeName: [this.qualityReference.attribute]

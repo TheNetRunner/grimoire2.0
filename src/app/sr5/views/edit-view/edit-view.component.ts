@@ -23,6 +23,10 @@ export class EditViewComponent implements OnInit {
         this.initEditor();
     }
 
+    ngOnChanges(): void {
+        console.log(this.character);
+    }
+
     initEditor(): void {
 		this.activedRoute.queryParams.subscribe((queryParams) => {
 			const providedStep = queryParams["step"];

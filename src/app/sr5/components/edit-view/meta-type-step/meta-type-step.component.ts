@@ -52,7 +52,7 @@ export class MetaTypeStepComponent implements OnInit {
         modalRef.componentInstance.currentMetaType = this.character.metaType;
 
         modalRef.componentInstance.metaTypeSelectEvent.subscribe((metaType: MetaType) => {
-            this.character.metaType = metaType;
+            this.character.handleMetaTypeChange(metaType);
             this.handleMetaTypeChange();
 
             this.dataService.updateCharacter(this.character.id, this.character.getSaveObject());

@@ -9,10 +9,11 @@ export enum AttributeName {
     Logic = "logic",
     Intuition = "intuition",
     Charisma = "charisma",
-    Edge = "edge"
+    
 }
 
-export enum MagicAttributeName {
+export enum SpecialAttributeName {
+    Edge = "edge",
     Magic = "magic",
     Resonance = "resonance",
 }
@@ -28,7 +29,7 @@ export interface MetaTypeAttributesTableRow {
         [AttributeName.Logic]: { base: number, max: number };
         [AttributeName.Intuition]: { base: number, max: number };
         [AttributeName.Charisma]: { base: number, max: number };
-        [AttributeName.Edge]: { base: number, max: number };
+        [SpecialAttributeName.Edge]: { base: number, max: number };
     };
 }
 

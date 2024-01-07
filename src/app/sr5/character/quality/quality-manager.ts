@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ShadowRun5ECharacterData } from '../interfaces/character.interface';
 import { Quality, QualityReference } from '../interfaces/quality.interface';
-import { AttributeName } from '../interfaces/attribute.interface';
+import { AttributeName, SpecialAttributeName } from '../interfaces/attribute.interface';
 
 export default class QualityManager {
     private positiveQualities: QualityReference[] = [];
@@ -181,7 +181,7 @@ export default class QualityManager {
         }
 
         if(newQualityReference.name === "lucky") {
-            newQualityReference.attribute = AttributeName.Edge;
+            newQualityReference.attribute = SpecialAttributeName.Edge;
         }
 
         if(newQualityReference.name === "home ground") {
