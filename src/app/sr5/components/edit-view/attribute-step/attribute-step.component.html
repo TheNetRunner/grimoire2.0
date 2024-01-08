@@ -142,19 +142,11 @@
                                 *ngIf="this.character.attributeManager.exceptionalAttributes.includes(specialAttribute)"
                             ></i>
                         </td>
-                        <td *ngIf="specialAttribute === 'edge'">
-                            0
-                        </td>
-                        <td *ngIf="specialAttribute !== 'edge'">
-                            N/A
+                        <td>
+                            {{ this.character.attributeManager.getSpecialAttributeBaseValue(specialAttribute) }}
                         </td>
                         <td>
                             <select class="form-select form-select-sm text-center p-0" formControlName="buildPoints">
-                                <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select class="form-select form-select-sm text-center p-0" formControlName="increases">
                                 <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
                             </select>
                         </td>
@@ -162,13 +154,12 @@
                         <td>
                             0 / 0
                         </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td colspan="2"></td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
+                        <td>0 / 0</td>
+                        <td></td>
                         <td colspan="2"></td>
                     </tr>
                 </tbody>

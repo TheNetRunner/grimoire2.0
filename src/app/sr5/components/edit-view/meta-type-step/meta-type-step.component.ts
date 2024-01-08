@@ -40,6 +40,7 @@ export class MetaTypeStepComponent implements OnInit {
 
     setMetaTypeAttributesTableRow(): void {
         this.metaTypeAttributesTableRow = metaTypeAttributesTable[this.character.metaType];
+        console.log(this.metaTypeAttributesTableRow);
     }
 
     openChangeMetaTypeModal(): void {
