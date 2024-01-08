@@ -207,11 +207,11 @@ export default class AttributeManager {
         }
 
         if(attributeName === SpecialAttributeName.Magic) {
-            this.priorityTableProvider.getMagicBaseValue(this.magicPriority);
+            value = this.priorityTableProvider.getMagicBaseValue(this.magicPriority);
         }
 
         if(attributeName === SpecialAttributeName.Resonance) {
-            this.priorityTableProvider.getResonanceBaseValue(this.magicPriority);
+            value = this.priorityTableProvider.getResonanceBaseValue(this.magicPriority);
         }
 
         return value;
@@ -225,6 +225,14 @@ export default class AttributeManager {
             maxValue = metaTypeAttributesTableRow.attributes[attributeName].max;
         }
 
+        if(attributeName === SpecialAttributeName.Magic) {
+            maxValue = 6;
+        }
+
+        if(attributeName === SpecialAttributeName.Resonance) {
+            maxValue = 6;
+        }
+
         return maxValue;
     }
 
@@ -234,5 +242,22 @@ export default class AttributeManager {
         const increases = this.getSpecialAttributeIncreases(attributeName);
 
         return minimumValue + buildPoints + increases;
+    }
+
+    get specialAttributesBuildPointsTotal(): number {
+        let total = 0;
+
+        for(const attributeName in this.specialAttributes) {
+            const key = attributeName as keyof typeof this.specialAttributes;
+            total += this.specialAttributes[key].buildPoints;
+        }
+
+        return total;
+    }
+
+    isSpecialAttributeTotalAboveMaximum(attributeName: SpecialAttributeName): boolean {
+        const attributeTotalValue = this.getSpecialAttributeTotalValue(attributeName);
+        const maximum = this.getSpecialAttributeMaxValue(attributeName);
+        return attributeTotalValue > maximum;
     }
 }

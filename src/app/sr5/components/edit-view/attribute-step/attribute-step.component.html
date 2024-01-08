@@ -49,7 +49,7 @@
                             </select>
                         </td>
                         <td>0</td>
-                        <td>
+                        <td [ngClass]="{ 'text-danger': this.character.attributeManager.isAttributeTotalAboveMaximum(normalAttribute) }">
                             {{ this.character.attributeManager.getAttributeTotalValue(normalAttribute) }} / 
                             {{ this.character.attributeManager.getAttributeMaxValue(normalAttribute) }}
                             <i 
@@ -81,7 +81,7 @@
                         </td>
                         <td colspan="4"></td>
                         <td class="align-middle">
-                            {{ this.character.initiative }}
+                            {{ this.character.initiative }}D6
                         </td>
                     </tr>
                 </tbody>
@@ -150,15 +150,25 @@
                                 <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
                             </select>
                         </td>
-                        <td>0</td>
                         <td>
-                            0 / 0
+                            0
                         </td>
-                        <td></td>
+                        <td>
+                            0
+                        </td>
+                        <td [ngClass]="{ 'text-danger': this.character.attributeManager.isSpecialAttributeTotalAboveMaximum(specialAttribute) }">
+                            {{ this.character.attributeManager.getSpecialAttributeTotalValue(specialAttribute) }} / {{ this.character.attributeManager.getSpecialAttributeMaxValue(specialAttribute) }}
+                            <i 
+                                class="bi bi-exclamation-diamond-fill text-warning warning-flash px-1"
+                                *ngIf="this.character.attributeManager.isSpecialAttributeTotalAboveMaximum(specialAttribute)"
+                            ></i>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2"></td>
-                        <td>0 / 0</td>
+                        <td [ngClass]="{ 'text-danger': this.character.attributeManager.specialAttributesBuildPointsTotal > this.character.attributeManager.specialAttributePoints}">
+                            {{ this.character.attributeManager.specialAttributesBuildPointsTotal }} / 
+                            {{ this.character.attributeManager.specialAttributePoints }}</td>
                         <td></td>
                         <td colspan="2"></td>
                     </tr>

@@ -205,7 +205,7 @@ export class ShadowRun5ECharacter {
     // Final Calculations
 
     get initiative(): number {
-        const totalReaction = this.attributeManager.getAttributeTotalValue(AttributeName.Reaction)
+        const totalReaction = this.attributeManager.getAttributeTotalValue(AttributeName.Reaction);
         const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition);
 
         return totalReaction + totalIntuition;
@@ -233,6 +233,34 @@ export class ShadowRun5ECharacter {
         const totalEssence = this.characterData.essence;
 
         return Math.ceil(((totalCharisma * 2) + totalWillpower + totalEssence ) / 3);
+    }
+
+    get composure(): number {
+        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower);
+        const totalCharisma = this.attributeManager.getAttributeTotalValue(AttributeName.Charisma);
+
+        return totalWillpower + totalCharisma;
+    }
+
+    get judgeIntentions(): number {
+        const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition);
+        const totalCharisma = this.attributeManager.getAttributeTotalValue(AttributeName.Charisma);
+
+        return totalIntuition + totalCharisma;
+    }
+
+    get memory(): number {
+        const totalLogic = this.attributeManager.getAttributeTotalValue(AttributeName.Logic);
+        const totalWillpower = this.attributeManager.getAttributeTotalValue(AttributeName.Willpower);
+
+        return totalLogic + totalWillpower;
+    }
+
+    get liftAndCarry(): number {
+        const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body);
+        const totalStrength = this.attributeManager.getAttributeTotalValue(AttributeName.Strength);
+
+        return totalBody + totalStrength;
     }
 
     get physicalMonitorBoxes(): number {
