@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
+import { MagicUserType } from '../../../character/interfaces/magic.interface';
 import { DataStoreService } from '../../../services/data-store.service';
 import { ShadowRun5ECharacter } from '../../../character/character';
 import { AttributeName, SpecialAttributeName } from '../../../character/interfaces/attribute.interface';
@@ -17,7 +18,7 @@ export class AttributeStepComponent implements OnInit {
     @Input() character!: ShadowRun5ECharacter;
 
     normalAttributes = Object.values(AttributeName);
-    specialAttributes = Object.values(SpecialAttributeName);
+    specialAttributes: SpecialAttributeName[] = [];
 
     normalAttributesForm!: FormGroup;
     specialAttributesForm!: FormGroup;
@@ -25,6 +26,7 @@ export class AttributeStepComponent implements OnInit {
     ngOnInit(): void {
         this.setNormalAttributesForm();
         this.setSpecialAttributesForm();
+        this.setSpecialAttributes();
     }
 
     setNormalAttributesForm(): void {
@@ -91,5 +93,19 @@ export class AttributeStepComponent implements OnInit {
             this.character.attributeManager.specialAttributes.resonance = formData.resonance;
             this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
         });
+    }
+
+    setSpecialAttributes(): void {
+        let specialAttributes: SpecialAttributeName[] = [SpecialAttributeName.Edge];
+
+        if(this.character.magicUserType === MagicUserType.Adept || this.character.magicUserType === MagicUserType.MysticAdept) {
+            specialAttributes.push(SpecialAttributeName.Magic);
+        }
+
+        if(this.character.magicUserType === MagicUserType.Technomancer) {
+            specialAttributes.push(SpecialAttributeName.Resonance);
+        }
+
+        this.specialAttributes = specialAttributes;
     }
 }

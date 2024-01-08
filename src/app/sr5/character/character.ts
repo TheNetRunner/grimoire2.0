@@ -11,8 +11,7 @@ import QualityManager from './quality/quality-manager';
 import { AttributeName } from './interfaces/attribute.interface';
 import { LevelOfPlayName } from './interfaces/settings.interface';
 import { Priority } from './interfaces/priority.interface';
-
-
+import { MagicUserType } from './interfaces/magic.interface';
 
 export class ShadowRun5ECharacter {
     private characterData: ShadowRun5ECharacterData;
@@ -140,6 +139,12 @@ export class ShadowRun5ECharacter {
     handleMetaTypeChange(metaType: MetaType): void {
         this.metaType = metaType;
         this.attributeManager.specialAttributePoints = this.priorityTableProvider.getSpecialAttributePoints(this.priorities.metaType, metaType);
+    }
+
+    // Magic
+
+    get magicUserType(): MagicUserType {
+        return this.characterData.magicUserType;
     }
 
     // Karma
