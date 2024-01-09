@@ -57,6 +57,10 @@ export class ShadowRun5ECharacter {
             this.handleAttributePriorityChange(priorities.attributes);
         }
 
+        if(priorities.magic !== this.priorities.magic) {
+            this.handleMagicPriorityChange(priorities.magic);
+        }
+
         this.priorities = priorities;
     }
 
@@ -70,6 +74,19 @@ export class ShadowRun5ECharacter {
         this.priorities = {...this.priorities, attributes: attributePriority}
         this.attributeManager.attributePoints = this.priorityTableProvider.getAttributePoints(attributePriority);
         console.log(this.attributeManager.attributePoints);
+    }
+
+    handleMagicPriorityChange(magicPriority: Priority): void {
+        this.priorities = {...this.priorities, magic: magicPriority}
+        this.characterData.magicUserType = MagicUserType.None;
+        this.resetMagic();
+    }
+
+    private resetMagic(): void {
+        delete this.characterData.magician;
+        delete this.characterData.aspectedMagician;
+        delete this.characterData.adept;
+        delete this.characterData.technomancer;
     }
 
     // Qualities
@@ -145,6 +162,10 @@ export class ShadowRun5ECharacter {
 
     get magicUserType(): MagicUserType {
         return this.characterData.magicUserType;
+    }
+
+    set magicUserType(magicUserType: MagicUserType) {
+        this.characterData.magicUserType = magicUserType;
     }
 
     // Karma

@@ -98,13 +98,15 @@ export class AttributeStepComponent implements OnInit {
     setSpecialAttributes(): void {
         let specialAttributes: SpecialAttributeName[] = [SpecialAttributeName.Edge];
 
-        if(this.character.magicUserType === MagicUserType.Adept || this.character.magicUserType === MagicUserType.MysticAdept) {
+        if(this.character.magicUserType !== MagicUserType.None && this.character.magicUserType !== MagicUserType.Technomancer) {
             specialAttributes.push(SpecialAttributeName.Magic);
         }
 
         if(this.character.magicUserType === MagicUserType.Technomancer) {
             specialAttributes.push(SpecialAttributeName.Resonance);
         }
+
+        console.log(specialAttributes)
 
         this.specialAttributes = specialAttributes;
     }

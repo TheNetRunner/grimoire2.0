@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <h5 class="modal-title">Select Magic Type</h5>
+    <button class="btn-close" type="button" aria-describedby="modal-title" (click)="dismiss()"></button>
+</div>
+<div class="modal-body">
+    <div ngbAccordion>
+        <div ngbAccordionItem *ngFor="let magicUserTypeOption of magicUserTypeOptions" [collapsed]="true">
+            <div ngbAccordionHeader class="accordion-button magic-user-type-selection-header justify-content-between">
+                <p *ngIf="magicUserTypeOption" class="text-info m-0">
+                    {{ magicUserTypeOption | titlecase }}
+                </p>
+                <p *ngIf="!magicUserTypeOption" class="text-info m-0">
+                    None
+                </p>
+                <div>
+                    <button class="btn btn-secondary spin-button mx-2" ngbAccordionToggle>
+                        <i class="bi bi-chevron-bar-expand"></i>
+                    </button>
+                    <button class="btn btn-primary" (click)="emitMagicUserTypeSelect(magicUserTypeOption)">
+                        Select
+                    </button>
+                </div>
+            </div>
+            <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" (click)="close()">
+        Close
+    </button>
+</div>
+
+

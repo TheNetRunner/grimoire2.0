@@ -1,0 +1,20 @@
+<div class="row">
+
+    <div class="col-8 d-flex align-items-center">
+        <h5 class="m-0" *ngIf="this.character.magicUserType">{{ this.character.magicUserType | titlecase }}</h5>
+    </div>
+
+    <div class="col-4">
+        <button class="btn btn-primary my-auto" (click)="openChangeMagicUserTypeModal()">
+            Change Magic
+        </button>
+    </div>
+</div>
+
+<div class="row no-magic-container" *ngIf="this.character.magicUserType === ''">
+    <div class="col-12 d-flex justify-content-center align-items-center">
+        <h5 class="text-secondary fst-italic">No Magic Selected</h5>
+    </div>
+</div>
+
+<app-magic-step-magician *ngIf="this.character.magicUserType === 'magician'"></app-magic-step-magician>

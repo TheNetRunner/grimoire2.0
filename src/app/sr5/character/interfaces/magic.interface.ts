@@ -6,3 +6,14 @@ export enum MagicUserType {
     MysticAdept = "mystic adept",
     Technomancer = "technomancer",
 }
+
+export enum AspectedMagicianType {
+    Conjurer = "conjurer",
+    Enchanter = "enchanter",
+    Sorcerer = "sorcerer",
+}
+
+export interface Spell {
+    name: string;
+}
+

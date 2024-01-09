@@ -21,6 +21,9 @@ import { QualityStepComponent } from './components/edit-view/quality-step/qualit
 import { QualityListItemComponent } from './components/edit-view/quality-list-item/quality-list-item.component';
 import { QualityReferenceListItemComponent } from './components/edit-view/quality-reference-list-item/quality-reference-list-item.component';
 import { AttributeStepComponent } from './components/edit-view/attribute-step/attribute-step.component';
+import { MagicStepComponent } from './components/edit-view/magic-step/magic-step.component';
+import { MagicUserTypeSelectComponent } from './components/modals/magic-user-type-select/magic-user-type-select.component';
+import { MagicStepMagicianComponent } from './components/modals/magic-step-magician/magic-step-magician.component';
 
 
 @NgModule({
@@ -40,7 +43,10 @@ import { AttributeStepComponent } from './components/edit-view/attribute-step/at
     QualityStepComponent,
     QualityListItemComponent,
     QualityReferenceListItemComponent,
-    AttributeStepComponent
+    AttributeStepComponent,
+    MagicStepComponent,
+    MagicUserTypeSelectComponent,
+    MagicStepMagicianComponent
   ],
   imports: [
     CommonModule,

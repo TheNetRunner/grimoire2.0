@@ -81,12 +81,17 @@ export default class AttributeManager {
         return maxValue;
     }
 
+    getAttributeBonuses(attributeName: AttributeName): number {
+        return 0;
+    }
+
     getAttributeTotalValue(attributeName: AttributeName): number {
         const minimumValue = this.getAttributeBaseValue(attributeName);
         const buildPoints = this.getAttributeBuildPoints(attributeName);
         const increases = this.getAttributeIncreases(attributeName);
+        const bonuses = this.getAttributeBonuses(attributeName);
 
-        return minimumValue + buildPoints + increases;
+        return minimumValue + buildPoints + increases + bonuses;
     }
 
     get attributeBuildPointsTotal(): number {
@@ -206,12 +211,8 @@ export default class AttributeManager {
             value = metaTypeAttributesTableRow.attributes[attributeName].base;
         }
 
-        if(attributeName === SpecialAttributeName.Magic) {
-            value = this.priorityTableProvider.getMagicBaseValue(this.magicPriority);
-        }
-
-        if(attributeName === SpecialAttributeName.Resonance) {
-            value = this.priorityTableProvider.getResonanceBaseValue(this.magicPriority);
+        if(attributeName === SpecialAttributeName.Magic || attributeName === SpecialAttributeName.Resonance) {
+            value = this.priorityTableProvider.getMagicResonanceBaseValue(this.magicPriority, this.magicUserType);
         }
 
         return value;
@@ -236,12 +237,17 @@ export default class AttributeManager {
         return maxValue;
     }
 
+    getSpecialAttributeBonuses(attributeName: SpecialAttributeName): number {
+        return 0;
+    }
+
     getSpecialAttributeTotalValue(attributeName: SpecialAttributeName): number {
         const minimumValue = this.getSpecialAttributeBaseValue(attributeName);
         const buildPoints = this.getSpecialAttributeBuildPoints(attributeName);
         const increases = this.getSpecialAttributeIncreases(attributeName);
+        const bonuses = this.getSpecialAttributeBonuses(attributeName);
 
-        return minimumValue + buildPoints + increases;
+        return minimumValue + buildPoints + increases + bonuses;
     }
 
     get specialAttributesBuildPointsTotal(): number {

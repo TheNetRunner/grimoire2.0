@@ -3,7 +3,7 @@ import { LevelOfPlayName } from "./settings.interface";
 import { MetaType } from "./meta-type.interface";
 import { Priority } from "./priority.interface";
 import { QualityReference } from "./quality.interface";
-import { MagicUserType } from "./magic.interface";
+import { MagicUserType, AspectedMagicianType, Spell } from "./magic.interface";
 
 export enum RoleName { 
     Decker = 'decker',
@@ -93,5 +93,13 @@ export interface ShadowRun5ECharacterData {
         negative: QualityReference[];
     },
     magicUserType: MagicUserType;
+    magician?: {
+        spells: Spell[];
+    };
+    aspectedMagician?: {
+        type: AspectedMagicianType;
+    };
+    adept?: {};
+    technomancer?: {};
     settings: SettingsData;
 }

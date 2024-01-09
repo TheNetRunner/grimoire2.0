@@ -1,7 +1,7 @@
 import { MetaType } from "../interfaces/meta-type.interface";
 import { Priority } from "../interfaces/priority.interface";
 import { LevelOfPlayName } from "../interfaces/settings.interface";
-
+import { MagicUserType } from "../interfaces/magic.interface";
 
 export default class PriorityTableProvider {
 
@@ -220,43 +220,70 @@ export default class PriorityTableProvider {
         return 0;
     }
 
-    getMagicBaseValue(magicPriority: Priority): number {
-        let value = 0;
-        
-        if(magicPriority === Priority.A) {
-            value = 6;
-        }
+    getMagicUserTypeOptions(priority: Priority): MagicUserType[] {
+        switch(priority) {
+            case Priority.A:
+                return [
+                    MagicUserType.Magician,
+                    MagicUserType.MysticAdept,
+                    MagicUserType.Technomancer,
+                    MagicUserType.None
+                ];
+            case Priority.B:
+            case Priority.C:
+                return [
+                    MagicUserType.Magician,
+                    MagicUserType.MysticAdept,
+                    MagicUserType.Technomancer,
+                    MagicUserType.Adept,
+                    MagicUserType.AspectedMagician,
+                    MagicUserType.None
+                ];
+            case Priority.D:
+                return [
+                    MagicUserType.Adept,
+                    MagicUserType.AspectedMagician,
+                    MagicUserType.None
+                ];
+            default:
+                return [
+                    MagicUserType.None
+                ];
 
-        if(magicPriority === Priority.B) {
-            value = 4;
         }
-
-        if(magicPriority === Priority.C) {
-            value = 3;
-        }
-
-        if(magicPriority === Priority.D) {
-            value = 2;
-        }
-
-        return value;
     }
 
-    getResonanceBaseValue(magicPriority: Priority): number {
-        let value = 0;
-        
-        if(magicPriority === Priority.A) {
-            value = 6;
+    getMagicResonanceBaseValue(magicPriority: Priority, magicUserType: MagicUserType): number {
+        switch(magicPriority) {
+            case Priority.A:
+                return 6;
+            case Priority.B:
+                switch(magicUserType) {
+                    case MagicUserType.Magician:
+                    case MagicUserType.MysticAdept:
+                    case MagicUserType.Technomancer:
+                        return 4;
+                    case MagicUserType.Adept:
+                        return 6;
+                    case MagicUserType.AspectedMagician:
+                        return 5;
+                }
+                break;
+            case Priority.C:
+                switch(magicUserType) {
+                    case MagicUserType.Magician:
+                    case MagicUserType.MysticAdept:
+                    case MagicUserType.AspectedMagician:
+                    case MagicUserType.Technomancer:
+                        return 3;
+                    case MagicUserType.Adept:
+                        return 4;
+                }
+                break;
+            case Priority.D:
+                return 2;
         }
 
-        if(magicPriority === Priority.B) {
-            value = 4;
-        }
-
-        if(magicPriority === Priority.C) {
-            value = 3;
-        }
-
-        return value;
+        return 0;
     }
 }

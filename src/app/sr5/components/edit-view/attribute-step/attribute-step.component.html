@@ -48,7 +48,7 @@
                                 <option *ngFor="let i of 11 | rangeArray " [ngValue]="i">{{ i }}</option>
                             </select>
                         </td>
-                        <td>0</td>
+                        <td>{{ this.character.attributeManager.getAttributeBonuses(normalAttribute) }}</td>
                         <td [ngClass]="{ 'text-danger': this.character.attributeManager.isAttributeTotalAboveMaximum(normalAttribute) }">
                             {{ this.character.attributeManager.getAttributeTotalValue(normalAttribute) }} / 
                             {{ this.character.attributeManager.getAttributeMaxValue(normalAttribute) }}
@@ -154,7 +154,7 @@
                             0
                         </td>
                         <td>
-                            0
+                            {{ this.character.attributeManager.getSpecialAttributeBonuses(specialAttribute) }}
                         </td>
                         <td [ngClass]="{ 'text-danger': this.character.attributeManager.isSpecialAttributeTotalAboveMaximum(specialAttribute) }">
                             {{ this.character.attributeManager.getSpecialAttributeTotalValue(specialAttribute) }} / {{ this.character.attributeManager.getSpecialAttributeMaxValue(specialAttribute) }}
