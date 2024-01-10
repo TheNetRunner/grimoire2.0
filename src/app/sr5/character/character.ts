@@ -1,4 +1,4 @@
-import { BasicData, ShadowRun5ECharacterData, PriorityData } from './interfaces/character.interface';
+import { BasicData, ShadowRun5ECharacterData, PriorityData, MagicianData } from './interfaces/character.interface';
 
 import { MetaType } from './interfaces/meta-type.interface';
 import { SettingsData } from './interfaces/character.interface';
@@ -82,13 +82,6 @@ export class ShadowRun5ECharacter {
         this.resetMagic();
     }
 
-    private resetMagic(): void {
-        delete this.characterData.magician;
-        delete this.characterData.aspectedMagician;
-        delete this.characterData.adept;
-        delete this.characterData.technomancer;
-    }
-
     // Qualities
 
     addQuality(quality: Quality): void {
@@ -166,6 +159,52 @@ export class ShadowRun5ECharacter {
 
     set magicUserType(magicUserType: MagicUserType) {
         this.characterData.magicUserType = magicUserType;
+    }
+
+    get magician(): MagicianData | undefined {
+        return this.characterData.magician;
+    }
+
+    get drainValue(): number {
+        let value  = 0;
+
+        for(const drainAttribute of this.magician?.drain || []) {
+            value += this.attributeManager.getAttributeTotalValue(drainAttribute);
+        }
+
+        return value;
+    }
+
+    handleMagicUserTypeChange(magicUserType: MagicUserType): void {
+        this.resetMagic();
+
+        switch(magicUserType) {
+            case MagicUserType.Adept:
+            case MagicUserType.AspectedMagician:
+            case MagicUserType.Magician:
+                this.setMagician();
+                break;
+            case MagicUserType.MysticAdept:
+            case MagicUserType.Technomancer:
+            default:
+                break;
+        }
+        
+    }
+
+    setMagician() {
+        this.characterData.magician = {
+            tradition: "hermetic",
+            drain: [AttributeName.Willpower, AttributeName.Logic],
+            spells: []
+        }
+    }
+
+    private resetMagic(): void {
+        delete this.characterData.magician;
+        delete this.characterData.aspectedMagician;
+        delete this.characterData.adept;
+        delete this.characterData.technomancer;
     }
 
     // Karma

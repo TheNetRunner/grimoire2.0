@@ -1,3 +1,5 @@
+import { AttributeName } from "./attribute.interface";
+
 export enum MagicUserType {
     None = "",
     Adept = "adept",
@@ -11,6 +13,17 @@ export enum AspectedMagicianType {
     Conjurer = "conjurer",
     Enchanter = "enchanter",
     Sorcerer = "sorcerer",
+}
+
+export interface Tradition {
+    name: string;
+    combat: string;
+    detection: string;
+    health: string;
+    illusion: string;
+    manipulation: string;
+    drain: AttributeName[];
+    description: string;
 }
 
 export interface Spell {

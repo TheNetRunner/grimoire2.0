@@ -1,1 +1,18 @@
-<p>magic-step-magician works!</p>
+<div class="row justify-content-between">
+
+    <div class="col-8 d-flex">
+        <p class="m-0 fs-7">
+            <span class="text-info">Tradition:</span> {{ this.character.magician?.tradition | titlecase }}
+        </p>
+        <p class="m-0 ms-3 fs-7" ngbTooltip="{{ drainTooltip | titlecase }}" placement="bottom">
+            <span class="text-info">Drain:</span> {{ this.character.drainValue }}
+        </p>
+    </div>
+
+    <div class="col-4">
+        <button class="btn btn-primary btn-sm">
+            Change Tradition
+        </button>
+    </div>
+
+</div>

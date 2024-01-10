@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mb-4">
 
     <div class="col-8 d-flex align-items-center">
         <h5 class="m-0" *ngIf="this.character.magicUserType">{{ this.character.magicUserType | titlecase }}</h5>
@@ -17,4 +17,7 @@
     </div>
 </div>
 
-<app-magic-step-magician *ngIf="this.character.magicUserType === 'magician'"></app-magic-step-magician>
+<app-magic-step-magician 
+    *ngIf="this.character.magicUserType === 'magician'" 
+    [character]="character"
+/>

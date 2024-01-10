@@ -25,6 +25,7 @@ export class MagicStepComponent {
 
         modalRef.componentInstance.magicUserTypeSelectEvent.subscribe((magicUserType: MagicUserType) => {
             this.character.magicUserType = magicUserType;
+            this.character.handleMagicUserTypeChange(magicUserType);
             this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
         });
     }

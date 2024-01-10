@@ -74,6 +74,12 @@ export interface SettingsData {
     levelOfPlay: LevelOfPlayName;
 }
 
+export interface MagicianData {
+    tradition: string;
+    drain: AttributeName[];
+    spells: Spell[];
+}
+
 export interface ShadowRun5ECharacterData {
     id: string;
     version: string;
@@ -93,9 +99,7 @@ export interface ShadowRun5ECharacterData {
         negative: QualityReference[];
     },
     magicUserType: MagicUserType;
-    magician?: {
-        spells: Spell[];
-    };
+    magician?: MagicianData;
     aspectedMagician?: {
         type: AspectedMagicianType;
     };

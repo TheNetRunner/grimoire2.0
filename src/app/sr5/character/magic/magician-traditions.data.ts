@@ -1,0 +1,25 @@
+import { AttributeName } from "../interfaces/attribute.interface";
+import { Tradition } from "../interfaces/magic.interface";
+
+export const traditions: Tradition[] = [
+    {
+        name: "hermetic",
+        combat: "fire",
+        detection: "air",
+        health: "man",
+        illusion: "water",
+        manipulation: "earth",
+        drain: [AttributeName.Willpower, AttributeName.Logic],
+        description: "The hermetic mage relies on logic, practice, and execution of a planned formula rather than intuition and improvisation to effectively cast spells. They have learned to control magic and believe that the universe (both the magical parts and the mundane) follows patterns of energy that can be manipulated through complex symbols, formulae, and arcane knowledge of its components. This tradition was widely practiced (if not effective) even before the Awakening, and this form appealed early on to corporations and governments due to its intellectual, formalized nature. In hermetic thinking, casting magic involves imposing the magician's will on the universe—so you can imagine some of the egos that emerge when mages get together. Mages are scholars and often have libraries of magical information from which they design spells. Any mage worth his reagents has at least a digital copy of one of the founding texts on hermeticism (rich mages have a fancy hard copy written and bound by hand in a very fancy ceremony). Hermetic trappings also include deluxe, well-crafted equipment in archaic laboratories where mages can create preparations and carry out their research.Mages create circles of power (they're really just magical lodges, just with a hermetic twist, but don't try to tell a mage that). Hermetic reagents include minerals, ores, and other elements—a knowledge of geology, parageology, and chemistry help them find where to gather such reagents. In urban areas, items found in the esoteric, antique, and forgotten corners of the cities can be used by mages. Older buildings, graveyards, and antique shops may have pieces of brick, pottery, glass, wrought iron, and jewelry that have been imbued with magical properties of the elements. Knowledge of architecture and antiques help in the search for these reagents. Mages, unsurprisingly, take a somewhat arrogant view on conjuring. The mage tends to believe that spirits are intelligent but inferior beings predestined for servitude. With that mindset, mages tend to be more comfortable binding spirits than are spellcasters of other traditions."
+    },
+    {
+        name: "shamanic",
+        combat: "beasts",
+        detection: "water",
+        health: "earth",
+        illusion: "air",
+        manipulation: "man",
+        drain: [AttributeName.Willpower, AttributeName.Charisma],
+        description: "The shaman uses mana to balance the world of nature and their own will. They believe in harmony and guidance, observing the world and using emotion to weave magic. They respect the gift of magic that connects them to the flow of the spirit of life. To the shaman, the earth is a living being, and her children are spirits who guide and aid those that support her; spirits of the sky, mountain, birds, rats, even metahumanity. Shamanism has been practiced far longer than hermetic magic and can be found in all parts of the world, although it wasn't taken seriously by modern metahumanity until the Great Ghost Dance. To the shaman, casting a spell is asking a greater universal entity, such as a mentor spirit, to grant her power. Shamans call their magical lodges “medicine lodges.” A medicine lodge (also known as a sweat lodge, inipi, kiva, temazcal, or a number of other names) can take a variety of forms, including a small domed hut with an animal skin roof or a hole dug into the ground and carefully covered with a ceiling of woven branches, or in an urban area a small room filled with skins, painting, and artistically decorative urban junk. The wilderness is an excellent place for shamans to gather reagents, finding plant and animal parts, naturally shaped stones, and vials of water in such pristine locations. Knowledge of zoology, parazoology, botany, and parabotany help them find and harvest these materials. In urban areas, shamans find that the spirit of life also inhabits in the cities. So-called “street shamans” find reagents in urban animals, naturally worn stones in parks or waterways, and handcrafted jewelry made with natural materials. Knowledge of architecture and crafts helps find this sort of reagent. The shamanic perspective on conjuring is based on a belief that spirits are intelligent and ancient, and they should be treated with the respect one would show an elder. Due to their belief that spirits are everywhere, shamans frequently summon spirits from the area when the need arises, rather than binding spirits for long periods. Shamans often develop personal connections to spirits, following them as they learn magic."
+    }
+]
