@@ -1,23 +1,28 @@
-<div class="container-xxl">
-    <ul class="list-group shadow">
-        <li class="list-group-item">
-            <div class="d-flex justify-content-between">
-                <span>{{ inventories.length }} / 25</span>
-                <div>
-                    <button class="btn p-0 mx-2" (click)="openNewInventoryModal()" ngbTooltip="Create New Inventory" placement="bottom">
-                        <i class="bi bi-plus-square-fill text-secondary fs-3"></i>
-                    </button>
-                    <button class="btn p-0 mx-4" (click)="openUploadInventoryModal()" ngbTooltip="Upload inventory" placement="bottom">
-                        <i class="bi bi-cloud-arrow-up-fill text-secondary fs-3"></i>
-                    </button>
-                </div>
-            </div>
-        </li>
+<div class="container-fluid mt-3">
+
+    <div class="row align-items-center mb-3">
+        <div class="col-8">
+            <h5 class="m-0">My Inventories</h5>
+            <h6 class="fs-7 text-body-tertiary">{{ inventories.length }} / 25</h6>
+        </div>
+
+        <div class="col-4 d-flex justify-content-end">
+            <button class="btn btn-primary me-3" (click)="openNewInventoryModal()" ngbTooltip="Create New Inventory" placement="bottom">
+                Create List
+            </button>
+            <button class="btn btn-primary" (click)="openUploadInventoryModal()" ngbTooltip="Upload inventory" placement="bottom">
+                Upload List
+            </button>
+        </div>
+    </div>
+
+    <ul class="list-group shadow mb-3">
+
         <li class="list-group-item" *ngFor="let inventory of inventories">
             <div class="row align-items-center">
                 <div class="col-10">
                     <a class="text-decoration-none" [routerLink]="[inventory.id]">
-                        <h5 class="mb-1 text-secondary">{{ inventory.name | titlecase }}</h5>
+                        <h5 class="mb-1">{{ inventory.name | titlecase }}</h5>
                         <h6 class="mb-1 text-info">{{ inventory.gameSystem | titlecase }}</h6>
                     </a>
                 </div>
@@ -40,4 +45,5 @@
             </div>
         </li>
     </ul>
+
 </div>

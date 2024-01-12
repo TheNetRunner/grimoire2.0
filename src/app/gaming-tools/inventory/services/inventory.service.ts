@@ -110,7 +110,7 @@ export class InventoryService {
 				return earthDawnCurrencies;
 			case "shadow run":
 				return shadowRunCurrencies;
-			case "dnd":
+			case "dungeons & dragons":
 				return dungeonsAndDragonsCurrencies;
 			default:
 				return [];

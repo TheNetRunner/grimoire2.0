@@ -16,13 +16,13 @@
             <label class="col-form-label" for="name">Game System</label>
             <select class="form-select is-valid" formControlName="gameSystem">
                 <option [ngValue]="'earth dawn'">Earth Dawn</option>
-                <option [ngValue]="'dnd'">Dungeons & Dragons</option>
+                <option [ngValue]="'dungeons & dragons'">Dungeons & Dragons</option>
                 <option [ngValue]="'shadow run'">Shadow Run</option>
             </select>
         </div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-secondary" type="button" (click)="onCreate()" [ngClass]="{ 'disabled': !isNameValid }">Create</button>
+    <button class="btn btn-primary" type="button" (click)="onCreate()" [ngClass]="{ 'disabled': !isNameValid }">Create</button>
     <button class="btn btn-danger" type="button" (click)="activeModal.close()">Close</button>
 </div>
