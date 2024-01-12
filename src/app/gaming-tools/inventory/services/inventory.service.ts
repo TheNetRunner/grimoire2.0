@@ -121,7 +121,7 @@ export class InventoryService {
 		let newId: string;
 
 		do {
-			newId = uuidv4();
+			newId = uuidv4().slice(-12)
 		} while (
 			await this.databaseService.verifyIdExistsInTable(INVENTORY_TABLE_NAME, newId)
 		);
