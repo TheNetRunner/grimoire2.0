@@ -16,6 +16,7 @@ import { EditInventoryItemModalComponent } from "./components/edit-inventory-ite
 import { AddInventoryItemModalComponent } from "./components/add-inventory-item-modal/add-inventory-item-modal.component";
 import { GameSystemItemListModalComponent } from "./components/game-system-item-list-modal/game-system-item-list-modal.component";
 import { UploadInventoryModalComponent } from './components/upload-inventory-modal/upload-inventory-modal.component';
+import { InventoryDetailsModalComponent } from './components/inventory-details-modal/inventory-details-modal.component';
 
 @NgModule({
 	declarations: [
@@ -29,6 +30,7 @@ import { UploadInventoryModalComponent } from './components/upload-inventory-mod
 		AddInventoryItemModalComponent,
 		GameSystemItemListModalComponent,
         UploadInventoryModalComponent,
+        InventoryDetailsModalComponent,
 	],
 	imports: [
 		CommonModule,

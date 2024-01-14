@@ -1,3 +1,11 @@
+.btn {
+    min-width: 43px;
+}
+
+.container-fluid {
+    max-width: 864px;
+}
+
 .card-header {
     min-height: 45px;
 }

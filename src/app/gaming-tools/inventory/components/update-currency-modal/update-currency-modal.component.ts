@@ -11,6 +11,8 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { Currency } from "../../models/inventory.model";
 
+const currencyValidators = [Validators.required, Validators.min(0), Validators.max(999999999)];
+
 @Component({
 	selector: "app-update-currency-modal",
 	templateUrl: "./update-currency-modal.component.html",
@@ -22,46 +24,47 @@ export class UpdateCurrencyModalComponent implements OnInit {
 
 	form!: FormGroup;
 
-	@Input() currency!: Currency;
-	@Output() updateCurrencyEvent = new EventEmitter<Currency>();
+	@Input() currentCurrencyValues: Currency[] = [];
+	@Output() updateCurrencyEvent = new EventEmitter<Currency[]>();
 
 	ngOnInit(): void {
-		this.form = this.formBuilder.group({
-			amount: [1, [Validators.required, Validators.min(1)]],
-		});
+        this.setForm();
 	}
 
-	onSubtraction(): void {
-		const n = this.form.get("amount")?.value;
+    setForm(): void {
+        this.form = this.formBuilder.group({});
 
-		if (n && this.form.valid) {
-			this.currency.amount = this.currency.amount - n;
-			this.emitCurrencyChangeEvent();
-		}
-	}
+        for(const currency of this.currentCurrencyValues) {
+            this.form.addControl(
+                currency.name, 
+                this.formBuilder.control(currency.amount, currencyValidators)
+            );
+        }
+    }
 
-	onAddition(): void {
-		const n = this.form.get("amount")?.value;
+    onSave(): void {
+        if(this.form.valid) {
+            this.emitUpdateCurrencyEvent();
+            this.activeModal.close();
+        }
+    }
 
-		if (n && this.form.valid) {
-			this.currency.amount = this.currency.amount + n;
-			this.emitCurrencyChangeEvent();
-		}
-	}
+    updateCurrencies(): void {
+        for(const currency of this.currentCurrencyValues) {
+            currency.amount = this.getFormControlValue(currency.name);
+        }
+    }
 
-	emitCurrencyChangeEvent(): void {
-		this.updateCurrencyEvent.emit(this.currency);
-	}
+    getFormControlValue(formControlName: string): number {
+        return this.form.controls[formControlName].value;
+    }
 
-	get isAmountValid(): boolean | undefined {
-		return this.form.get("amount")?.valid;
-	}
+    isFormControlInvalid(formControlName: string): boolean {
+        return this.form.controls[formControlName].invalid;
+    }
 
-	get hasAmountBeenTouched(): boolean | undefined {
-		return this.form.get("amount")?.touched;
-	}
-
-	get amountValue(): number | undefined {
-		return this.form.get("amount")?.value;
-	}
+    emitUpdateCurrencyEvent(): void {
+        this.updateCurrencies();
+        this.updateCurrencyEvent.emit(this.currentCurrencyValues);
+    }
 }

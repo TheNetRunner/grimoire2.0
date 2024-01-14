@@ -1,4 +1,4 @@
-<li class="list-group-item bg-primary" *ngIf="item">
+<li class="list-group-item" *ngIf="item">
     <div class="row align-items-center">
         <div class="col-6 ">
             <span class="text-break">{{ item.quantity }} x {{ item.name | titlecase }}</span>
@@ -7,22 +7,22 @@
             <button class="btn" (click)="emitOpenItemEditModalEvent()">
                 <i class="bi bi-pencil-fill" ngbTooltip="Edit item" placement="top"></i>
             </button>
-            <button class="btn" (click)="collapse.toggle()" [attr.aria-expanded]="!notesCollapsed">
+            <button class="btn" (click)="collapse.toggle()" [attr.aria-expanded]="!notesCollapsed" *ngIf="item.notes">
                 <i class="bi bi-caret-down-square-fill" *ngIf="notesCollapsed" ngbTooltip="Expand notes" placement="top"></i>
                 <i class="bi bi-caret-up-square-fill" *ngIf="!notesCollapsed" ngbTooltip="Collapse notes" placement="top"></i>
             </button>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-2">
         <div class="col-6">
-            <span class="fs-7 text-info" *ngIf="item.amountPerItem > 0">Value: {{ item.amountPerItem }}{{ item.currencyPerItem | stringAbbreviationer }} each</span>
+            <p class="fs-7 m-0" *ngIf="item.amountPerItem > 0"><span class="text-info">Value:</span> {{ item.amountPerItem }}{{ item.currencyPerItem | stringAbbreviationer }} each</p>
         </div>
         <div class="col-6 text-end">
-            <span class="fs-7 text-info" *ngIf="item.amountPerItem > 0">Total Value: {{ item.amountPerItem * item.quantity }}{{ item.currencyPerItem | stringAbbreviationer }}</span>
+            <p class="fs-7 m-0" *ngIf="item.amountPerItem > 0"><span class="text-info">Total Value:</span> {{ item.amountPerItem * item.quantity }}{{ item.currencyPerItem | stringAbbreviationer }}</p>
         </div>
     </div>
     <div #collapse="ngbCollapse" [(ngbCollapse)]="notesCollapsed" [animation]="true">
-        <p class="text-info fs-6 m-0">Item Notes:</p>
-        <p>{{ item.notes }}</p>
+        <h6 class="text-info m-0">Item Notes:</h6>
+        <p class="mx-3 my-0">{{ item.notes }}</p>
     </div>
 </li>

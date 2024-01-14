@@ -10,6 +10,7 @@ import { EditInventoryItemModalComponent } from "../components/edit-inventory-it
 import { Item } from "../../inventory/models/inventory.model";
 import { AddInventoryItemModalComponent } from "../components/add-inventory-item-modal/add-inventory-item-modal.component";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { InventoryDetailsModalComponent } from "../components/inventory-details-modal/inventory-details-modal.component";
 
 const modalOptions = {
 	keyboard: true,
@@ -69,33 +70,30 @@ export class DetailViewComponent implements OnInit {
         });
     }
 
-	openUpdateCurrecyModal(currency: Currency): void {
-		const modalRef = this.modalService.open(
-			UpdateCurrencyModalComponent,
-			modalOptions,
-		);
+    updateCurrency(currencyName: string, operation: "add" | "subtract", amount: number): void {
+        const currencyToUpdate = this.inventory.currencies.find((currency) => currency.name === currencyName);
 
-		modalRef.componentInstance.currency = currency;
+        if (currencyToUpdate) {
+            if (operation === "add" && currencyToUpdate.amount + amount <= 999999999) {
+                currencyToUpdate.amount += amount;
+            } else if (operation === "subtract" && currencyToUpdate.amount - amount >= 0) {
+                currencyToUpdate.amount -= amount;
+            }
 
-		modalRef.componentInstance.updateCurrencyEvent.subscribe(
-			(updatedCurrency: Currency) => {
-				const currencyIndex = this.getCurrencyIndex(
-					updatedCurrency.name,
-				);
+            this.updateInventoryDatabaseEntry();
+        }
+    }
 
-				if (currencyIndex !== -1) {
-					this.inventory.currencies[currencyIndex] = updatedCurrency;
-					this.updateInventoryDatabaseEntry();
-				}
-			},
-		);
-	}
+    openUpdateCurrencyModal(): void {
+        const modalRef = this.modalService.open(UpdateCurrencyModalComponent, { ...modalOptions, size: "sm" });
 
-	private getCurrencyIndex(currencyName: string): number {
-		return this.inventory.currencies.findIndex(
-			(currency) => currency.name === currencyName,
-		);
-	}
+        modalRef.componentInstance.currentCurrencyValues = this.inventory.currencies;
+
+        modalRef.componentInstance.updateCurrencyEvent.subscribe((currencies: Currency[]) => {
+            this.inventory.currencies = currencies;
+            this.updateInventoryDatabaseEntry();
+        });
+    }
 
 	openItemEditModal(item: Item): void {
 		const modalRef = this.modalService.open(
@@ -134,6 +132,12 @@ export class DetailViewComponent implements OnInit {
 			this.updateInventoryDatabaseEntry();
 		});
 	}
+
+    openInventoryDetailsModal(): void {
+        const modalRef = this.modalService.open(InventoryDetailsModalComponent, modalOptions);
+
+        modalRef.componentInstance.inventory = this.inventory;
+    }
 
     private generateItemId(): string {
 		let newId: string;
