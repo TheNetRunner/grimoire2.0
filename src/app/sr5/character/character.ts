@@ -276,6 +276,10 @@ export class ShadowRun5ECharacter {
         return totalReaction + totalIntuition;
     }
 
+    get initiativeDice(): number {
+        return 1;
+    }
+
     get mentalLimit(): number {
         const totalLogic = this.attributeManager.getAttributeTotalValue(AttributeName.Logic);
         const totalIntuition = this.attributeManager.getAttributeTotalValue(AttributeName.Intuition);
