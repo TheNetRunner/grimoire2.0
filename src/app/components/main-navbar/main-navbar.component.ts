@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-main-navbar',

@@ -34,9 +34,9 @@ export default class QualityManager {
 
     get selectedQualityNames(): string[] {
         const allQualities = this.qualityReferenceArray;
-        let selectedQualityNames: string[] = [];
+        const selectedQualityNames: string[] = [];
 
-        for(let quality of allQualities) {
+        for(const quality of allQualities) {
             selectedQualityNames.push(quality.name);
         }
 
@@ -235,11 +235,11 @@ export default class QualityManager {
     getTotalQualityKarmaCost(): number {
         let karmaCost = 0;
 
-        for(let qualityReference of this.positiveQualityReferences) {
+        for(const qualityReference of this.positiveQualityReferences) {
             karmaCost += qualityReference.karmaCost * qualityReference.ratingValue;
         }
 
-        for(let qualityReference of this.negativeQualityReferences) {
+        for(const qualityReference of this.negativeQualityReferences) {
             karmaCost -= qualityReference.karmaCost * qualityReference.ratingValue;
         }
 

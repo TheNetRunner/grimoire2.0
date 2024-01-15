@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class RangeArrayPipe implements PipeTransform {
 
   transform(stop: number = 1, start: number = 0, step: number = 1): number[] {
-    let results = [];
+    const results = [];
 
     for (let i = start; i <= stop; i = i + step) {
         results.push(i);

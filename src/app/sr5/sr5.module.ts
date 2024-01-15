@@ -24,6 +24,7 @@ import { AttributeStepComponent } from './components/edit-view/attribute-step/at
 import { MagicStepComponent } from './components/edit-view/magic-step/magic-step.component';
 import { MagicUserTypeSelectComponent } from './components/modals/magic-user-type-select/magic-user-type-select.component';
 import { MagicStepMagicianComponent } from './components/modals/magic-step-magician/magic-step-magician.component';
+import { AugmentStepComponent } from './components/edit-view/augment-step/augment-step.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { MagicStepMagicianComponent } from './components/modals/magic-step-magic
     AttributeStepComponent,
     MagicStepComponent,
     MagicUserTypeSelectComponent,
-    MagicStepMagicianComponent
+    MagicStepMagicianComponent,
+    AugmentStepComponent
   ],
   imports: [
     CommonModule,

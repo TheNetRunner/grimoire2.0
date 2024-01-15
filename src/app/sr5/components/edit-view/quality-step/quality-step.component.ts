@@ -36,9 +36,9 @@ export class QualityStepComponent implements OnInit {
     setPostiveQualityOptions(filterString: string = ""): Quality[] {
         const filterStringLower = filterString.toLowerCase();
         const selectedQualityNames = this.character.qualityManager.selectedQualityNames;
-        let unselectedQualities: Quality[] = [];
+        const unselectedQualities: Quality[] = [];
 
-        for(let quality of positiveQualities) {
+        for(const quality of positiveQualities) {
             if(!selectedQualityNames.includes(quality.name) && quality.name.includes(filterStringLower)) {
                 unselectedQualities.push(quality);
             }
@@ -50,9 +50,9 @@ export class QualityStepComponent implements OnInit {
     setNegativeQualityOptions(filterString: string = ""): Quality[] {
         const filterStringLower = filterString.toLowerCase();
         const selectedQualityNames = this.character.qualityManager.selectedQualityNames;
-        let unselectedQualities: Quality[] = [];
+        const unselectedQualities: Quality[] = [];
 
-        for(let quality of negativeQualities) {
+        for(const quality of negativeQualities) {
             if(!selectedQualityNames.includes(quality.name) && quality.name.includes(filterStringLower)) {
                 unselectedQualities.push(quality);
             }
