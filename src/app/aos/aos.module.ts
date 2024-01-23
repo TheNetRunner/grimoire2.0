@@ -8,13 +8,15 @@ import { AosRoutingModule } from './aos-routing.module';
 import { PtgListComponent } from './views/ptg-list/ptg-list.component';
 import { PtgDetailComponent } from './views/ptg-detail/ptg-detail.component';
 import { ErrorComponent } from './components/error/error.component';
+import { DeleteItemModalComponent } from './modal/delete-item-modal/delete-item-modal.component';
 
 
 @NgModule({
   declarations: [
     PtgListComponent,
     PtgDetailComponent,
-    ErrorComponent
+    ErrorComponent,
+    DeleteItemModalComponent
   ],
   imports: [
     CommonModule,

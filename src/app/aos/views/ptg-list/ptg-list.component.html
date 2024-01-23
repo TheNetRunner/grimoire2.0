@@ -17,14 +17,19 @@
 
     <ul class="list-group mx-4">
         <li class="list-group-item" *ngFor="let roster of rosters">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <a class="nav-item fs-5" [routerLink]="[roster.id]">{{ roster.name | titlecase }}</a>
-                <p class="m-0 text-info">{{ roster.faction | titlecase }}</p>
+            <div class="row">
+                <div class="col-8">
+                    <a class="nav-item fs-5" [routerLink]="[roster.id]">{{ roster.name | titlecase }}</a>
+                    <p class="m-0 text-info">{{ roster.faction | titlecase }}</p>
+                </div>
+                <div class="col-4 my-auto">
+                    <button class="btn btn-danger btn-sm float-end" (click)="openDeleteRosterModal(roster)">Delete</button>
+                </div>
             </div>
-            
+
             <div class="d-flex">
-                <span class="fs-7 text-body-tertiary">Updated: {{ roster.lastUpdated | date: "medium" }}</span>
-                <span class="fs-7 text-body-tertiary ms-auto">{{ roster.id }}</span>
+                <span class="fs-8 text-body-tertiary">Updated: {{ roster.lastUpdated | date: "medium" }}</span>
+                <span class="fs-8 text-body-tertiary ms-auto">{{ roster.id }}</span>
             </div>
         </li>
     </ul>
