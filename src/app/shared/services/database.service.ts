@@ -12,7 +12,8 @@ export class DatabaseService {
 		this.database.version(3).stores({
 			inventories: "&id",
             shadowRun5ECharacters: "&id",
-            tanksForTheApocalypse: "&id"
+            tanksForTheApocalypse: "&id",
+            aosPathToGloryRosters: "&id"
 		});
 	}
 

@@ -8,8 +8,10 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { InventoryModule } from "./gaming-tools/inventory/inventory.module";
 import { Sr5Module } from "./sr5/sr5.module";
+import { AosModule } from "./aos/aos.module";
 
 import { MainNavbarComponent } from './components/main-navbar/main-navbar.component';
+
 
 @NgModule({
 	declarations: [AppComponent, MainNavbarComponent],
@@ -21,6 +23,7 @@ import { MainNavbarComponent } from './components/main-navbar/main-navbar.compon
 		ReactiveFormsModule,
 		InventoryModule,
         Sr5Module,
+        AosModule
 	],
 	providers: [],
 	bootstrap: [AppComponent],
