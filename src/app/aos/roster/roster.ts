@@ -19,6 +19,14 @@ export class Roster {
         this.rosterData.name = name;
     }
 
+    get faction(): string {
+        return this.rosterData.faction;
+    }
+
+    set faction(faction: string) {
+        this.rosterData.faction = faction;
+    }
+
     get lastUpdated(): number {
         return this.rosterData.lastUpdated;
     }

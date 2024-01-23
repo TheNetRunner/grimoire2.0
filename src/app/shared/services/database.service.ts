@@ -9,7 +9,7 @@ export class DatabaseService {
 
 	constructor() {
 		this.database = new Dexie("Grimoire");
-		this.database.version(3).stores({
+		this.database.version(4).stores({
 			inventories: "&id",
             shadowRun5ECharacters: "&id",
             tanksForTheApocalypse: "&id",

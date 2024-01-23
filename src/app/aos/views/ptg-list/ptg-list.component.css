@@ -1,3 +1,10 @@
+.error-row {
+    position: absolute;
+    top: 54px;
+    left: 27.5%;
+    width: 864px;
+}
+
 .container-fluid {
     max-width: 864px;
 }

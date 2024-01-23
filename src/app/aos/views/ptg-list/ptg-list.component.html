@@ -1,23 +1,30 @@
+<div class="error-row z-2" *ngIf="errors.length > 0">
+    <app-error *ngFor="let error of errors" [errorText]="error" (dismissErrorEvent)="dismissError($event)"></app-error>
+</div>
+
 <div class="container-fluid">
-
     <div class="row my-3">
-
         <div class="col-6">
             <h5>My Rosters</h5>
-            <p class="text-info">0 / 25</p>
+            <p class="text-info">{{ this.rosters.length }} / 25</p>
         </div>
 
         <div class="col-6">
-            <button class="btn btn-primary float-end">Create New Roster</button>
+            <button class="btn btn-primary float-end" (click)="craftRoster()">Craft Roster</button>
         </div>
 
     </div>
 
     <ul class="list-group mx-4">
         <li class="list-group-item" *ngFor="let roster of rosters">
-            <a class="nav-item" [routerLink]="[roster.id]">{{ roster.name }}</a>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <a class="nav-item fs-5" [routerLink]="[roster.id]">{{ roster.name | titlecase }}</a>
+                <p class="m-0 text-info">{{ roster.faction | titlecase }}</p>
+            </div>
+            
             <div class="d-flex">
-                <span class="fs-7 text-body-tertiary">{{ roster.lastUpdated | date: "medium" }}</span>
+                <span class="fs-7 text-body-tertiary">Updated: {{ roster.lastUpdated | date: "medium" }}</span>
+                <span class="fs-7 text-body-tertiary ms-auto">{{ roster.id }}</span>
             </div>
         </li>
     </ul>

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
+import { DataStoreService } from '../../services/data-store.service';
 import { Roster } from '../../roster/roster';
 import { RosterData } from '../../roster/roster.interfaces';
 
@@ -9,6 +10,30 @@ import { RosterData } from '../../roster/roster.interfaces';
   styleUrl: './ptg-list.component.css'
 })
 export class PtgListComponent {
+    private dataStoreService = inject(DataStoreService);
 
-    rosters: Roster[] = [new Roster({ name: 'Test', id: '1', created: Date.now(), lastUpdated: Date.now() + 1000 })];
+    rosters: Roster[] = [];
+    errors: string[] = [];
+
+    ngOnInit(): void {
+        this.setRosters();
+    }
+
+    setRosters(): void {
+        this.dataStoreService.getRosters().subscribe((rosters: RosterData[]) => {
+            this.rosters = rosters.map((roster: RosterData) => new Roster(roster));
+        });
+    }
+
+    craftRoster(): void {
+        if(this.rosters.length < 25) {
+            this.dataStoreService.createRoster();
+        } else {
+            this.errors.push("You can only have 25 rosters at a time.");
+        }
+    }
+
+    dismissError(index: number): void {
+        this.errors.splice(index, 1);
+    }
 }
