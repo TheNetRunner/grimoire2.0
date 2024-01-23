@@ -14,6 +14,8 @@
 
     <app-magic-step *ngIf="currentEditorStep === 'magic'" [character]="character"></app-magic-step>
 
-    <app-augment-step *ngIf="currentEditorStep === 'augments'" [character]="character"></app-augment-step>
+    <app-augment-step *ngIf="currentEditorStep === 'augment'" [character]="character"></app-augment-step>
+
+    <app-weapon-step *ngIf="currentEditorStep === 'weapons'" [character]="character"></app-weapon-step>
 
 </div>

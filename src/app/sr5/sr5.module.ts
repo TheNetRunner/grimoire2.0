@@ -25,7 +25,9 @@ import { MagicStepComponent } from './components/edit-view/magic-step/magic-step
 import { MagicUserTypeSelectComponent } from './components/modals/magic-user-type-select/magic-user-type-select.component';
 import { MagicStepMagicianComponent } from './components/modals/magic-step-magician/magic-step-magician.component';
 import { AugmentStepComponent } from './components/edit-view/augment-step/augment-step.component';
-
+import { CyberwareShopComponent } from './components/modals/cyberware-shop/cyberware-shop.component';
+import { WeaponStepComponent } from './components/edit-view/weapon-step/weapon-step.component';
+import { ShopComponent } from './components/modals/shop/shop.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,10 @@ import { AugmentStepComponent } from './components/edit-view/augment-step/augmen
     MagicStepComponent,
     MagicUserTypeSelectComponent,
     MagicStepMagicianComponent,
-    AugmentStepComponent
+    AugmentStepComponent,
+    CyberwareShopComponent,
+    WeaponStepComponent,
+    ShopComponent,
   ],
   imports: [
     CommonModule,

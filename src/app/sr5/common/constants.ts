@@ -6,6 +6,7 @@ export const EDITOR_STEPS: string[] = [
     "attributes", 
     "magic", 
     "skills", 
-    "augment", 
+    "augment",
+    "weapons", 
     "equipment"
 ];

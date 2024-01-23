@@ -1,0 +1,44 @@
+<div class="modal-body">
+    <div class="row">
+
+        <div class="col-6 text-end">
+            <h5 class="m-0">{{ title | titlecase }}</h5>
+        </div>
+
+        <div class="col-6 d-flex justify-content-end">
+            <button class="btn-close me-3" type="button" aria-describedby="modal-title" (click)="dismiss()"></button>
+        </div>
+
+    </div>
+    <div class="row pt-4 mx-n2">
+        
+        <div class="col-lg-2 col-md-3 col-sm-4 p-2 mb-grid-gutter" *ngFor="let item of items">
+            <div class="card item-card p-2">
+                <img class="mb-2" src="../../../../../assets/imgs/shadow-run/weapon-placeholder.jpeg">
+                <div class="row">
+
+                    <div class="col-6">
+                        <span class="fs-7 text-body-secondary">Catagory</span>
+                        <h6>Weapon Name</h6>
+                    </div>
+                    
+                    <div class="col-6 text-end">
+                        <h6 class="text-info">10000&#165;</h6>
+                    </div>
+                    
+                </div>
+
+            <div class="card-body px-3">
+                <button class="btn btn-primary btn-sm d-block w-100 mb-2">
+                    Buy
+                </button>
+                <button class="btn btn-sm d-block w-100 mb-2">
+                    Preview
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
