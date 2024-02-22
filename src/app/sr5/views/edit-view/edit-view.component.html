@@ -2,7 +2,12 @@
 
 
 <div class="container-fluid" *ngIf="character">
-    <app-detail-bar *ngIf="character" [karmaSpent]="character.totalKarmaSpent" [karmaTotal]="character.totalKarma"></app-detail-bar>
+    <app-detail-bar 
+        *ngIf="character" 
+        [karmaSpent]="character.totalKarmaSpent" 
+        [karmaTotal]="character.totalKarma" 
+        [nuyentotal]="this.character.totalNuyen"
+    ></app-detail-bar>
     
     <app-concept-step *ngIf="currentEditorStep === 'concept'" [character]="character"></app-concept-step>
 

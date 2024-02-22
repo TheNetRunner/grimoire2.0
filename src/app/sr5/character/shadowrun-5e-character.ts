@@ -16,6 +16,7 @@ import { MagicUserType } from './interfaces/magic.interface';
 
 import PrioritiesManager from './priorities/priorities-manager';
 import { PriorityName, Priority, PrioritiesData } from './priorities/priority.interface';
+import { start } from 'repl';
 
 
 export class Shadowrun5ECharacter {
@@ -73,9 +74,11 @@ export class Shadowrun5ECharacter {
         this.prioritiesManager.setPriority(priorityName, priority);
     }
 
-    getStartingNuyen(): number {
+    get startingNuyen(): number {
         return this.prioritiesManager.startingNuyen;
     }
+
+    // Attributes
 
     // Qualities
 
@@ -266,6 +269,22 @@ export class Shadowrun5ECharacter {
         const totalBody = this.attributeManager.getAttributeTotalValue(AttributeName.Body);
 
         return totalBody;
+    }
+
+    // Resources
+
+    get totalNuyenSpent(): number {
+        return 0
+    }
+
+    get totalNuyen(): number {
+        let total = 0
+
+        total += this.startingNuyen
+
+        total -= this.totalNuyenSpent
+
+        return total;
     }
 
     // Settings

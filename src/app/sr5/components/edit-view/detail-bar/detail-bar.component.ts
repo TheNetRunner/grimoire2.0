@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class DetailBarComponent {
     @Input() karmaSpent: number = 0;
     @Input() karmaTotal: number = 0;
+    @Input() nuyentotal: number = 0;
 }
