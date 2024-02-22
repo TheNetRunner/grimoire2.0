@@ -1,11 +1,10 @@
 import { Component, Output, Input, EventEmitter, OnInit, inject, Attribute } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { Quality, QualityReference, QualityOption } from '../../../character/interfaces/quality.interface';
+import { Quality, QualityReference, QualityOption } from '../../../character/quality/quality.interface';
 import { positiveQualities, negativeQualities } from '../../../character/data/qualities.data';
 import { AttributeName, SpecialAttributeName } from '../../../character/interfaces/attribute.interface';
-
-type ExceptionalAttributeName = AttributeName.Body | AttributeName.Agility | AttributeName.Reaction | AttributeName.Strength | AttributeName.Willpower | AttributeName.Logic | AttributeName.Intuition | AttributeName.Charisma | SpecialAttributeName.Magic | SpecialAttributeName.Resonance;
+import { ExceptionalAttributeName } from "../../../character/quality/quality.interface";
 
 interface QualityReferenceUpdate {
     qualityReference: QualityReference,
@@ -69,9 +68,7 @@ export class QualityReferenceListItemComponent implements OnInit {
 
         this.attributeForm.valueChanges.subscribe((formData: any) => {
             this.qualityReference.attribute = formData.attributeName;
-            this.updateQualityReferenceEvent.emit(
-                { qualityReference: this.qualityReference, qualityType: this.quality.type }
-            );
+            this.updateQualityReferenceEvent.emit({ qualityReference: this.qualityReference, qualityType: this.quality.type });
         });
     }
 

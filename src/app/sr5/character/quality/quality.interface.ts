@@ -1,4 +1,7 @@
-import {AttributeName, SpecialAttributeName } from "./attribute.interface";
+import {AttributeName, SpecialAttributeName } from "../interfaces/attribute.interface";
+
+export type ExceptionalAttributeName = AttributeName.Body | AttributeName.Agility | AttributeName.Reaction | AttributeName.Strength | 
+    AttributeName.Willpower | AttributeName.Logic | AttributeName.Intuition | AttributeName.Charisma | SpecialAttributeName.Magic | SpecialAttributeName.Resonance;
 
 export interface Quality {
     name: string;

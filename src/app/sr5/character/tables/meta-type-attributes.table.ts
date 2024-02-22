@@ -1,8 +1,8 @@
 import { AttributeName, SpecialAttributeName } from "../interfaces/attribute.interface";
-import { MetaType } from "../interfaces/meta-type.interface";
+import { MetaTypeName } from "../interfaces/meta-type.interface";
 
 export const metaTypeAttributesTable = {
-    [MetaType.Human]: {
+    [MetaTypeName.Human]: {
         racial: "None.",
         attributes: {
             [AttributeName.Body]: { base: 1, max: 6 },
@@ -16,7 +16,7 @@ export const metaTypeAttributesTable = {
             [SpecialAttributeName.Edge]: { base: 2, max: 7 },
         }
     },
-    [MetaType.Elf]: {
+    [MetaTypeName.Elf]: {
         racial: "Low-light vision.",
         attributes: {
             [AttributeName.Body]: { base: 1, max: 6 },
@@ -30,7 +30,7 @@ export const metaTypeAttributesTable = {
             [SpecialAttributeName.Edge]: { base: 1, max: 6 },
         }
     },
-    [MetaType.Dwarf]: {
+    [MetaTypeName.Dwarf]: {
         racial:  "+2 dice for pathogen and toxin resistance, +20% increased Lifestyle cost.",
         attributes: {
             [AttributeName.Body]: { base: 3, max: 8 },
@@ -44,7 +44,7 @@ export const metaTypeAttributesTable = {
             [SpecialAttributeName.Edge]: { base: 1, max: 6 },
         }
     },
-    [MetaType.Ork]: {
+    [MetaTypeName.Ork]: {
         racial: "Low-light vision.",
         attributes: {
             [AttributeName.Body]: { base: 4, max: 9 },
@@ -58,7 +58,7 @@ export const metaTypeAttributesTable = {
             [SpecialAttributeName.Edge]: { base: 1, max: 6 },
         }
     },
-    [MetaType.Troll]: {
+    [MetaTypeName.Troll]: {
         racial: "Thermographic Vision, +1 Reach, +1 dermal armor, +100% increased Lifestyle costs.",
         attributes: {
             [AttributeName.Body]: { base: 5, max: 10 },

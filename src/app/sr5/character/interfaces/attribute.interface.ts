@@ -1,4 +1,4 @@
-import { MetaType } from "./meta-type.interface";
+import { MetaTypeName } from "./meta-type.interface";
 
 export enum AttributeName {
     Body = "body",
@@ -34,9 +34,9 @@ export interface MetaTypeAttributesTableRow {
 }
 
 export interface MetaTypeAttributesTable {
-    [MetaType.Human]: MetaTypeAttributesTableRow;
-    [MetaType.Ork]: MetaTypeAttributesTableRow;
-    [MetaType.Elf]: MetaTypeAttributesTableRow;
-    [MetaType.Troll]: MetaTypeAttributesTableRow;
-    [MetaType.Dwarf]: MetaTypeAttributesTableRow;
+    [MetaTypeName.Human]: MetaTypeAttributesTableRow;
+    [MetaTypeName.Ork]: MetaTypeAttributesTableRow;
+    [MetaTypeName.Elf]: MetaTypeAttributesTableRow;
+    [MetaTypeName.Troll]: MetaTypeAttributesTableRow;
+    [MetaTypeName.Dwarf]: MetaTypeAttributesTableRow;
 }

@@ -1,11 +1,11 @@
-import { ShadowRun5ECharacterData, RoleName } from "../interfaces/character.interface";
-import { MetaType } from "../interfaces/meta-type.interface";
-import { Priority } from "../interfaces/priority.interface";
+import { Shadowrun5ECharacterData, RoleName } from "../interfaces/shadowrun-5e-character-data.interface";
+import { MetaTypeName } from "../interfaces/meta-type.interface";
+import { Priority } from "../priorities/priority.interface";
 import { AttributeName, SpecialAttributeName } from "../interfaces/attribute.interface";
 import { MagicUserType } from "../interfaces/magic.interface";
 import { LevelOfPlayName } from "../interfaces/settings.interface";
 
-export const characterObject: ShadowRun5ECharacterData = {
+export const characterObject: Shadowrun5ECharacterData = {
     id: "",
     version: "1.0.0",
     basic: {
@@ -29,7 +29,7 @@ export const characterObject: ShadowRun5ECharacterData = {
 	karmaPoints: 0,
     nuyen: 0,
     essence: 6,
-	metaType: MetaType.Human,
+	metaType: MetaTypeName.Human,
 	priorities: {
 		metaType: Priority.A,
 		attributes: Priority.B,
@@ -38,7 +38,7 @@ export const characterObject: ShadowRun5ECharacterData = {
 		resources: Priority.E,
 	},
 	attributesData: {
-        attributePoints: 20,
+        attributeBuildPoints: 20,
             attributes: {
             [AttributeName.Body]: {
                 buildPoints: 0,
@@ -75,7 +75,7 @@ export const characterObject: ShadowRun5ECharacterData = {
         }
     },
     specialAttributesData: {
-        specialAttributePoints: 9,
+        specialAttributeBuildPoints: 9,
         specialAttributes: {
             [SpecialAttributeName.Edge]: {
                 buildPoints: 0,
@@ -93,8 +93,14 @@ export const characterObject: ShadowRun5ECharacterData = {
     },
     exceptionalAttributes: [],
     qualities: { negative: [], positive: [] },
-    magicUserType: MagicUserType.None,
-    settings: {
+    magicData: {
+        magicUserType: MagicUserType.None,
+    },
+    skillsData: {
+        skillBuildPoints: 22,
+        skillGroupBuildPoints: 0,
+    },
+    settingsData: {
         levelOfPlay: LevelOfPlayName.Normal,
     }
 }

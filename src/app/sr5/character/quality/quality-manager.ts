@@ -1,14 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { ShadowRun5ECharacterData } from '../interfaces/character.interface';
-import { Quality, QualityReference } from '../interfaces/quality.interface';
+import { Shadowrun5ECharacterData } from '../interfaces/shadowrun-5e-character-data.interface';
+import { Quality, QualityReference } from './quality.interface';
 import { AttributeName, SpecialAttributeName } from '../interfaces/attribute.interface';
 
 export default class QualityManager {
     private positiveQualities: QualityReference[] = [];
     private negativeQualities: QualityReference[] = [];
 
-    constructor(characterData: ShadowRun5ECharacterData) {
+    constructor(characterData: Shadowrun5ECharacterData) {
         this.positiveQualities = characterData.qualities.positive;
         this.negativeQualities = characterData.qualities.negative;
     }

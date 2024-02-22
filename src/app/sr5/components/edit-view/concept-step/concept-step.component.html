@@ -19,7 +19,7 @@
             <div class="row text-end align-items-center">
                 <label for="role" class="col-2 col-form-label px-0">Role</label>
                 <div class="col-10">
-                    <select class="form-select" aria-label="role" formControlName="role">
+                    <select class="form-select" formControlName="role" id="role">
                         <option *ngFor="let role of roles" [value]="role">{{ role | titlecase }}</option>
                     </select>
                 </div>
@@ -108,7 +108,7 @@
             <li class="list-group-item no-border-radius" [(ngbCollapse)]="biographyCollapse" [animation]="true">
                 <form [formGroup]="biographyForm">
                     <div class="mb-3">
-                        <textarea class="form-control" id="bio" formControlName="bio" rows="12"></textarea>
+                        <textarea class="form-control textarea-border" id="bio" formControlName="bio" rows="12"></textarea>
                     </div>
                 </form>
             </li>
@@ -126,7 +126,7 @@
                 <form [formGroup]="gameSettingsForm">
                     <div class="mb-3">
                         <label for="levelOfPlay" class="form-label">Level of Play</label>
-                        <select class="form-select" formControlName="levelOfPlay">
+                        <select class="form-select" formControlName="levelOfPlay" id="levelOfPlay">
                             <option *ngFor="let levelOfPlay of levelsOfPlay" [ngValue]="levelOfPlay">{{ levelOfPlay | titlecase }}</option>
                         </select>
                     </div>

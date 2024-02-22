@@ -1,15 +1,15 @@
 import { Component, Input, inject, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { MetaType } from '../../../character/interfaces/meta-type.interface';
+import { MetaTypeName } from '../../../character/interfaces/meta-type.interface';
 import { metaTypeAttributesTable } from '../../../character/tables/meta-type-attributes.table';
 import { MetaTypeAttributesTableRow } from '../../../character/interfaces/attribute.interface';
-import { MetaTypeStartingValues } from '../../../character/interfaces/priority.interface';
+import { MetaTypeStartingValues } from '../../../character/priorities/priority.interface';
 import { priorityTable } from '../../../character/tables/priority-table.data';
-import { Priority } from '../../../character/interfaces/priority.interface';
+import { Priority } from '../../../character/priorities/priority.interface';
 
 interface MetaTypeOptions {
-    metaType: MetaType;
+    metaType: MetaTypeName;
     specialAttrPoints: number;
 }
 
@@ -22,8 +22,8 @@ export class MetaTypeSelectComponent implements OnInit {
     private activeModalService = inject(NgbActiveModal);
 
     @Input() metaTypePriority!: Priority;
-    @Input() currentMetaType!: MetaType;
-    @Output() metaTypeSelectEvent = new EventEmitter<MetaType>();
+    @Input() currentMetaType!: MetaTypeName;
+    @Output() metaTypeSelectEvent = new EventEmitter<MetaTypeName>();
 
     metaTypeOptions: MetaTypeStartingValues[] = [];
 
@@ -44,16 +44,16 @@ export class MetaTypeSelectComponent implements OnInit {
         this.activeModalService.close();
     }
 
-    emitSelectMetaType(metaType: MetaType): void {
+    emitSelectMetaType(metaType: MetaTypeName): void {
         this.metaTypeSelectEvent.emit(metaType);
         this.close();
     }
 
-    getMetaTypeRacial(metaType: MetaType): string {
+    getMetaTypeRacial(metaType: MetaTypeName): string {
         return metaTypeAttributesTable[metaType].racial;
     }
 
-    getMetaTypeAttributeTableRow(metaType: MetaType): MetaTypeAttributesTableRow['attributes'] {
+    getMetaTypeAttributeTableRow(metaType: MetaTypeName): MetaTypeAttributesTableRow['attributes'] {
         return metaTypeAttributesTable[metaType].attributes;
     }
 }

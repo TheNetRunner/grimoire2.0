@@ -1,69 +1,69 @@
-import { MetaType } from "../interfaces/meta-type.interface";
-import { Priority } from "../interfaces/priority.interface";
+import { MetaTypeName } from "../interfaces/meta-type.interface";
+import { Priority } from "./priority.interface";
 import { LevelOfPlayName } from "../interfaces/settings.interface";
 import { MagicUserType } from "../interfaces/magic.interface";
 
-export default class PriorityTableProvider {
+export default class PrioritiesTableProvider {
 
-    getSpecialAttributePoints(metaTypePriority: Priority, metaType: MetaType): number {
+    getSpecialAttributePoints(metaTypePriority: Priority, metaType: MetaTypeName): number {
         let value = 0;
 
         if(metaTypePriority === Priority.A) {
-            if(metaType === MetaType.Human) {
+            if(metaType === MetaTypeName.Human) {
                 value = 9;
             }
 
-            if(metaType === MetaType.Elf) {
+            if(metaType === MetaTypeName.Elf) {
                 value = 8;
             }
 
-            if(metaType === MetaType.Dwarf) {
+            if(metaType === MetaTypeName.Dwarf) {
                 value = 7;
             }
 
-            if(metaType === MetaType.Ork) {
+            if(metaType === MetaTypeName.Ork) {
                 value = 7;
             }
 
-            if(metaType === MetaType.Troll) {
+            if(metaType === MetaTypeName.Troll) {
                 value = 5;
             }
         }
 
         if(metaTypePriority === Priority.B) {
-            if(metaType === MetaType.Human) {
+            if(metaType === MetaTypeName.Human) {
                 value = 7;
             }
 
-            if(metaType === MetaType.Elf) {
+            if(metaType === MetaTypeName.Elf) {
                 value = 6;
             }
 
-            if(metaType === MetaType.Dwarf) {
+            if(metaType === MetaTypeName.Dwarf) {
                 value = 4;
             }
 
-            if(metaType === MetaType.Ork) {
+            if(metaType === MetaTypeName.Ork) {
                 value = 4;
             }
         }
 
         if(metaTypePriority === Priority.C) {
-            if(metaType === MetaType.Human) {
+            if(metaType === MetaTypeName.Human) {
                 value = 5;
             }
 
-            if(metaType === MetaType.Elf) {
+            if(metaType === MetaTypeName.Elf) {
                 value = 3;
             }
 
-            if(metaType === MetaType.Dwarf) {
+            if(metaType === MetaTypeName.Dwarf) {
                 value = 1;
             }
         }
 
         if(metaTypePriority === Priority.D) {
-            if(metaType === MetaType.Human) {
+            if(metaType === MetaTypeName.Human) {
                 value = 5;
             }
         }
@@ -146,7 +146,7 @@ export default class PriorityTableProvider {
         return value;
     }
 
-    getResouces(priority: Priority, levelOfPlayName: LevelOfPlayName): number {
+    getStartingNuyen(priority: Priority, levelOfPlayName: LevelOfPlayName): number {
         if(priority === Priority.A) {
             if(levelOfPlayName === LevelOfPlayName.Street) {
                 return 75000;

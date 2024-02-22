@@ -3,8 +3,8 @@ import { ActivatedRoute, Router, Params } from "@angular/router";
 
 import { DataStoreService } from '../../services/data-store.service';
 import { EDITOR_STEPS } from '../../common/constants';
-import { ShadowRun5ECharacterData } from '../../character/interfaces/character.interface';
-import { ShadowRun5ECharacter } from '../../character/character';
+import { Shadowrun5ECharacterData } from '../../character/interfaces/shadowrun-5e-character-data.interface';
+import { Shadowrun5ECharacter } from '../../character/shadowrun-5e-character';
 
 @Component({
   selector: 'app-edit-view',
@@ -17,7 +17,7 @@ export class EditViewComponent implements OnInit {
     private router = inject(Router);
 
     currentEditorStep: string = "concept";
-    character!: ShadowRun5ECharacter;
+    character!: Shadowrun5ECharacter;
 
     ngOnInit(): void {
         this.initEditor();
@@ -34,7 +34,7 @@ export class EditViewComponent implements OnInit {
 				this.currentEditorStep = providedStep;
                 this.setCharacter();
 			} else {
-				this.redirect();
+				this.redirectToListView();
 			}
 		});
 	}
@@ -43,20 +43,19 @@ export class EditViewComponent implements OnInit {
         this.activedRoute.params.subscribe((params: Params) => {
             const characterIdParam = params['id']
 
-            this.dataStoreService.getCharacter(characterIdParam).subscribe((characterData: ShadowRun5ECharacterData) => {
-
-                if(characterData) {
-                    this.character = new ShadowRun5ECharacter(characterData);
-                    console.log(characterData);
-                } else {
-                    this.router.navigate(['sr5', 'characters']);
+            this.dataStoreService.getCharacter(characterIdParam).subscribe(
+                (characterData: Shadowrun5ECharacterData) => {
+                    if(characterData) {
+                        this.character = new Shadowrun5ECharacter(characterData);
+                    } else {
+                        this.redirectToListView()
+                    }
                 }
-                
-            });
+            );
         });
     }
 
-    redirect(): void {
-		this.router.navigate(["sr5", "characters"]);
+    redirectToListView(): void {
+		this.router.navigate(["sr5e", "runners"]);
 	}
 }

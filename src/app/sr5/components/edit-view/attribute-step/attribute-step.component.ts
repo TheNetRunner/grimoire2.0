@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { MagicUserType } from '../../../character/interfaces/magic.interface';
 import { DataStoreService } from '../../../services/data-store.service';
-import { ShadowRun5ECharacter } from '../../../character/character';
+import { Shadowrun5ECharacter } from '../../../character/shadowrun-5e-character';
 import { AttributeName, SpecialAttributeName } from '../../../character/interfaces/attribute.interface';
 
 @Component({
@@ -15,7 +15,7 @@ export class AttributeStepComponent implements OnInit {
     private formBuilder = inject(FormBuilder);
     private dataStoreService = inject(DataStoreService);
 
-    @Input() character!: ShadowRun5ECharacter;
+    @Input() character!: Shadowrun5ECharacter;
 
     normalAttributes = Object.values(AttributeName);
     specialAttributes: SpecialAttributeName[] = [];
@@ -67,7 +67,7 @@ export class AttributeStepComponent implements OnInit {
 
         this.normalAttributesForm.valueChanges.subscribe((formData: any) => {
             this.character.attributeManager.attributes = formData;
-            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+            this.dataStoreService.updateCharacter(this.character.id, this.character.saveObject);
         });
     }
 
@@ -91,7 +91,7 @@ export class AttributeStepComponent implements OnInit {
             this.character.attributeManager.specialAttributes.edge = formData.edge;
             this.character.attributeManager.specialAttributes.magic = formData.magic;
             this.character.attributeManager.specialAttributes.resonance = formData.resonance;
-            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+            this.dataStoreService.updateCharacter(this.character.id, this.character.saveObject);
         });
     }
 
@@ -105,8 +105,6 @@ export class AttributeStepComponent implements OnInit {
         if(this.character.magicUserType === MagicUserType.Technomancer) {
             specialAttributes.push(SpecialAttributeName.Resonance);
         }
-
-        console.log(specialAttributes)
 
         this.specialAttributes = specialAttributes;
     }

@@ -1,29 +1,38 @@
-import { BasicData, ShadowRun5ECharacterData, PriorityData, MagicianData } from './interfaces/character.interface';
+import { BasicData, Shadowrun5ECharacterData } from './interfaces/shadowrun-5e-character-data.interface';
 
-import { MetaType } from './interfaces/meta-type.interface';
-import { SettingsData } from './interfaces/character.interface';
-import { Quality, QualityReference } from './interfaces/quality.interface';
+import { MetaTypeName } from './interfaces/meta-type.interface';
+import { SettingsData } from './interfaces/shadowrun-5e-character-data.interface';
+import { Quality, QualityReference } from './quality/quality.interface';
 
-import PriorityTableProvider from './tables/priority-table-provider';
+import PriorityTableProvider from './priorities/priority-table-provider';
 
 import AttributeManager from './attributes/attribute-manager';
 import QualityManager from './quality/quality-manager';
+import MagicManager from './magic/magic-manager';
+
 import { AttributeName } from './interfaces/attribute.interface';
 import { LevelOfPlayName } from './interfaces/settings.interface';
-import { Priority } from './interfaces/priority.interface';
 import { MagicUserType } from './interfaces/magic.interface';
 
-export class ShadowRun5ECharacter {
-    private characterData: ShadowRun5ECharacterData;
+import PrioritiesManager from './priorities/priorities-manager';
+import { PriorityName, Priority, PrioritiesData } from './priorities/priority.interface';
+
+
+export class Shadowrun5ECharacter {
+    private characterData: Shadowrun5ECharacterData;
     private priorityTableProvider: PriorityTableProvider;
     public attributeManager: AttributeManager;
     public qualityManager: QualityManager;
+    public magicManager: MagicManager;
+    private prioritiesManager: PrioritiesManager;
     
-    constructor(characterData: ShadowRun5ECharacterData) {
+    constructor(characterData: Shadowrun5ECharacterData) {
         this.characterData = characterData;
         this.priorityTableProvider = new PriorityTableProvider();
         this.attributeManager = new AttributeManager(characterData);
         this.qualityManager = new QualityManager(characterData);
+        this.magicManager = new MagicManager(characterData);
+        this.prioritiesManager = new PrioritiesManager(characterData);
     }
 
     get id() {
@@ -40,46 +49,24 @@ export class ShadowRun5ECharacter {
 
     // Priorities
 
-    get priorities(): PriorityData {
+    get priorities(): PrioritiesData {
         return this.characterData.priorities;
     }
 
-    set priorities(priorities: PriorityData) {
-        this.characterData.priorities = priorities;
+    set priorities(priorities: PrioritiesData) {
+        this.setPriority(PriorityName.metaType, priorities.metaType);
+        this.setPriority(PriorityName.attributes, priorities.attributes);
+        this.setPriority(PriorityName.magic, priorities.magic);
+        this.setPriority(PriorityName.skills, priorities.skills);
+        this.setPriority(PriorityName.resources, priorities.resources);
     }
 
-    handlePriorityChanges(priorities: PriorityData): void {
-        if(priorities.metaType !== this.priorities.metaType) {
-            this.handleMetaTypePriorityChange(priorities.metaType);
-        }
-
-        if(priorities.attributes !== this.priorities.attributes) {
-            this.handleAttributePriorityChange(priorities.attributes);
-        }
-
-        if(priorities.magic !== this.priorities.magic) {
-            this.handleMagicPriorityChange(priorities.magic);
-        }
-
-        this.priorities = priorities;
+    private setPriority(priorityName: PriorityName, priority: Priority) {
+        this.prioritiesManager.setPriority(priorityName, priority);
     }
 
-    handleMetaTypePriorityChange(metaTypePriority: Priority): void {
-        this.priorities = {...this.priorities, metaType: metaTypePriority}
-        this.metaType = MetaType.Human;
-        this.attributeManager.specialAttributePoints = this.priorityTableProvider.getSpecialAttributePoints(metaTypePriority, this.metaType);
-    }
-
-    handleAttributePriorityChange(attributePriority: Priority): void {
-        this.priorities = {...this.priorities, attributes: attributePriority}
-        this.attributeManager.attributePoints = this.priorityTableProvider.getAttributePoints(attributePriority);
-        console.log(this.attributeManager.attributePoints);
-    }
-
-    handleMagicPriorityChange(magicPriority: Priority): void {
-        this.priorities = {...this.priorities, magic: magicPriority}
-        this.characterData.magicUserType = MagicUserType.None;
-        this.resetMagic();
+    getStartingNuyen(): number {
+        return this.prioritiesManager.startingNuyen;
     }
 
     // Qualities
@@ -130,11 +117,11 @@ export class ShadowRun5ECharacter {
 
     // Meta Type
 
-    get metaType(): MetaType {
+    get metaType(): MetaTypeName {
         return this.characterData.metaType;
     }
 
-    set metaType(metaType: MetaType) {
+    set metaType(metaType: MetaTypeName) {
         this.characterData.metaType = metaType;
     }
 
@@ -146,7 +133,7 @@ export class ShadowRun5ECharacter {
         this.characterData.imageName = imageName;
     }
 
-    handleMetaTypeChange(metaType: MetaType): void {
+    handleMetaTypeChange(metaType: MetaTypeName): void {
         this.metaType = metaType;
         this.attributeManager.specialAttributePoints = this.priorityTableProvider.getSpecialAttributePoints(this.priorities.metaType, metaType);
     }
@@ -154,59 +141,13 @@ export class ShadowRun5ECharacter {
     // Magic
 
     get magicUserType(): MagicUserType {
-        return this.characterData.magicUserType;
+        return this.characterData.magicData.magicUserType;
     }
 
     set magicUserType(magicUserType: MagicUserType) {
-        this.characterData.magicUserType = magicUserType;
+        this.characterData.magicData.magicUserType = magicUserType;
     }
-
-    get magician(): MagicianData | undefined {
-        return this.characterData.magician;
-    }
-
-    get drainValue(): number {
-        let value  = 0;
-
-        for(const drainAttribute of this.magician?.drain || []) {
-            value += this.attributeManager.getAttributeTotalValue(drainAttribute);
-        }
-
-        return value;
-    }
-
-    handleMagicUserTypeChange(magicUserType: MagicUserType): void {
-        this.resetMagic();
-
-        switch(magicUserType) {
-            case MagicUserType.Adept:
-            case MagicUserType.AspectedMagician:
-            case MagicUserType.Magician:
-                this.setMagician();
-                break;
-            case MagicUserType.MysticAdept:
-            case MagicUserType.Technomancer:
-            default:
-                break;
-        }
-        
-    }
-
-    setMagician() {
-        this.characterData.magician = {
-            tradition: "hermetic",
-            drain: [AttributeName.Willpower, AttributeName.Logic],
-            spells: []
-        }
-    }
-
-    private resetMagic(): void {
-        delete this.characterData.magician;
-        delete this.characterData.aspectedMagician;
-        delete this.characterData.adept;
-        delete this.characterData.technomancer;
-    }
-
+    
     // Karma
 
     get totalKarmaSpent(): number {
@@ -232,39 +173,6 @@ export class ShadowRun5ECharacter {
     get startingKarmaSpend(): number {
         const totalQualitySpend = this.qualityManager.getTotalQualityKarmaCost();
         return totalQualitySpend;
-    }
-
-    // Settings
-
-    get settings(): SettingsData {
-        return this.characterData.settings;
-    }
-
-    set settings(settings: SettingsData) {
-        this.characterData.settings = settings;
-        this.handleLevelOfPlayChange();
-    }
-
-    set levelOfPlay(levelOfPlay: LevelOfPlayName) {
-        this.characterData.settings.levelOfPlay = levelOfPlay;
-        this.handleLevelOfPlayChange();
-    }
-
-    handleLevelOfPlayChange(): void {
-        this.startingKarma = this.getStartingKarma(this.settings.levelOfPlay);
-    }
-
-    private getStartingKarma(LevelOfPlay: LevelOfPlayName): number {
-        switch(LevelOfPlay) {
-            case LevelOfPlayName.Street:
-                return 13;
-            case LevelOfPlayName.Normal:
-                return 25;
-            case LevelOfPlayName.Prime:
-                return 35;
-            default:
-                return 0;
-        }
     }
 
     // Final Calculations
@@ -350,9 +258,42 @@ export class ShadowRun5ECharacter {
         return totalBody;
     }
 
+    // Settings
+
+    get settings(): SettingsData {
+        return this.characterData.settingsData;
+    }
+
+    set settings(settings: SettingsData) {
+        this.characterData.settingsData = settings;
+        this.handleLevelOfPlayChange();
+    }
+
+    set levelOfPlay(levelOfPlay: LevelOfPlayName) {
+        this.characterData.settingsData.levelOfPlay = levelOfPlay;
+        this.handleLevelOfPlayChange();
+    }
+
+    handleLevelOfPlayChange(): void {
+        this.startingKarma = this.getStartingKarma(this.settings.levelOfPlay);
+    }
+
+    private getStartingKarma(LevelOfPlay: LevelOfPlayName): number {
+        switch(LevelOfPlay) {
+            case LevelOfPlayName.Street:
+                return 13;
+            case LevelOfPlayName.Normal:
+                return 25;
+            case LevelOfPlayName.Prime:
+                return 35;
+            default:
+                return 0;
+        }
+    }
+
     // Save
 
-    getSaveObject(): ShadowRun5ECharacterData {
+    get saveObject(): Shadowrun5ECharacterData {
         return this.characterData;
     }
 }

@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ShadowRun5ECharacter } from '../../../character/character';
+import { Shadowrun5ECharacter } from '../../../character/shadowrun-5e-character';
 import { MagicUserType } from '../../../character/interfaces/magic.interface';
 import { MagicUserTypeSelectComponent } from '../../modals/magic-user-type-select/magic-user-type-select.component';
 import { DataStoreService } from '../../../services/data-store.service';
@@ -15,7 +15,7 @@ export class MagicStepComponent {
     private modalService = inject(NgbModal);
     private dataStoreService = inject(DataStoreService);
 
-    @Input() character!: ShadowRun5ECharacter;
+    @Input() character!: Shadowrun5ECharacter;
 
     openChangeMagicUserTypeModal(): void {
         const modalRef = this.modalService.open(MagicUserTypeSelectComponent, { size: 'lg', scrollable: true });
@@ -25,8 +25,7 @@ export class MagicStepComponent {
 
         modalRef.componentInstance.magicUserTypeSelectEvent.subscribe((magicUserType: MagicUserType) => {
             this.character.magicUserType = magicUserType;
-            this.character.handleMagicUserTypeChange(magicUserType);
-            this.dataStoreService.updateCharacter(this.character.id, this.character.getSaveObject());
+            this.dataStoreService.updateCharacter(this.character.id, this.character.saveObject);
         });
     }
 }

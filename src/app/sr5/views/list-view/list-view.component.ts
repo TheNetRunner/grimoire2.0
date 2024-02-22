@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DeleteComponent } from '../../components/modals/delete/delete.component';
-import { ShadowRun5ECharacterData } from '../../character/interfaces/character.interface';
+import { Shadowrun5ECharacterData } from '../../character/interfaces/shadowrun-5e-character-data.interface';
 import { DataStoreService } from '../../services/data-store.service';
 
 @Component({
@@ -16,14 +16,14 @@ export class ListViewComponent implements OnInit {
     private dataStoreService = inject(DataStoreService);
     private router = inject(Router);
 
-    characters: ShadowRun5ECharacterData[] = [];
+    characters: Shadowrun5ECharacterData[] = [];
 
     ngOnInit() {
         this.getCharacters();
     }
 
     getCharacters(): void {
-        this.dataStoreService.getCharacters().subscribe((characters: ShadowRun5ECharacterData[]) => {
+        this.dataStoreService.getCharacters().subscribe((characters: Shadowrun5ECharacterData[]) => {
             this.characters = characters;
         });
     }
@@ -32,7 +32,7 @@ export class ListViewComponent implements OnInit {
         const newCharacterId = await this.dataStoreService.createCharacter();
 
         this.router.navigate(
-            ["sr5", "characters", newCharacterId, "edit"], { queryParams: { step: "concept" } });
+            ["sr5e", "runners", newCharacterId, "edit"], { queryParams: { step: "concept" } });
     }
 
     copyCharacter(characterId: string): void {

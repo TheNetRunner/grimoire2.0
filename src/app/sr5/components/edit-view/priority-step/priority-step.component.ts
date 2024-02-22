@@ -1,13 +1,13 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { ShadowRun5ECharacter } from '../../../character/character';
+import { Shadowrun5ECharacter } from '../../../character/shadowrun-5e-character';
 import { DataStoreService } from '../../../services/data-store.service';
 import { LevelOfPlayName } from '../../../character/interfaces/settings.interface';
-import { Priority } from '../../../character/interfaces/priority.interface';
+import { PrioritiesData, Priority } from '../../../character/priorities/priority.interface';
 import { areFormValuesUnique } from "../../../../shared/form-validators/unique-values-validator/unique-values-validator.module"
 import { priorityTable } from '../../../character/tables/priority-table.data';
-import { PriorityTableRow } from '../../../character/interfaces/priority.interface';
+import { PriorityTableRow } from '../../../character/priorities/priority.interface';
 
 @Component({
   selector: 'app-priority-step',
@@ -18,7 +18,7 @@ export class PriorityStepComponent implements OnInit {
     private dataService = inject(DataStoreService);
     private formBuilder = inject(FormBuilder);
 
-    @Input() character!: ShadowRun5ECharacter;
+    @Input() character!: Shadowrun5ECharacter;
 
     priorityOptions: Priority[] = Object.values(Priority);
     form!: FormGroup;
@@ -36,9 +36,9 @@ export class PriorityStepComponent implements OnInit {
             resources: [this.character.priorities.resources, [Validators.required]],
         }, { validators: areFormValuesUnique() });
 
-        this.form.valueChanges.subscribe((formData: any) => {
-            this.character.handlePriorityChanges(formData);
-            this.dataService.updateCharacter(this.character.id, this.character.getSaveObject());
+        this.form.valueChanges.subscribe((formData: PrioritiesData) => {
+            this.character.priorities = formData;
+            this.dataService.updateCharacter(this.character.id, this.character.saveObject);
         });
     }
 

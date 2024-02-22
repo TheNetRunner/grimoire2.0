@@ -1,9 +1,10 @@
 import { AttributeName, SpecialAttributeName } from "./attribute.interface"
 import { LevelOfPlayName } from "./settings.interface";
-import { MetaType } from "./meta-type.interface";
-import { Priority } from "./priority.interface";
-import { QualityReference } from "./quality.interface";
-import { MagicUserType, AspectedMagicianType, Spell } from "./magic.interface";
+import { MetaTypeName } from "./meta-type.interface";
+import { PrioritiesData } from "../priorities/priority.interface";
+import { QualityReference } from "../quality/quality.interface";
+import { MagicData } from "./magic.interface";
+import { SkillsData } from "../skills/skills.interface";
 
 export enum RoleName { 
     Decker = 'decker',
@@ -32,21 +33,13 @@ export interface BasicData {
     bio: string;
 }
 
-export interface PriorityData {
-    metaType: Priority;
-    attributes: Priority;
-    magic: Priority;
-    skills: Priority;
-    resources: Priority;
-}
-
 export interface AttributeData {
     buildPoints: number;
     increases: number;
 }
 
 export interface AttributesData {
-    attributePoints: number;
+    attributeBuildPoints: number;
     attributes: {
         [AttributeName.Body]: AttributeData;
         [AttributeName.Agility]: AttributeData;
@@ -60,7 +53,7 @@ export interface AttributesData {
 }
 
 export interface SpecialAttributesData {
-    specialAttributePoints: number;
+    specialAttributeBuildPoints: number;
     specialAttributes: {
         [SpecialAttributeName.Edge]: AttributeData;
         [SpecialAttributeName.Magic]: AttributeData;
@@ -74,19 +67,13 @@ export interface SettingsData {
     levelOfPlay: LevelOfPlayName;
 }
 
-export interface MagicianData {
-    tradition: string;
-    drain: AttributeName[];
-    spells: Spell[];
-}
-
-export interface ShadowRun5ECharacterData {
+export interface Shadowrun5ECharacterData {
     id: string;
     version: string;
     basic: BasicData;
     imageName: string;
-    priorities: PriorityData;
-    metaType: MetaType;
+    priorities: PrioritiesData;
+    metaType: MetaTypeName;
     attributesData: AttributesData;
     specialAttributesData: SpecialAttributesData;
     exceptionalAttributes: ExceptionalAttributesData[];
@@ -98,12 +85,7 @@ export interface ShadowRun5ECharacterData {
         positive: QualityReference[];
         negative: QualityReference[];
     },
-    magicUserType: MagicUserType;
-    magician?: MagicianData;
-    aspectedMagician?: {
-        type: AspectedMagicianType;
-    };
-    adept?: {};
-    technomancer?: {};
-    settings: SettingsData;
+    magicData: MagicData;
+    skillsData: SkillsData;
+    settingsData: SettingsData;
 }

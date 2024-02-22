@@ -1,4 +1,4 @@
-export enum MetaType {
+export enum MetaTypeName {
     Human = "human",
     Dwarf = "dwarf",
     Elf = "elf",
@@ -12,9 +12,9 @@ export interface MetaTypeDescription {
 }
 
 export interface MetaTypeDescriptions {
-    [MetaType.Human]: MetaTypeDescription;
-    [MetaType.Ork]: MetaTypeDescription;
-    [MetaType.Elf]: MetaTypeDescription;
-    [MetaType.Troll]: MetaTypeDescription;
-    [MetaType.Dwarf]: MetaTypeDescription;
+    [MetaTypeName.Human]: MetaTypeDescription;
+    [MetaTypeName.Ork]: MetaTypeDescription;
+    [MetaTypeName.Elf]: MetaTypeDescription;
+    [MetaTypeName.Troll]: MetaTypeDescription;
+    [MetaTypeName.Dwarf]: MetaTypeDescription;
 }

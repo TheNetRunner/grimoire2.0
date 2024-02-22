@@ -2,10 +2,10 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ShadowRun5ECharacter } from '../../../character/character';
+import { Shadowrun5ECharacter } from '../../../character/shadowrun-5e-character';
 import { PortraitSelectComponent } from '../../modals/portrait-select/portrait-select.component';
 import { DataStoreService } from '../../../services/data-store.service';
-import { RoleName } from '../../../character/interfaces/character.interface';
+import { RoleName } from '../../../character/interfaces/shadowrun-5e-character-data.interface';
 import { LevelOfPlayName } from '../../../character/interfaces/settings.interface';
 
 @Component({
@@ -18,7 +18,7 @@ export class ConceptStepComponent implements OnInit {
     private dataService = inject(DataStoreService);
     private formBuilder = inject(FormBuilder);
 
-    @Input() character!: ShadowRun5ECharacter;
+    @Input() character!: Shadowrun5ECharacter;
 
     characterImageUrl: string = "";
     roles: string[] = Object.values(RoleName);
@@ -134,6 +134,6 @@ export class ConceptStepComponent implements OnInit {
     }
 
     saveCharacterChanges(): void {
-        this.dataService.updateCharacter(this.character.id, this.character.getSaveObject());
+        this.dataService.updateCharacter(this.character.id, this.character.saveObject);
     }
 }

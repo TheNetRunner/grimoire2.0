@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MagicUserType } from '../../../character/interfaces/magic.interface';
-import { Priority } from '../../../character/interfaces/priority.interface';
-import PriorityTableProvider from '../../../character/tables/priority-table-provider';
+import { Priority } from '../../../character/priorities/priority.interface';
+import PriorityTableProvider from '../../../character/priorities/priority-table-provider';
 
 @Component({
   selector: 'app-magic-user-type-select',

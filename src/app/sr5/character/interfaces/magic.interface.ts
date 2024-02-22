@@ -26,7 +26,17 @@ export interface Tradition {
     description: string;
 }
 
+export interface MagicianData {
+    tradition: string;
+    drain: AttributeName[];
+    spells: Spell[];
+}
+
 export interface Spell {
     name: string;
+}
+
+export interface MagicData {
+    magicUserType: MagicUserType;
 }
 

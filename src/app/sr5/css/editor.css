@@ -20,6 +20,10 @@
     color: white;
 }
 
+.textarea-border {
+    border: 2px solid var(--bs-primary);
+}
+
 .no-border-radius {
     border-radius: 0;
 }

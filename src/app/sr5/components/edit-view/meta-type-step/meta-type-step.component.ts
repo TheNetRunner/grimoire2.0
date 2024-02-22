@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ShadowRun5ECharacter } from '../../../character/character';
+import { Shadowrun5ECharacter } from '../../../character/shadowrun-5e-character';
 import { DataStoreService } from '../../../services/data-store.service';
-import { MetaType, MetaTypeDescription } from '../../../character/interfaces/meta-type.interface';
+import { MetaTypeName, MetaTypeDescription } from '../../../character/interfaces/meta-type.interface';
 import { MetaTypeAttributesTableRow } from '../../../character/interfaces/attribute.interface';
 
 import { metaTypeDescriptions } from '../../../character/tables/meta-type-descriptions.table';
@@ -19,7 +19,7 @@ export class MetaTypeStepComponent implements OnInit {
     private modalService = inject(NgbModal);
     private dataService = inject(DataStoreService);
 
-    @Input() character!: ShadowRun5ECharacter;
+    @Input() character!: Shadowrun5ECharacter;
 
     metaTypeDescription!: MetaTypeDescription;
     metaTypeAttributesTableRow!: MetaTypeAttributesTableRow;
@@ -40,7 +40,6 @@ export class MetaTypeStepComponent implements OnInit {
 
     setMetaTypeAttributesTableRow(): void {
         this.metaTypeAttributesTableRow = metaTypeAttributesTable[this.character.metaType];
-        console.log(this.metaTypeAttributesTableRow);
     }
 
     openChangeMetaTypeModal(): void {
@@ -52,11 +51,11 @@ export class MetaTypeStepComponent implements OnInit {
         modalRef.componentInstance.metaTypePriority = this.character.priorities.metaType;
         modalRef.componentInstance.currentMetaType = this.character.metaType;
 
-        modalRef.componentInstance.metaTypeSelectEvent.subscribe((metaType: MetaType) => {
+        modalRef.componentInstance.metaTypeSelectEvent.subscribe((metaType: MetaTypeName) => {
             this.character.handleMetaTypeChange(metaType);
             this.handleMetaTypeChange();
 
-            this.dataService.updateCharacter(this.character.id, this.character.getSaveObject());
+            this.dataService.updateCharacter(this.character.id, this.character.saveObject);
         });
     }
 }

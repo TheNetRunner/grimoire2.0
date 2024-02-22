@@ -1,13 +1,29 @@
-import { MetaType } from "./meta-type.interface";
-import { MagicUserType } from "./magic.interface";
-import { LevelOfPlayName } from "./settings.interface";
+import { MetaTypeName } from "../interfaces/meta-type.interface";
+import { MagicUserType } from "../interfaces/magic.interface";
+import { LevelOfPlayName } from "../interfaces/settings.interface";
+
+export enum PriorityName {
+    skills = "skills",
+    attributes = "attributes",
+    resources = "resources",
+    metaType = "metaType",
+    magic = "magic"
+}
 
 export enum Priority {
-    A = "a",
-    B = "b",
-    C = "c",
-    D = "d",
-    E = "e",
+    A = "A",
+    B = "B",
+    C = "C",
+    D = "D",
+    E = "E"
+}
+
+export interface PrioritiesData {
+    metaType: Priority;
+    attributes: Priority;
+    skills: Priority;
+    resources: Priority;
+    magic: Priority;
 }
 
 export interface MagicalStartingValues {
@@ -34,7 +50,7 @@ export interface MagicalStartingValues {
 }
 
 export interface MetaTypeStartingValues {
-	name: MetaType;
+	name: MetaTypeName;
 	specialAttrPoints: number;
 }
 

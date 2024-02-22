@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, inject, SimpleChanges } from '@angular/core';
 
-import { MetaType } from '../../../character/interfaces/meta-type.interface';
+import { MetaTypeName } from '../../../character/interfaces/meta-type.interface';
 import { MetaTypeAttributesTableRow } from '../../../character/interfaces/attribute.interface';
 import { metaTypeAttributesTable } from '../../../character/tables/meta-type-attributes.table';
 
@@ -12,7 +12,7 @@ import { metaTypeAttributesTable } from '../../../character/tables/meta-type-att
 })
 export class MetaTypeStartingAttrsTableComponent implements OnInit {
 
-    @Input() metaType!: MetaType;
+    @Input() metaType!: MetaTypeName;
 
     ngOnInit(): void {
         this.setMetaTypeAttributesTableRow();

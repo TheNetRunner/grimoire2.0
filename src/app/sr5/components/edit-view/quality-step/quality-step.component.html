@@ -6,7 +6,9 @@
             <li class="list-group-item active">
                 <div class="d-flex justify-content-between">
                     <h5 class="my-auto">Selected Qualities</h5>
-                    <span class="my-auto">Remaining Karma: {{ this.character.startingKarma - this.character.startingKarmaSpend }}</span>
+                    <span class="my-auto">
+                        Starting Karma: {{ this.character.remainingStartingKarma }} / {{ this.character.startingKarma }}
+                    </span>
                 </div>
             </li>
             <app-quality-reference-list-item
@@ -29,22 +31,23 @@
             </li>
             <li class="list-group-item">
                 <form class="row" [formGroup]="searchFilterForm">
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6 col-12">
                         <input class="form-control" type="search" placeholder="Search..." formControlName="filterString">
                     </div>
 
-                    <div class="col-md-6 d-flex justify-content-end">
-                        <div class="d-flex justify-content-center my-auto">
-                            <div class="form-check form-switch mx-2">
-                                <input class="form-check-input" type="checkbox" role="switch" id="positive" formControlName="positiveQualities">
-                                <label class="form-check-label" for="positive">Positive</label>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="negative" formControlName="negativeQualities">
-                                <label class="form-check-label" for="negativeQualities">Negative</label>
-                            </div>
+                    <div class="col-lg-2 col-md-3 col-6 d-flex align-items-end justify-content-center">
+                        <div class="form-check form-switch mx-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="positiveQualities" formControlName="positiveQualities">
+                            <label class="form-check-label" for="positiveQualities">Positive</label>
                         </div>
                     </div>
+                    <div class="col-lg-2 col-md-3 col-6 d-flex align-items-end justify-content-center">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="negativeQualities" formControlName="negativeQualities">
+                            <label class="form-check-label" for="negativeQualities">Negative</label>
+                        </div>
+                    </div>
+
                 </form>
             </li>
             <app-quality-list-item 

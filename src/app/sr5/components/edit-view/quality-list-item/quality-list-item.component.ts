@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { Quality } from '../../../character/interfaces/quality.interface';
+import { Quality } from '../../../character/quality/quality.interface';
 
 @Component({
   selector: 'app-quality-list-item',

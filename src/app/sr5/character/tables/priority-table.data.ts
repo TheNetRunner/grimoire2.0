@@ -1,5 +1,5 @@
-import { MetaType } from "../interfaces/meta-type.interface";
-import { Priority, PriorityTable } from "../interfaces/priority.interface";
+import { MetaTypeName } from "../interfaces/meta-type.interface";
+import { Priority, PriorityTable } from "../priorities/priority.interface";
 import { MagicUserType } from "../interfaces/magic.interface";
 import { LevelOfPlayName } from "../interfaces/settings.interface";
 
@@ -7,23 +7,23 @@ export const priorityTable: PriorityTable = {
     [Priority.A]: {
         metaTypes: [
 			{
-				name: MetaType.Human,
+				name: MetaTypeName.Human,
 				specialAttrPoints: 9,
 			},
 			{
-				name: MetaType.Elf,
+				name: MetaTypeName.Elf,
 				specialAttrPoints: 8,
 			},
 			{
-				name: MetaType.Dwarf,
+				name: MetaTypeName.Dwarf,
 				specialAttrPoints: 7,
 			},
 			{
-				name: MetaType.Ork,
+				name: MetaTypeName.Ork,
 				specialAttrPoints: 7,
 			},
 			{
-				name: MetaType.Troll,
+				name: MetaTypeName.Troll,
 				specialAttrPoints: 5,
 			},
 		],
@@ -56,23 +56,23 @@ export const priorityTable: PriorityTable = {
 	[Priority.B]: {
 		metaTypes: [
 			{
-				name: MetaType.Human,
+				name: MetaTypeName.Human,
 				specialAttrPoints: 7,
 			},
 			{
-				name: MetaType.Elf,
+				name: MetaTypeName.Elf,
 				specialAttrPoints: 6,
 			},
 			{
-				name: MetaType.Dwarf,
+				name: MetaTypeName.Dwarf,
 				specialAttrPoints: 4,
 			},
 			{
-				name: MetaType.Ork,
+				name: MetaTypeName.Ork,
 				specialAttrPoints: 4,
 			},
 			{
-				name: MetaType.Troll,
+				name: MetaTypeName.Troll,
 				specialAttrPoints: 0,
 			},
 		],
@@ -115,19 +115,19 @@ export const priorityTable: PriorityTable = {
     [Priority.C]: {
 		metaTypes: [
 			{
-				name: MetaType.Human,
+				name: MetaTypeName.Human,
 				specialAttrPoints: 5,
 			},
 			{
-				name: MetaType.Elf,
+				name: MetaTypeName.Elf,
 				specialAttrPoints: 3,
 			},
 			{
-				name: MetaType.Dwarf,
+				name: MetaTypeName.Dwarf,
 				specialAttrPoints: 1,
 			},
 			{
-				name: MetaType.Ork,
+				name: MetaTypeName.Ork,
 				specialAttrPoints: 0,
 			},
 		],
@@ -170,11 +170,11 @@ export const priorityTable: PriorityTable = {
 	[Priority.D]: {
 		metaTypes: [
 			{
-				name: MetaType.Human,
+				name: MetaTypeName.Human,
 				specialAttrPoints: 3,
 			},
 			{
-				name: MetaType.Elf,
+				name: MetaTypeName.Elf,
 				specialAttrPoints: 0,
 			},
 		],
@@ -206,7 +206,7 @@ export const priorityTable: PriorityTable = {
     [Priority.E]: {
 		metaTypes: [
 			{
-				name: MetaType.Human,
+				name: MetaTypeName.Human,
 				specialAttrPoints: 1,
 			},
 		],

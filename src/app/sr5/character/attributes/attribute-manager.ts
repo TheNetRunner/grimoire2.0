@@ -1,22 +1,22 @@
-import { MetaType } from "../interfaces/meta-type.interface";
+import { MetaTypeName } from "../interfaces/meta-type.interface";
 import { AttributeName, SpecialAttributeName } from "../interfaces/attribute.interface";
 import { 
     AttributesData,
     SpecialAttributesData, 
-    ShadowRun5ECharacterData, 
+    Shadowrun5ECharacterData, 
     ExceptionalAttributesData 
-} from "../interfaces/character.interface";
+} from "../interfaces/shadowrun-5e-character-data.interface";
 
 import { metaTypeAttributesTable } from "../tables/meta-type-attributes.table";
-import PriorityTableProvider from "../tables/priority-table-provider";
-import { Priority } from "../interfaces/priority.interface";
+import PriorityTableProvider from "../priorities/priority-table-provider";
+import { Priority } from "../priorities/priority.interface";
 import { MagicUserType } from "../interfaces/magic.interface";
 
 export default class AttributeManager {
-    private characterData: ShadowRun5ECharacterData;
+    private characterData: Shadowrun5ECharacterData;
     private priorityTableProvider: PriorityTableProvider;
 
-    constructor(characterData: ShadowRun5ECharacterData) {
+    constructor(characterData: Shadowrun5ECharacterData) {
         this.characterData = characterData;
         this.priorityTableProvider = new PriorityTableProvider();
     }
@@ -30,11 +30,11 @@ export default class AttributeManager {
     }
 
     get attributePoints(): number {
-        return this.characterData.attributesData.attributePoints;
+        return this.characterData.attributesData.attributeBuildPoints;
     }
 
     set attributePoints(attributePoints: number) {
-        this.characterData.attributesData.attributePoints = attributePoints;
+        this.characterData.attributesData.attributeBuildPoints = attributePoints;
     }
 
     get exceptionalAttributes(): ExceptionalAttributesData[] {
@@ -45,12 +45,12 @@ export default class AttributeManager {
         this.exceptionalAttributes = exceptionalAttributes;
     }
 
-    get metaType(): MetaType {
+    get metaType(): MetaTypeName {
         return this.characterData.metaType;
     }
 
     get magicUserType(): MagicUserType {
-        return this.characterData.magicUserType;
+        return this.characterData.magicData.magicUserType;
     }
 
     get magicPriority(): Priority {
@@ -187,11 +187,11 @@ export default class AttributeManager {
     }
 
     get specialAttributePoints(): number {
-        return this.characterData.specialAttributesData.specialAttributePoints;
+        return this.characterData.specialAttributesData.specialAttributeBuildPoints;
     }
 
     set specialAttributePoints(specialAttributeBuildPoints: number) {
-        this.characterData.specialAttributesData.specialAttributePoints = specialAttributeBuildPoints;
+        this.characterData.specialAttributesData.specialAttributeBuildPoints = specialAttributeBuildPoints;
     }
 
     getSpecialAttributeBuildPoints(attributeName: SpecialAttributeName): number {

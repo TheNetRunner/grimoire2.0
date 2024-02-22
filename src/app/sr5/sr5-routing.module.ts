@@ -6,9 +6,9 @@ import { EditViewComponent } from './views/edit-view/edit-view.component';
 import { PlayViewComponent } from './views/play-view/play-view.component';
 
 const routes: Routes = [
-    { path: 'sr5/characters', component: ListViewComponent },
-    { path: 'sr5/characters/:id/edit', component: EditViewComponent },
-    { path: 'sr5/characters/:id/play', component: PlayViewComponent }
+    { path: 'sr5e/runners', component: ListViewComponent },
+    { path: 'sr5e/runners/:id/edit', component: EditViewComponent },
+    { path: 'sr5e/runners/:id/play', component: PlayViewComponent }
 ];
 
 @NgModule({

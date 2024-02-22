@@ -2,8 +2,8 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { DataStoreService } from '../../../services/data-store.service';
-import { ShadowRun5ECharacter } from '../../../character/character';
-import { Quality, QualityReference } from '../../../character/interfaces/quality.interface';
+import { Shadowrun5ECharacter } from '../../../character/shadowrun-5e-character';
+import { Quality, QualityReference } from '../../../character/quality/quality.interface';
 
 import { positiveQualities, negativeQualities } from '../../../character/data/qualities.data';
 
@@ -16,7 +16,7 @@ export class QualityStepComponent implements OnInit {
     private dataService = inject(DataStoreService);
     private formBuilder = inject(FormBuilder);
 
-    @Input() character!: ShadowRun5ECharacter;
+    @Input() character!: Shadowrun5ECharacter;
     
     positiveQualityOptions: Quality[] = [];
     negativeQualityOptions: Quality[] = [];
@@ -90,7 +90,7 @@ export class QualityStepComponent implements OnInit {
 
     updateQualityReference(qualityReferenceUpdate: QualityReference, qualityType: string): void {
         this.character.updateQuality(qualityReferenceUpdate, qualityType);
-        this.dataService.updateCharacter(this.character.id, this.character.getSaveObject());
+        this.dataService.updateCharacter(this.character.id, this.character.saveObject);
 
         this.setQualityOptions();
     }
@@ -103,6 +103,6 @@ export class QualityStepComponent implements OnInit {
     }
 
     updateCharacter(): void {
-        this.dataService.updateCharacter(this.character.id, this.character.getSaveObject());
+        this.dataService.updateCharacter(this.character.id, this.character.saveObject);
     }
 }
