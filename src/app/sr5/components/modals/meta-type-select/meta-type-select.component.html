@@ -5,14 +5,11 @@
 <div class="modal-body">
     <div ngbAccordion>
         <div ngbAccordionItem *ngFor="let metaTypeOption of metaTypeOptions" [collapsed]="true">
-            <div ngbAccordionHeader class="accordion-button meta-type-selection-header justify-content-between">
+            <div ngbAccordionHeader class="accordion-button meta-type-selection-header justify-content-between" ngbAccordionToggle>
                 <p class="text-info m-0">
                     {{ metaTypeOption.name | titlecase }}
                 </p>
                 <div>
-                    <button class="btn btn-secondary spin-button mx-2" ngbAccordionToggle>
-                        <i class="bi bi-chevron-bar-expand"></i>
-                    </button>
                     <button class="btn btn-primary" (click)="emitSelectMetaType(metaTypeOption.name)">
                         Select
                     </button>

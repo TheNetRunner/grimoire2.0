@@ -28,6 +28,7 @@ import { AugmentStepComponent } from './components/edit-view/augment-step/augmen
 import { CyberwareShopComponent } from './components/modals/cyberware-shop/cyberware-shop.component';
 import { WeaponStepComponent } from './components/edit-view/weapon-step/weapon-step.component';
 import { ShopComponent } from './components/modals/shop/shop.component';
+import { DetailBarComponent } from './components/edit-view/detail-bar/detail-bar.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ShopComponent } from './components/modals/shop/shop.component';
     CyberwareShopComponent,
     WeaponStepComponent,
     ShopComponent,
+    DetailBarComponent,
   ],
   imports: [
     CommonModule,

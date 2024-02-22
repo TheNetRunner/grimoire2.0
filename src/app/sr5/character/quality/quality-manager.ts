@@ -232,18 +232,23 @@ export default class QualityManager {
         return !allQualities.find(q => q.id === id);
     }
 
-    getTotalQualityKarmaCost(): number {
+    getTotalPositiveQualityKarmaCost(): number {
         let karmaCost = 0;
 
         for(const qualityReference of this.positiveQualityReferences) {
             karmaCost += qualityReference.karmaCost * qualityReference.ratingValue;
         }
 
+        return karmaCost;
+    }
+
+    getTotalNegativeQualityKarmaReward(): number {
+        let karmaCost = 0;
+
         for(const qualityReference of this.negativeQualityReferences) {
-            karmaCost -= qualityReference.karmaCost * qualityReference.ratingValue;
+            karmaCost += qualityReference.karmaCost * qualityReference.ratingValue;
         }
 
         return karmaCost;
-
     }
 }

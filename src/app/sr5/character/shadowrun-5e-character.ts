@@ -47,6 +47,14 @@ export class Shadowrun5ECharacter {
         this.characterData.basic = basicData;
     }
 
+    get imageName(): string {
+        return this.characterData.imageName;
+    }
+
+    set imageName(imageName: string) {
+        this.characterData.imageName = imageName;
+    }
+
     // Priorities
 
     get priorities(): PrioritiesData {
@@ -123,18 +131,6 @@ export class Shadowrun5ECharacter {
 
     set metaType(metaType: MetaTypeName) {
         this.characterData.metaType = metaType;
-    }
-
-    get imageName(): string {
-        return this.characterData.imageName;
-    }
-
-    set imageName(imageName: string) {
-        this.characterData.imageName = imageName;
-    }
-
-    handleMetaTypeChange(metaType: MetaTypeName): void {
-        this.metaType = metaType;
         this.attributeManager.specialAttributePoints = this.priorityTableProvider.getSpecialAttributePoints(this.priorities.metaType, metaType);
     }
 
@@ -154,6 +150,17 @@ export class Shadowrun5ECharacter {
         let total = 0;
 
         total += this.attributeManager.getAttributeIncreasesKarmaCostTotal();
+        total += this.totalKarmaSpentOnPositiveQualities;
+
+        total -= this.totalKarmaSpentOnNegativeQualities;
+
+        return total;
+    }
+
+    get totalKarma(): number {
+        let total = 0
+
+        total += this.startingKarma;
 
         return total;
     }
@@ -170,9 +177,12 @@ export class Shadowrun5ECharacter {
         return this.startingKarma
     }
 
-    get startingKarmaSpend(): number {
-        const totalQualitySpend = this.qualityManager.getTotalQualityKarmaCost();
-        return totalQualitySpend;
+    get totalKarmaSpentOnPositiveQualities(): number {
+        return this.qualityManager.getTotalPositiveQualityKarmaCost();
+    }
+
+    get totalKarmaSpentOnNegativeQualities(): number {
+        return this.qualityManager.getTotalNegativeQualityKarmaReward();
     }
 
     // Final Calculations

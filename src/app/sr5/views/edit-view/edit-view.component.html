@@ -1,7 +1,9 @@
 <app-edit-navbar *ngIf="character" [characterName]="character.basic.name"></app-edit-navbar>
 
-<div class="container-fluid" *ngIf="character">
 
+<div class="container-fluid" *ngIf="character">
+    <app-detail-bar *ngIf="character" [karmaSpent]="character.totalKarmaSpent" [karmaTotal]="character.totalKarma"></app-detail-bar>
+    
     <app-concept-step *ngIf="currentEditorStep === 'concept'" [character]="character"></app-concept-step>
 
     <app-priority-step *ngIf="currentEditorStep === 'priorities'" [character]="character"></app-priority-step>

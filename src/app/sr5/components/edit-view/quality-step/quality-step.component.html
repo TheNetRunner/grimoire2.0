@@ -4,12 +4,23 @@
 
         <ul class="list-group">
             <li class="list-group-item active">
-                <div class="d-flex justify-content-between">
-                    <h5 class="my-auto">Selected Qualities</h5>
-                    <span class="my-auto">
-                        Starting Karma: {{ this.character.remainingStartingKarma }} / {{ this.character.startingKarma }}
-                    </span>
+
+                <div class="row">
+                    <h5>Selected Qualities</h5>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <span class="fs-7">
+                            Positive Qualities: {{ this.character.totalKarmaSpentOnPositiveQualities }} / 13 Karma
+                        </span>
+                    </div>
+
+                    <div class="col-md-6 col-12 d-flex justify-content-end">
+                       <span class="fs-7">Negative Qualities: {{ this.character.totalKarmaSpentOnNegativeQualities }} / 13 Karma</span>
+                    </div>
+                </div>
+
             </li>
             <app-quality-reference-list-item
                 *ngFor="let qualityReference of this.character.qualityManager.qualityReferenceArray"
