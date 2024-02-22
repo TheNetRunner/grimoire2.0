@@ -12,6 +12,7 @@ import { Sr5Module } from "./sr5/sr5.module";
 import { MainNavbarComponent } from './components/main-navbar/main-navbar.component';
 
 
+
 @NgModule({
 	declarations: [AppComponent, MainNavbarComponent],
 	imports: [

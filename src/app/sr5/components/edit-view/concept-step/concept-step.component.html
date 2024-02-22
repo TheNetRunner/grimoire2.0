@@ -108,22 +108,9 @@
             <li class="list-group-item no-border-radius" [(ngbCollapse)]="biographyCollapse" [animation]="true">
                 <form [formGroup]="biographyForm">
                     <div class="mb-3">
-                        <label for="bio" class="form-label">Biography</label>
-                        <textarea class="form-control" id="bio" formControlName="bio"></textarea>
+                        <textarea class="form-control" id="bio" formControlName="bio" rows="12"></textarea>
                     </div>
                 </form>
-            </li>
-        </ul>
-
-        <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between active no-border-radius">
-                <h5 class="my-auto">Notes</h5>
-                <button class="btn btn-secondary spin-button" (click)="notesCollapse = !notesCollapse">
-                    <i class="bi bi-chevron-bar-expand"></i>
-                </button>
-            </li>
-            <li class="list-group-item no-border-radius" [(ngbCollapse)]="notesCollapse" [animation]="true">
-
             </li>
         </ul>
 
